@@ -3,7 +3,8 @@ import React from 'react'
 
 const LeftSection = () => {
     return (
-        <div className=" md:w-[55%] md:ps-5">
+        <div className=" relative md:w-[55%] md:px-5">
+
             <h1 className="user-select-none text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#7b1113] to-[#d42e32]">
                     Indian Legal Document
@@ -18,7 +19,7 @@ const LeftSection = () => {
                 <ChevronRight className="ml-2 h-4 w-4" />
             </div>
 
-            <p className="user-select-none text-gray-600 text-sm md:w-[90%] mt-7 ">
+            <p className="user-select-none text-gray-600 text-sm md:w-[90%] pt-2">
                 Access, understand, and utilize landmark judgments from Indian courts with our AI-powered summarization
                 service. Perfect for legal professionals, researchers, and students.
             </p>
@@ -61,11 +62,11 @@ const LeftSection = () => {
 
             {/* Search bar */}
             <div className=" my-3">
-                <div className="mb-1 flex items-center text-xs text-gray-500 pl-4">
-                    <span className="mr-3">Quick searches:</span>
-                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Article 14</button>
-                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">IPC 302</button>
-                    <button className="px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Landmark Cases</button>
+                <div className="mb-1 flex items-center justify-start gap-1 sm:text-xs text-[11px] text-gray-500 sm:pl-4 pl-1">
+                    <span className="">Quick searches |</span>
+                    <span className="rounded hover:text-[#7b1113]">Article 14 |</span>
+                    <span className="rounded hover:text-[#7b1113]">IPC 302 |</span>
+                    <span className="rounded hover:text-[#7b1113]">Landmark Cases</span>
                 </div>
                 <div className="relative flex items-center xl:h-16 h-12 bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden">
                     <div className=" inset-y-0 left-0 px-4 flex items-center pointer-events-none">
@@ -82,11 +83,9 @@ const LeftSection = () => {
                         </button>
                     </div>
                 </div>
-
             </div>
 
-
-            <div className="flex flex-row gap-4 pt-2">
+            <div className="flex sm:flex-row flex-col gap-4 pt-2">
                 <button className="bg-[#7b1113] text-sm text-white md:px-5 px-3 py-3 rounded-lg hover:bg-[#7b1113]/90 transition-colors flex items-center justify-center">
                     <FileText className="mr-2 h-5 w-5" />
                     Try Document Analysis
@@ -113,7 +112,6 @@ const LeftSection = () => {
                     <span className="ml-3 text-xs">Trusted by 5000+ legal professionals</span>
                 </div>
             </div>
-
 
         </div>
     )
