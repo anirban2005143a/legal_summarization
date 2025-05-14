@@ -25,32 +25,6 @@ const LeftSection = () => {
                 service. Perfect for legal professionals, researchers, and students.
             </p>
 
-
-            {/* Search bar */}
-            <div className=" my-3">
-                <div className="relative flex items-center xl:h-16 h-12 bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden">
-                    <div className=" inset-y-0 left-0 px-4 flex items-center pointer-events-none">
-                        <Search className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                        type="text"
-                        className="block w-full h-full pr-4 py-4 text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
-                        placeholder="Search case law, judgments, or legal documents..."
-                    />
-                    <div className="h-full inset-y-0">
-                        <button className="h-full px-6 bg-[#7b1113] text-base text-white font-medium hover:bg-[#5a0d0f] transition-colors">
-                            Search
-                        </button>
-                    </div>
-                </div>
-                <div className="mt-1 flex items-center text-xs text-gray-500 pl-4">
-                    <span className="mr-3">Quick searches:</span>
-                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Article 14</button>
-                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">IPC 302</button>
-                    <button className="px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Landmark Cases</button>
-                </div>
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 user-select-none">
                 {[
                     {
@@ -86,6 +60,32 @@ const LeftSection = () => {
                     </div>
                 ))}
             </div>
+
+            {/* Search bar */}
+            <div className=" my-3">
+                <div className="relative flex items-center xl:h-16 h-12 bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden">
+                    <div className=" inset-y-0 left-0 px-4 flex items-center pointer-events-none">
+                        <Search className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                        type="text"
+                        className="block w-full h-full pr-4 py-4 text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
+                        placeholder="Search case law, judgments, or legal documents..."
+                    />
+                    <div className="h-full inset-y-0">
+                        <button className="h-full px-6 bg-[#7b1113] text-base text-white font-medium hover:bg-[#5a0d0f] transition-colors">
+                            Search
+                        </button>
+                    </div>
+                </div>
+                <div className="mt-1 flex items-center text-xs text-gray-500 pl-4">
+                    <span className="mr-3">Quick searches:</span>
+                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Article 14</button>
+                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">IPC 302</button>
+                    <button className="px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Landmark Cases</button>
+                </div>
+            </div>
+
 
             <div className="flex flex-row gap-4 pt-2">
                 <button className="bg-[#7b1113] text-sm text-white md:px-5 px-3 py-3 rounded-lg hover:bg-[#7b1113]/90 transition-colors flex items-center justify-center">
