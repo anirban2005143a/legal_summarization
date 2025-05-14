@@ -61,6 +61,12 @@ const LeftSection = () => {
 
             {/* Search bar */}
             <div className=" my-3">
+                <div className="mb-1 flex items-center text-xs text-gray-500 pl-4">
+                    <span className="mr-3">Quick searches:</span>
+                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Article 14</button>
+                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">IPC 302</button>
+                    <button className="px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Landmark Cases</button>
+                </div>
                 <div className="relative flex items-center xl:h-16 h-12 bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden">
                     <div className=" inset-y-0 left-0 px-4 flex items-center pointer-events-none">
                         <Search className="h-5 w-5 text-gray-400" />
@@ -76,12 +82,7 @@ const LeftSection = () => {
                         </button>
                     </div>
                 </div>
-                <div className="mt-1 flex items-center text-xs text-gray-500 pl-4">
-                    <span className="mr-3">Quick searches:</span>
-                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Article 14</button>
-                    <button className="mr-2 px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">IPC 302</button>
-                    <button className="px-2 py-0.5 rounded hover:bg-gray-100 hover:text-[#7b1113]">Landmark Cases</button>
-                </div>
+
             </div>
 
 
