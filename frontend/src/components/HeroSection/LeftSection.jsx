@@ -3,10 +3,8 @@ import React from 'react'
 
 const LeftSection = () => {
     return (
-        <div className=" md:w-[50%] ">
-
-
-            <h1 className="user-select-none text-4xl font-bold text-gray-900 leading-tight">
+        <div className=" md:w-[55%] md:ps-5">
+            <h1 className="user-select-none text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#7b1113] to-[#d42e32]">
                     Indian Legal Document
                 </span>
@@ -50,7 +48,7 @@ const LeftSection = () => {
                 ].map((feature, index) => (
                     <div
                         key={index}
-                        className="flex items-start space-x-3 p-3 rounded-lg "
+                        className="flex items-start space-x-3 p-3 ps-0 rounded-lg "
                     >
                         <div className="p-1 bg-[#7b1113]/10 rounded-full  ">{feature.icon}</div>
                         <div>
