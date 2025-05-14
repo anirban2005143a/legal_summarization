@@ -224,8 +224,8 @@ const HeroSection = () => {
       <BackGround />
 
       {/* Main content */}
-      <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className=" mx-auto px-6 py-20 md:py-28 relative z-10">
+        <div className="flex md:flex-row flex-col max-w-7xl mx-auto  justify-between items-start ">
           {/* Left Content - Now spans 7 columns for better proportions */}
           <LeftSection />
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 const RightComponent = () => {
     return (
-        <div className="lg:col-span-5 relative">
+        <div className="md:w-[45%] ">
             <div className="relative h-full min-h-[500px] rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white">
                 {/* Document header */}
                 <div className="user-select-none relative py-5 bg-gradient-to-r from-[#7b1113] to-[#9e1518] flex items-center px-4">
@@ -19,7 +19,7 @@ const RightComponent = () => {
                 </div>
 
                 {/* Document content */}
-                <div className=" p-6 overflow-hidden">
+                <div className=" p-6 ">
                     {/* Document title */}
                     <div className=" mb-6 pb-3 border-b border-gray-200">
                         <div className="flex items-center justify-between mb-2">
