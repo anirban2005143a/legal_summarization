@@ -87,13 +87,13 @@ const LeftSection = () => {
                 ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <button className="bg-[#7b1113] text-sm text-white px-6 py-3 rounded-lg hover:bg-[#7b1113]/90 transition-colors flex items-center justify-center">
+            <div className="flex flex-row gap-4 pt-2">
+                <button className="bg-[#7b1113] text-sm text-white md:px-5 px-3 py-3 rounded-lg hover:bg-[#7b1113]/90 transition-colors flex items-center justify-center">
                     <FileText className="mr-2 h-5 w-5" />
                     Try Document Analysis
                 </button>
 
-                <button className="group border text-sm border-gray-300 bg-white text-gray-700 px-6 py-3 rounded-lg hover:border-[#7b1113] hover:text-[#7b1113] transition-colors flex items-center justify-center">
+                <button className="group border text-sm border-gray-300 bg-white text-gray-700 md:px-5 px-3 py-3 rounded-lg hover:border-[#7b1113] hover:text-[#7b1113] transition-colors flex items-center justify-center">
                     <BookOpen className="mr-2 h-5 w-5 group-hover:text-[#7b1113]" />
                     Browse Library
                 </button>

@@ -7,10 +7,10 @@ const RightComponent = () => {
             <div className="relative h-full min-h-[500px] rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white">
                 {/* Document header */}
                 <div className="user-select-none relative py-5 bg-gradient-to-r from-[#7b1113] to-[#9e1518] flex items-center px-4">
-                    <div className=" absolute left-0 top-1/2 -translate-y-1/2 ps-5 flex space-x-2">
-                        <div className="h-3 w-3 rounded-full bg-white opacity-70"></div>
-                        <div className="h-3 w-3 rounded-full bg-white opacity-70"></div>
-                        <div className="h-3 w-3 rounded-full bg-white opacity-70"></div>
+                    <div className=" absolute left-0 top-1/2 -translate-y-1/2 md:ps-4 ps-2 flex space-x-2">
+                        <div className="h-2.5 w-2.5 rounded-full bg-white opacity-70"></div>
+                        <div className="h-2.5 w-2.5 rounded-full bg-white opacity-70"></div>
+                        <div className="h-2.5 w-2.5 rounded-full bg-white opacity-70"></div>
                     </div>
                     <div className="mx-auto text-white text-sm font-medium flex items-center">
                         <Scale className="h-4 w-4 mr-2" />
@@ -19,7 +19,7 @@ const RightComponent = () => {
                 </div>
 
                 {/* Document content */}
-                <div className=" p-6 ">
+                <div className=" px-3 py-6 ">
                     {/* Document title */}
                     <div className=" mb-6 pb-3 border-b border-gray-200">
                         <div className="flex items-center justify-between mb-2">

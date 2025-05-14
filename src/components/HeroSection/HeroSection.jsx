@@ -225,7 +225,7 @@ const HeroSection = () => {
 
       {/* Main content */}
       <div className=" mx-auto px-6 py-20 md:py-28 relative z-10">
-        <div className="flex md:flex-row flex-col max-w-7xl mx-auto  justify-between items-start ">
+        <div className="flex md:flex-row flex-col max-w-7xl mx-auto md:gap-0 gap-10 justify-between items-start ">
           {/* Left Content - Now spans 7 columns for better proportions */}
           <LeftSection />
 
@@ -233,7 +233,6 @@ const HeroSection = () => {
           <RightComponent />
         </div>
       </div>
-
 
     </div>
   )
