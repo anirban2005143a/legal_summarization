@@ -64,9 +64,9 @@ const LeftSection = () => {
             <div className=" my-3">
                 <div className="mb-1 flex items-center justify-start gap-1 sm:text-xs text-[11px] text-gray-500 sm:pl-4 pl-1">
                     <span className="">Quick searches |</span>
-                    <span className="rounded hover:text-[#7b1113]">Article 14 |</span>
-                    <span className="rounded hover:text-[#7b1113]">IPC 302 |</span>
-                    <span className="rounded hover:text-[#7b1113]">Landmark Cases</span>
+                    <span className="rounded md:hover:text-[#7b1113]">Article 14 |</span>
+                    <span className="rounded md:hover:text-[#7b1113]">IPC 302 |</span>
+                    <span className="rounded md:hover:text-[#7b1113]">Landmark Cases</span>
                 </div>
                 <div className="relative flex items-center xl:h-16 h-12 bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-gray-100 overflow-hidden">
                     <div className=" inset-y-0 left-0 px-4 flex items-center pointer-events-none">
@@ -78,7 +78,7 @@ const LeftSection = () => {
                         placeholder="Search case law, judgments, or legal documents..."
                     />
                     <div className="h-full inset-y-0">
-                        <button className="h-full px-6 bg-[#7b1113] text-base text-white font-medium hover:bg-[#5a0d0f] transition-colors">
+                        <button className="h-full px-6 bg-[#7b1113] text-base text-white font-medium md:hover:bg-[#5a0d0f] transition-colors">
                             Search
                         </button>
                     </div>
@@ -86,13 +86,13 @@ const LeftSection = () => {
             </div>
 
             <div className="flex sm:flex-row flex-col gap-4 pt-2">
-                <button className="bg-[#7b1113] text-sm text-white md:px-5 px-3 py-3 rounded-lg hover:bg-[#7b1113]/90 transition-colors flex items-center justify-center">
+                <button className="bg-[#7b1113] text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#7b1113]/90 transition-colors flex items-center justify-center">
                     <FileText className="mr-2 h-5 w-5" />
                     Try Document Analysis
                 </button>
 
-                <button className="group border text-sm border-gray-300 bg-white text-gray-700 md:px-5 px-3 py-3 rounded-lg hover:border-[#7b1113] hover:text-[#7b1113] transition-colors flex items-center justify-center">
-                    <BookOpen className="mr-2 h-5 w-5 group-hover:text-[#7b1113]" />
+                <button className="group border text-sm border-gray-300 bg-white text-gray-700 md:px-5 px-3 py-3 rounded-lg md:hover:border-[#7b1113] md:hover:text-[#7b1113] transition-colors flex items-center justify-center">
+                    <BookOpen className="mr-2 h-5 w-5 md:group-hover:text-[#7b1113]" />
                     Browse Library
                 </button>
             </div>

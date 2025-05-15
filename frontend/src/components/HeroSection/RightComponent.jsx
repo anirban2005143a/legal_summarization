@@ -85,7 +85,7 @@ const RightComponent = () => {
                     {/* Document footer with annotations */}
                     <div className="absolute h-10 bottom-1 left-4 right-4 flex justify-between items-center">
                         <div className="flex items-center space-x-4">
-                            <button className="flex cursor-pointer items-center text-xs xl:text-base text-gray-500 hover:text-[#7b1113]">
+                            <button className="flex cursor-pointer items-center text-xs xl:text-base text-gray-500 md:hover:text-[#7b1113]">
                                 <BookOpen className="h-4 w-4 mr-1" />
                                 <span>Full Text</span>
                             </button>
@@ -93,10 +93,10 @@ const RightComponent = () => {
                             <div className="text-xs xl:text-base text-gray-500">Page 1 of 24</div>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <button className="p-1.5 rounded-full hover:bg-gray-100">
+                            <button className="p-1.5 rounded-full md:hover:bg-gray-100">
                                 <ChevronRight className="h-4 w-4 text-gray-400 rotate-180" />
                             </button>
-                            <button className="p-1.5 rounded-full hover:bg-gray-100">
+                            <button className="p-1.5 rounded-full md:hover:bg-gray-100">
                                 <ChevronRight className="h-4 w-4 text-gray-400" />
                             </button>
                         </div>
