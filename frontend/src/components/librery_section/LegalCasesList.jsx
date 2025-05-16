@@ -30,7 +30,7 @@ const LegalCasesList = ({ cases }) => {
   }, [debouncedSearchTerm, filterCases]);
 
   return (
-    <div className=' max-w-7xl mx-auto md:p-6 sm:p-4 p-2'>
+    <div className=' max-w-7xl mx-auto md:px-6 sm:px-4 px-2 pt-[100px] pb-5'>
       {/* <div className="mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />

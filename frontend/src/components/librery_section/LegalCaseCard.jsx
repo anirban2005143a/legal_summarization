@@ -39,7 +39,7 @@ const LegalCaseCard = ({ legalCase }) => {
   };
 
   return (
-    <section id={`${legalCase["id"]}`} className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-200 mb-6">
+    <section id={`${legalCase["id"]}`} className=" bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-200 mb-6">
       <div className="p-6">
         <h2 className="md:text-2xl text-lg font-bold text-gray-900 mb-4">{legalCase["heading"]}</h2>
 
