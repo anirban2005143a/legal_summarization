@@ -3,10 +3,13 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, FileText, Download, MessageSquareText } from 'lucide-react';
 import { downloadAsTextFile } from '@/utils/fileUtils';
+import { useRouter } from 'next/navigation';
 
 const LegalCaseCard = ({ legalCase }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
+
+  const router = useRouter()
 
   // Function to truncate content for preview
   const truncateContent = (content, maxLength = 300) => {
@@ -18,15 +21,15 @@ const LegalCaseCard = ({ legalCase }) => {
   const handleDownload = () => {
     const fileName = `${legalCase["heading"].replace(/\s+/g, '_')}.txt`;
     const contentToDownload = `
-${legalCase["heading"]}
-${'-'.repeat(legalCase["heading"].length)}
+        ${legalCase["heading"]}
+        ${'-'.repeat(legalCase["heading"].length)}
 
-FULL CONTENT:
-${legalCase["main_content"]}
+        FULL CONTENT:
+        ${legalCase["main_content"]}
 
-SUMMARY:
-${legalCase["summary"]}
-`;
+        SUMMARY:
+        ${legalCase["summary"]}
+        `;
     downloadAsTextFile(fileName, contentToDownload);
   };
 
@@ -36,15 +39,15 @@ ${legalCase["summary"]}
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-200 mb-6">
+    <section id={`${legalCase["id"]}`} className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-200 mb-6">
       <div className="p-6">
         <h2 className="md:text-2xl text-lg font-bold text-gray-900 mb-4">{legalCase["heading"]}</h2>
 
         <div className="prose max-w-none text-gray-700 text-sm">
           {isExpanded ? (
-            <p className="animate-fadeIn">{legalCase["main_content"]}</p>
+            <p className="whitespace-pre-line animate-fadeIn">{legalCase["main_content"]}</p>
           ) : (
-            <p>{truncateContent(legalCase["main_content"])}</p>
+            <p className=' whitespace-pre-line'>{truncateContent(legalCase["main_content"])}</p>
           )}
         </div>
 
@@ -60,7 +63,11 @@ ${legalCase["summary"]}
         <div className="flex flex-wrap gap-3 justify-between items-center md:text-sm text-xs">
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setIsExpanded(!isExpanded)}
+              onClick={(e) => {
+                e.preventDefault()
+                if (isExpanded) router.push(`/cases/#${legalCase["id"]}`)
+                setIsExpanded(!isExpanded)
+              }}
               className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition duration-200"
             >
               {isExpanded ? (
@@ -76,7 +83,11 @@ ${legalCase["summary"]}
               )}
             </button>
             <button
-              onClick={() => setShowSummary(!showSummary)}
+              onClick={(e) => {
+                e.preventDefault()
+                // if(showSummary) router.push(`cases/#${legalCase["id"]}`)
+                setShowSummary(!showSummary)
+              }}
               className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-amber-50 text-amber-700 hover:bg-amber-100 transition duration-200"
             >
               <FileText className="w-4 h-4 mr-1" />
@@ -102,7 +113,7 @@ ${legalCase["summary"]}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

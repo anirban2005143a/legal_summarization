@@ -1,4 +1,5 @@
 import { BookOpen, CheckCircle, ChevronRight, FileText, Scale, Search } from 'lucide-react'
+import Link from 'next/link'
 import React from 'react'
 
 const LeftSection = () => {
@@ -91,10 +92,11 @@ const LeftSection = () => {
                     Try Document Analysis
                 </button>
 
-                <button className="group border text-sm border-gray-300 bg-white text-gray-700 md:px-5 px-3 py-3 rounded-lg md:hover:border-[#7b1113] md:hover:text-[#7b1113] transition-colors flex items-center justify-center">
+                <Link href={"/cases"}
+                 className="group border text-sm border-gray-300 bg-white text-gray-700 md:px-5 px-3 py-3 rounded-lg md:hover:border-[#7b1113] md:hover:text-[#7b1113] transition-colors flex items-center justify-center">
                     <BookOpen className="mr-2 h-5 w-5 md:group-hover:text-[#7b1113]" />
                     Browse Library
-                </button>
+                </Link>
             </div>
 
             <div className=" relative flex items-center gap-4 pt-4  text-gray-500 user-select-none">
