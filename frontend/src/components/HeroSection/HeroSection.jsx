@@ -7,7 +7,7 @@ import BackGround from "./BackGround"
 
 const HeroSection = () => {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-[#f8f2e9] to-white">
+    <div className="relative overflow-hidden bg-gradient-to-b from-[#f8f2e9] to-white pt-[40px] ">
       <BackGround />
 
       {/* Main content */}

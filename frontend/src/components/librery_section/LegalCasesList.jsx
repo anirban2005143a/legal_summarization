@@ -30,8 +30,8 @@ const LegalCasesList = ({ cases }) => {
   }, [debouncedSearchTerm, filterCases]);
 
   return (
-    <div>
-      <div className="mb-6">
+    <div className=' max-w-7xl mx-auto md:p-6 sm:p-4 p-2'>
+      {/* <div className="mb-6">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <input
@@ -43,7 +43,7 @@ const LegalCasesList = ({ cases }) => {
             aria-label="Search cases"
           />
         </div>
-      </div>
+      </div> */}
 
       {filteredCases.length === 0 ? (
         <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">

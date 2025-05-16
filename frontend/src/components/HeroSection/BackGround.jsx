@@ -13,7 +13,7 @@ const BackGround = () => {
                 <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px]"></div>
 
                 {/* Accent lines */}
-                <div className="absolute top-[30px] right-0 sm:w-[50%] md:w-[30%] w-[80%] h-[2px] bg-gradient-to-r from-transparent to-[#7b1113]/20"></div>
+                <div className="absolute top-[60px] right-0 sm:w-[50%] md:w-[30%] w-[80%] h-[2px] bg-gradient-to-r from-transparent to-[#7b1113]/20"></div>
                 <div className="absolute bottom-[30px] left-0 sm:w-[50%] md:w-[30%] w-[80%] h-[2px] bg-gradient-to-r from-[#7b1113]/20 to-transparent"></div>
 
             </div>
