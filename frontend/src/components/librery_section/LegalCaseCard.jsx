@@ -39,8 +39,8 @@ const LegalCaseCard = ({ legalCase }) => {
   };
 
   return (
-    <section id={`${legalCase["id"]}`} className=" bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-200 mb-6">
-      <div className="p-6">
+    <section id={`${legalCase["id"]}`} className=" bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 md:hover:shadow-xl border border-gray-200 mb-6">
+      <div className="md:p-6 p-3">
         <h2 className="md:text-2xl text-lg font-bold text-gray-900 mb-4">{legalCase["heading"]}</h2>
 
         <div className="prose max-w-none text-gray-700 text-sm">
@@ -68,7 +68,7 @@ const LegalCaseCard = ({ legalCase }) => {
                 if (isExpanded) router.push(`/cases/#${legalCase["id"]}`)
                 setIsExpanded(!isExpanded)
               }}
-              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition duration-200"
+              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-indigo-50 text-indigo-700 md:hover:bg-indigo-100 transition duration-200"
             >
               {isExpanded ? (
                 <>
@@ -88,7 +88,7 @@ const LegalCaseCard = ({ legalCase }) => {
                 // if(showSummary) router.push(`cases/#${legalCase["id"]}`)
                 setShowSummary(!showSummary)
               }}
-              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-amber-50 text-amber-700 hover:bg-amber-100 transition duration-200"
+              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-amber-50 text-amber-700 md:hover:bg-amber-100 transition duration-200"
             >
               <FileText className="w-4 h-4 mr-1" />
               {showSummary ? 'Hide Summary' : 'Show Summary'}
@@ -98,14 +98,14 @@ const LegalCaseCard = ({ legalCase }) => {
           <div className="flex flex-wrap gap-2">
             <button
               onClick={handleAskAI}
-              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-purple-50 text-purple-700 hover:bg-purple-100 transition duration-200"
+              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-purple-50 text-purple-700 md:hover:bg-purple-100 transition duration-200"
             >
               <MessageSquareText className="w-4 h-4 mr-1" />
               Ask AI
             </button>
             <button
               onClick={handleDownload}
-              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-green-50 text-green-700 hover:bg-green-100 transition duration-200"
+              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-green-50 text-green-700 md:hover:bg-green-100 transition duration-200"
             >
               <Download className="w-4 h-4 mr-1" />
               Download

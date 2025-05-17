@@ -59,7 +59,7 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
         className="text-black md:hidden cursor-pointer focus:outline-none"
       >
         <svg
-          className="w-10 h-10"
+          className="w-8 h-8"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
