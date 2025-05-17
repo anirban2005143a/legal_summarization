@@ -6,11 +6,14 @@ import NavLinks from './Navbar_links';
 import MobileMenu from './Mobile_menu';
 import { Search, Menu } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  
+  const [path, setpath] = useState("/")
+  const pathname = usePathname()
+
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
@@ -26,10 +29,16 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    console.log(pathname)
+    setpath(pathname)
+  }, [])
+
+
 
   return (
     <>
-      <nav className={`fixed w-full bg-orange-50 z-30 transition-all duration-300 py-4 ${!isVisible ? ' -top-[100px]' : ' top-0 '
+      <nav className={`fixed w-full ${path === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all backdrop-blur-xl duration-300 py-4 ${!isVisible ? ' -top-[100px]' : ' top-0 '
         }`}>
         <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="flex items-center justify-between">
