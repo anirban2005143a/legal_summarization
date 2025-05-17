@@ -6,10 +6,12 @@ const AiSummarization = ({input}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const handleOpenPopup = () => {
+    document.body.style.overflowY = "hidden"
     setIsPopupOpen(true);
   };
 
   const handleClosePopup = () => {
+    document.body.style.overflowY = "auto"
     setIsPopupOpen(false);
   };
 
