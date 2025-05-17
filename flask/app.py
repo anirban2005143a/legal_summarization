@@ -1,6 +1,19 @@
+from flask import Flask, request, jsonify
+from model import generate_summary  # Make sure this file is in the same directory
+from flask_cors import CORS
+from dotenv import load_dotenv
 import os
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+# Load variables from .env
+load_dotenv()
+
+app = Flask(__name__)
+
+# Get CORS origins from env, default to '*'
+cors_origins = os.getenv("CORS_ORIGINS", "*").split(",")
+CORS(app, origins=cors_origins)
 
 # Load model and tokenizer
 tokenizer = AutoTokenizer.from_pretrained("satviksh09/PnHLayman")
@@ -10,59 +23,27 @@ model = AutoModelForSeq2SeqLM.from_pretrained("satviksh09/PnHLayman")
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model.to(device)
 
-# Chunking function
-def chunk_text(text, max_length=1024):
-    words = text.split()
-    chunks = []
-    chunk = []
+@app.route("/", methods=["GET"])
+def Home():
+    return "Flask server running"
 
-    for word in words:
-        chunk.append(word)
-        if len(chunk) > max_length:
-            chunks.append(' '.join(chunk[:-1]))
-            chunk = [chunk[-1]]
-    if chunk:
-        chunks.append(' '.join(chunk))
-    return chunks
 
-# Summary generation function
-def generate_summary(model, tokenizer, case_text, device="cuda"):
-    chunks = chunk_text(case_text, max_length=1024)
-    all_summaries = []
+@app.route("/predict", methods=["POST"])
+def predict():
+    try:
+        input_data = request.get_json()
+        # print(input_data)
+        if input_data is None:
+            return jsonify({"error": "Invalid input, JSON expected"}), 400
 
-    for chunk in chunks:
-        inputs = tokenizer(chunk, return_tensors="pt", truncation=True, padding="longest", max_length=1024)
-        inputs = {key: value.to(device) for key, value in inputs.items()}
-        summary_ids = model.generate(
-            inputs['input_ids'],
-            attention_mask=inputs['attention_mask'],
-            max_new_tokens=128,
-            num_beams=8,
-            early_stopping=True,
-            pad_token_id=tokenizer.eos_token_id,
-            eos_token_id=tokenizer.eos_token_id,
-            no_repeat_ngram_size=3,
-            length_penalty=0.8
+        output = generate_summary(
+            model, tokenizer, input_data["text"], device
         )
-        summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-        all_summaries.append(summary)
+        return jsonify({"output": output})
+    except Exception as e:
+        print(e)
+        return jsonify({"error": str(e)}), 500
 
-    return " ".join(all_summaries)
 
-# Paths
-# judgments_dir = "Judgments"
-# summaries_dir = "Summaries"
-# os.makedirs(summaries_dir, exist_ok=True)
-
-# # Process each file
-# for filename in os.listdir(judgments_dir):
-#     if filename.endswith(".txt"):
-#         with open(os.path.join(judgments_dir, filename), "r", encoding="utf-8") as f:
-#             case_text = f.read()
-
-#         summary = generate_summary(model, tokenizer, case_text, device)
-
-#         with open(os.path.join(summaries_dir, filename), "w", encoding="utf-8") as f:
-#             f.write(summary)
-
-generate_summary(model , tokenizer , "tell me about what you know" , device)
+if __name__ == "__main__":
+    app.run(debug=True)

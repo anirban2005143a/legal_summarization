@@ -35,6 +35,7 @@ env/
 .env/
 env.bak/
 venv.bak/
+model/
 
 # Flask specific
 instance/
