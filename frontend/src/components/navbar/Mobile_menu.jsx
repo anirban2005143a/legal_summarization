@@ -54,7 +54,9 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
         ref={toggleButtonRef}
         onClick={() => {
           // console.log(menuRef.current)
-          setIsMenuOpen(!isMenuOpen);
+          document.body.style.overflowY = "hidden"
+            // if(isMenuOpen) document.body.style.overflowY = "auto"
+          setIsMenuOpen(true);
         }}
         className="text-black md:hidden cursor-pointer focus:outline-none"
       >
@@ -78,11 +80,13 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
       <div
         ref={menuRef}
         className={`${isMenuOpen ? "" : "hidden "
-          } md:hidden fixed top-0 right-0 h-screen w-screen  bg-[#00000084] backdrop-blur-sm shadow-lg `}
+          } md:hidden fixed top-0 right-0 h-screen w-screen bg-black/55 shadow-lg `}
+          
       >
-        <div className="px-10 pt-[50px] h-full">
+        <div className="px-10 pt-[50px] h-full backdrop-blur-3xl">
           <button
             onClick={() => {
+              document.body.style.overflowY = "auto"
               setIsMenuOpen(false);
             }}
             className="text-white cursor-pointer focus:outline-none"
@@ -102,13 +106,15 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
               />
             </svg>
           </button>
-          <div className=' flex flex-col items-start gap-10  pt-[20px] text-white'>
+          <div className=' flex flex-col items-start gap-10 pt-[20px] text-white'>
             <Link onClick={() => {
+              document.body.style.overflowY = "auto"
               setIsMenuOpen(false)
             }} href={`/`} className="text-white hover:underline hover:underline-offset-4  nav-menu-mobile">
               Home
             </Link>
             <Link onClick={() => {
+              document.body.style.overflowY = "auto"
               setIsMenuOpen(false)
             }} href='/cases' className="text-white hover:underline hover:underline-offset-4  nav-menu-mobile">
               Cases
