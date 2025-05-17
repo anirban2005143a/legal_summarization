@@ -5,8 +5,8 @@ import { ChevronDown, ChevronUp, FileText, Download, MessageSquareText } from 'l
 import { downloadAsTextFile } from '@/utils/fileUtils';
 import { useRouter } from 'next/navigation';
 
-const LegalCaseCard = ({ legalCase }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const LegalCaseCard = ({ legalCase , isExpand , onToggle,id }) => {
+  const [isExpanded, setIsExpanded] = useState(isExpand);
   const [showSummary, setShowSummary] = useState(false);
 
   const router = useRouter()
@@ -39,7 +39,7 @@ const LegalCaseCard = ({ legalCase }) => {
   };
 
   return (
-    <section id={`${legalCase["id"]}`} className=" bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 md:hover:shadow-xl border border-gray-200 mb-6">
+    <section id={`${id}`} className=" bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 md:hover:shadow-xl border border-gray-200 mb-6">
       <div className="md:p-6 p-3">
         <h2 className="md:text-2xl text-lg font-bold text-gray-900 mb-4">{legalCase["heading"]}</h2>
 
@@ -65,7 +65,8 @@ const LegalCaseCard = ({ legalCase }) => {
             <button
               onClick={(e) => {
                 e.preventDefault()
-                if (isExpanded) router.push(`/cases/#${legalCase["id"]}`)
+                onToggle()
+                if (isExpanded) router.push(`/cases/#${id}`)
                 setIsExpanded(!isExpanded)
               }}
               className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-indigo-50 text-indigo-700 md:hover:bg-indigo-100 transition duration-200"
