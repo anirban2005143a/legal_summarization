@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, FileText, Download, MessageSquareText } from 'lucide-react';
 import { downloadAsTextFile } from '@/utils/fileUtils';
 import { useRouter } from 'next/navigation';
+import AskAiButton from './Ai_response/AskAiButton';
+import AiSummarization from './Ai_response/AiSummarization';
 
-const LegalCaseCard = ({ legalCase , isExpand , onToggle,id }) => {
+const LegalCaseCard = ({ legalCase, isExpand, onToggle, id }) => {
   const [isExpanded, setIsExpanded] = useState(isExpand);
   const [showSummary, setShowSummary] = useState(false);
 
@@ -115,59 +117,55 @@ const LegalCaseCard = ({ legalCase , isExpand , onToggle,id }) => {
         </div>
       </div> */}
       <div className="border-t border-red-200 bg-red-50/30 px-6 py-3">
-  <div className="flex flex-wrap gap-3 justify-between items-center md:text-sm text-xs">
-    <div className="flex flex-wrap gap-2">
-      <button
-        onClick={(e) => {
-          e.preventDefault()
-          onToggle()
-          if (isExpanded) router.push(`/cases/#${id}`)
-          setIsExpanded(!isExpanded)
-        }}
-        className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-blue-100 text-blue-800 md:hover:bg-blue-200 transition duration-200 border border-blue-200"
-      >
-        {isExpanded ? (
-          <>
-            <ChevronUp className="w-4 h-4 mr-1" />
-            Collapse
-          </>
-        ) : (
-          <>
-            <ChevronDown className="w-4 h-4 mr-1" />
-            Expand
-          </>
-        )}
-      </button>
-      <button
-        onClick={(e) => {
-          e.preventDefault()
-          setShowSummary(!showSummary)
-        }}
-        className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-amber-100 text-amber-800 md:hover:bg-amber-200 transition duration-200 border border-amber-200"
-      >
-        <FileText className="w-4 h-4 mr-1" />
-        {showSummary ? 'Hide Summary' : 'Show Summary'}
-      </button>
-    </div>
+        <div className="flex flex-wrap gap-3 justify-between items-center md:text-sm text-xs">
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                onToggle()
+                if (isExpanded) router.push(`/cases/#${id}`)
+                setIsExpanded(!isExpanded)
+              }}
+              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-blue-100 text-blue-800 md:hover:bg-blue-200 transition duration-200 border border-blue-200"
+            >
+              {isExpanded ? (
+                <>
+                  <ChevronUp className="w-4 h-4 mr-1" />
+                  Collapse
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="w-4 h-4 mr-1" />
+                  Expand
+                </>
+              )}
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                setShowSummary(!showSummary)
+              }}
+              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-amber-100 text-amber-800 md:hover:bg-amber-200 transition duration-200 border border-amber-200"
+            >
+              <FileText className="w-4 h-4 mr-1" />
+              {showSummary ? 'Hide Summary' : 'Show Summary'}
+            </button>
+          </div>
 
-    <div className="flex flex-wrap gap-2">
-      <button
-        onClick={handleAskAI}
-        className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-blue-600 text-white md:hover:bg-blue-700 transition duration-200 shadow-sm"
-      >
-        <MessageSquareText className="w-4 h-4 mr-1" />
-        Ask AI
-      </button>
-      <button
-        onClick={handleDownload}
-        className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-white text-red-700 md:hover:bg-red-50 transition duration-200 border border-red-300"
-      >
-        <Download className="w-4 h-4 mr-1" />
-        Download
-      </button>
-    </div>
-  </div>
-</div>
+          <div className="flex flex-wrap gap-2">
+            {/* ask ai for summary  */}
+            <AiSummarization input={legalCase["main_content"]} />
+            {/* download data  */}
+            <button
+              onClick={handleDownload}
+              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-white text-red-700 md:hover:bg-red-50 transition duration-200 border border-red-300"
+            >
+              <Download className="w-4 h-4 mr-1" />
+              Download
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
