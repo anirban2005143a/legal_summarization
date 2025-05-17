@@ -4,7 +4,6 @@ import LegalCaseCard from './LegalCaseCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import FetchData from './FetchData';
 import { DocumentLoader } from './DocumentLoader';
-import ErrorPage from '../Error_Page/ErrorPage';
 
 const LegalCasesList = () => {
   const [data, setdata] = useState(null)
@@ -16,20 +15,20 @@ const LegalCasesList = () => {
     setpage((prevPage) => prevPage + 1); // Increment page on scroll
   }
 
-  // useEffect(() => {
-  //   try {
-  //     console.log("again")
-  //     FetchData({ page, data, setdata, sethasMore, setisLoading })
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }, [page])
+  useEffect(() => {
+    try {
+      console.log("again")
+      FetchData({ page, data, setdata, sethasMore, setisLoading })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [page])
 
 
   return (
     <div className=' max-w-7xl mx-auto md:px-6 sm:px-4 px-2 pt-[100px] pb-5'>
 
-      {isLoading && <ErrorPage />}
+      {isLoading && <DocumentLoader />}
 
       {!isLoading && data && data.length === 0 && (
         <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
