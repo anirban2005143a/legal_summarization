@@ -1,5 +1,5 @@
 
-const FetchData = async ({ page, setdata, sethasMore, setisLoading }) => {
+const FetchData = async ({ page,data, setdata, sethasMore, setisLoading }) => {
 
     try {
         setisLoading(true)
@@ -8,7 +8,8 @@ const FetchData = async ({ page, setdata, sethasMore, setisLoading }) => {
         console.log(newData)
 
         if (newData.length > 0) {
-            setdata((prevData) => [...prevData, ...newData]);
+            const prevData = data ? data : []
+            setdata([...prevData , ...newData]);
         } else {
             sethasMore(false); // Stop infinite scroll when no more data is available
         }
