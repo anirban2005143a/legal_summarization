@@ -59,7 +59,7 @@ const AIPopup = ({ isOpen, onClose, input }) => {
                     </div>
                     <button
                         onClick={onClose}
-                        className="text-gray-500 cursor-pointer hover:text-gray-700 transition-colors"
+                        className="text-gray-700 bg-gray-800/10 p-2 rounded-full cursor-pointer md:hover:bg-gray-800/20 transition-colors"
                         aria-label="Close popup"
                     >
                         <X size={20} />

@@ -19,15 +19,15 @@ const AIResponseDisplay = ({ output, isLoading }) => {
           </div>
         </div>
       ) : output ? (
-        <div className="prose max-w-none">
+        <div className=" max-w-none">
           {output.split('\n').map((paragraph, index) => (
-            <p key={index} className="text-gray-800 mb-2 whitespace-pre-wrap">
+            <p key={index} className="text-gray-800 text-sm mb-2 whitespace-pre-wrap">
               {paragraph}
             </p>
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 italic">AI response will appear here...</p>
+        <p className="text-gray-500 italic text-sm">AI response will appear here...</p>
       )}
     </div>
   );

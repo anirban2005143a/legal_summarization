@@ -48,10 +48,9 @@ export default function NotFound() {
           <Link
             href="/"
             className={cn(
-              "flex items-center justify-center gap-2 rounded-lg bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2",
+              "flex items-center justify-center gap-2 rounded-lg bg-red-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-150 ease-in hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2",
               isVisible ? "opacity-100" : "opacity-0"
-            )}
-            style={{ transitionDelay: '200ms' }}
+            )} 
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Return to Home</span>
@@ -60,10 +59,9 @@ export default function NotFound() {
           <button
             onClick={() => window.history.back()}
             className={cn(
-              "flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition-all border border-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2",
+              "flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition-all duration-150 ease-in border border-gray-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2",
               isVisible ? "opacity-100" : "opacity-0"
-            )}
-            style={{ transitionDelay: '300ms' }}
+            )} 
           >
             Go Back
           </button>

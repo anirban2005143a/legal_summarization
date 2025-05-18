@@ -143,6 +143,8 @@ const LegalCaseCard = ({ legalCase, isExpand, onToggle, id }) => {
             <button
               onClick={(e) => {
                 e.preventDefault()
+                if (!isExpanded && showSummary) router.push(`/cases/#${id}`)
+                if (window.innerWidth <= 450 && showSummary) router.push(`/cases/#${id}`)
                 setShowSummary(!showSummary)
               }}
               className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-amber-100 text-amber-800 md:hover:bg-amber-200 transition duration-200 border border-amber-200"

@@ -47,10 +47,8 @@ const NavLinks = () => {
   return (
     <ul className="hidden md:flex items-center space-x-1 text-sm ">
       <NavItem href="/" label="Home" />
-      <NavItem href="/cases" label="Cases" />
+      <NavItem href="/judgments" label="Judgments" />
       <NavItem href="#" label="Services" hasDropdown />
-      <NavItem href="#" label="Courts & Judgments" hasDropdown />
-      <NavItem href="#" label="Resources" hasDropdown />
       <NavItem href="#" label="Contact" />
     </ul>
   );

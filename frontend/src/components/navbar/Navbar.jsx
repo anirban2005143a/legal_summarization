@@ -2,15 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 import Logo from '../Logo/Logo';
-import NavLinks from './Navbar_links';
 import MobileMenu from './Mobile_menu';
-import { Search, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Desktop_view from './Desktop_view';
+
+const LogoComponent = () => {
+  {/* Logo */ }
+  return (<div className="flex-shrink-0">
+    <Link href="/" className="block">
+      <Logo />
+    </Link>
+  </div>)
+}
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+
   const [path, setpath] = useState("/")
   const pathname = usePathname()
 
@@ -38,24 +46,12 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`fixed w-full ${path === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all backdrop-blur-xl duration-300 py-4 ${!isVisible ? ' -top-[100px]' : ' top-0 '
+      <nav className={`fixed w-full ${path === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all  duration-300 py-4 ${!isVisible ? ' -top-[100px]' : ' top-0 '
         }`}>
-        <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 ">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex-shrink-0">
-              <Link href="/" className="block">
-                <Logo />
-              </Link>
-            </div>
-
-            {/* Navigation Links - Desktop */}
-            <NavLinks />
-
-            {/* Mobile menu */}
-            <MobileMenu isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
-          </div>
-        </div>
+        {/* Navigation Links - Desktop */}
+        <Desktop_view LogoComponent={<LogoComponent />} />
+        {/* Mobile menu */}
+        <MobileMenu LogoComponent={<LogoComponent />} />
       </nav>
 
 
