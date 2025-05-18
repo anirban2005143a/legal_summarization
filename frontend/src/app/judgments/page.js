@@ -1,9 +1,9 @@
-"use client"
+
 import LegalCasesList from '@/components/librery_section/LegalCasesList'
 import Navbar from '@/components/navbar/Navbar'
 import React from 'react'
 
-const CasesPage = () => {
+const  CasesPage = async() => {
 
   return (
     <>

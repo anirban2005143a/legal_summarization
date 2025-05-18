@@ -52,14 +52,18 @@ export function HeroContentLoader() {
 
           <div className="lg:col-span-5">
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="bg-[#901C1C] p-4">
+              <div className="bg-[#901C1C] p-4 ">
                 <div className="flex justify-between items-center">
-                  <Skeleton className="h-4 w-4 bg-white/20 rounded-full" />
-                  <Skeleton className="h-5 w-40 bg-white/20" />
+                  <div className=' flex gap-2'>
+                  <Skeleton className="h-4 w-4 delay-75 bg-white/50 rounded-full" />
+                  <Skeleton className="h-4 w-4 delay-100 bg-white/50 rounded-full" />
+                  <Skeleton className="h-4 w-4 delay-150 bg-white/50 rounded-full" />
+                  </div>
+                  <Skeleton className="h-5 w-40 bg-white/50" />
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="md:p-6 py-6 px-3">
                 <div className="flex justify-between mb-5">
                   <Skeleton className="h-4 w-32" />
                   <Skeleton className="h-4 w-32" />
