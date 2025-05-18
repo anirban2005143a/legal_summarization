@@ -2,9 +2,9 @@ import { BookOpen, CheckCircle, ChevronRight, FileText, Scale, Search } from 'lu
 import Link from 'next/link'
 import React from 'react'
 
-const LeftSection = () => {
+const LeftSection = ({width}) => {
     return (
-        <div className=" relative md:w-[55%] md:px-5">
+        <div className={`relative  ${width > 900 ?" w-[55%] px-5 ":"" } `} >
 
             <h1 className="user-select-none text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#7b1113] to-[#d42e32]">

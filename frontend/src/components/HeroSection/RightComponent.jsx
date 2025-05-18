@@ -1,9 +1,9 @@
 import { BookOpen, CheckCircle, ChevronRight, FileText, Scale } from 'lucide-react'
 import React from 'react'
 
-const RightComponent = () => {
+const RightComponent = ({width}) => {
     return (
-        <div className="md:w-[35%] xl:w-[40%] md:min-w-[340px] md:max-w-[500px] xl:max-w-[580px] ">
+        <div className={`${width > 900 ?" w-[35%] min-w-[340px] max-w-[500px]":"" } xl:w-[40%] xl:max-w-[580px] `}>
             <div className="relative h-full min-h-[500px] rounded-xl overflow-hidden shadow-xl border border-gray-200 bg-white">
                 {/* Document header */}
                 <div className="user-select-none relative py-3 bg-gradient-to-r from-[#7b1113] to-[#9e1518] flex items-center px-4">

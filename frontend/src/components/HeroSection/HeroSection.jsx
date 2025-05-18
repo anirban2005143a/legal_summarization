@@ -4,20 +4,34 @@ import { BookOpen, FileText, Scale, CheckCircle, ChevronRight, Search } from "lu
 import RightComponent from "./RightComponent"
 import LeftSection from "./LeftSection"
 import BackGround from "./BackGround"
+import { useEffect, useState } from "react"
 
 const HeroSection = () => {
+  const [width, setwidth] = useState(window.innerWidth)
+
+  useEffect(() => {
+
+    const changeWidth = () => {
+      setwidth(window.innerWidth)
+    }
+    window.addEventListener("resize", changeWidth)
+    return () => {
+      window.removeEventListener("resize", changeWidth)
+    }
+  }, [])
+
   return (
     <div className="relative overflow-hidden bg-gradient-to-b from-[#f8f2e9] to-white pt-[40px] ">
       <BackGround />
 
       {/* Main content */}
       <div className=" mx-auto px-6 py-16 relative z-10">
-        <div className="flex md:flex-row flex-col max-w-[1500px] mx-auto md:gap-4 gap-15 justify-between items-start ">
+        <div className={`flex ${width > 900 ? " flex-row " : " flex-col "} max-w-[1500px] mx-auto ${window.innerWidth > 900 ? " gap-4 " : " gap-15 "} justify-between items-start `}>
           {/* Left Content - Now spans 7 columns for better proportions */}
-          <LeftSection />
+          <LeftSection width={width} />
 
           {/* Right Content - Improved document preview - Now spans 5 columns */}
-          <RightComponent />
+          <RightComponent width={width} />
         </div>
       </div>
 
