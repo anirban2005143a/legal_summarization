@@ -114,8 +114,15 @@ const MobileMenu = ({ LogoComponent, ChatNavigationButton }) => {
             <Link onClick={() => {
               document.body.style.overflowY = "auto"
               setIsMenuOpen(false)
-            }} href='/cases' className=" relative nav-menu-mobile">
-              Cases
+            }} href='/judgments' className=" relative nav-menu-mobile">
+              Judgments
+              <span className="absolute nav-menu-underline -bottom-1 left-0 w-full h-0.5 bg-red-600 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link onClick={() => {
+              document.body.style.overflowY = "auto"
+              setIsMenuOpen(false)
+            }} href='/chat/123' className=" relative nav-menu-mobile">
+              Ai Assistant
               <span className="absolute nav-menu-underline -bottom-1 left-0 w-full h-0.5 bg-red-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
           </div>
