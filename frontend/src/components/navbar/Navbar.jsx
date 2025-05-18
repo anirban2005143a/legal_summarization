@@ -17,29 +17,11 @@ const LogoComponent = () => {
   </div>)
 }
 
-const ChatNavigationButton = ({ setIsNavOpen, isNavOpen, path }) => {
-  {
-    path.includes("/chat") && (
-      <button
-        onClick={() => {
-          setIsNavOpen(!isNavOpen);
-        }}
-        // onBlur={() => {
-        //     setIsNavOpen(false)
-        // }}
-        className=" cursor-pointer  text-white px-4 py-2 rounded-lg shadow-lg"
-      >
-        {isNavOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
-      </button>
-    )
-  }
-}
 
-const Navbar = ({ setIsNavOpen, isNavOpen }) => {
+const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
 
   const pathname = usePathname()
-  const [path, setpath] = useState(pathname)
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -59,12 +41,12 @@ const Navbar = ({ setIsNavOpen, isNavOpen }) => {
 
   return (
     <>
-      <nav className={`fixed w-full ${path === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all  duration-300 ${!isVisible ? ' -top-[100px]' : ' top-0 '
+      <nav className={`fixed w-full ${pathname === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all  duration-300 ${!isVisible ? ' -top-[100px]' : ' top-0 '
         }`}>
         {/* Navigation Links - Desktop */}
-        <Desktop_view LogoComponent={<LogoComponent />} ChatNavigationButton={<ChatNavigationButton isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} path={path} />} />
+        <Desktop_view LogoComponent={<LogoComponent />}  />
         {/* Mobile menu */}
-        <MobileMenu LogoComponent={<LogoComponent />} ChatNavigationButton={<ChatNavigationButton isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} path={path} />} />
+        <MobileMenu LogoComponent={<LogoComponent />} />
       </nav>
 
     </>

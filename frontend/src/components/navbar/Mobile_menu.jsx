@@ -55,9 +55,7 @@ const MobileMenu = ({ LogoComponent, ChatNavigationButton }) => {
       <div className='md:hidden px-3 py-3 flex justify-between items-center backdrop-blur-xl'>
         {/* logo component  */}
         {LogoComponent}
-        
-        {/* chat navigation button */}
-        {ChatNavigationButton}
+      
 
         {/* Toggle Button */}
         <button
