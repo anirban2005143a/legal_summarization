@@ -57,7 +57,9 @@ const Sidebar = ({ isNavOpen, setchatCount, setisChatInfoFetching, setSelectedCh
         return;
       }
 
-      if (name !== "New chat" && allChats && allChats.some(chat => (chat.title)||"Unknown".toLowerCase() === name.toLowerCase())) {
+      if (name !== "New chat" && allChats && allChats.some(chat => {
+        return (chat.title || "Unknown").toLowerCase() === name.toLowerCase()
+      })) {
         showToast("A chat with this name already exists", 1);
         setisChatInfoFetching(false)
         return;
@@ -84,15 +86,18 @@ const Sidebar = ({ isNavOpen, setchatCount, setisChatInfoFetching, setSelectedCh
     }
   };
 
+  // console.log(allChats)
+
   const handleDeleteChat = async (id) => {
     if (!id) {
       alert("Chat ID is required to delete a chat");
       return;
     }
     try {
-      const allchatFromLocalStorage = localStorage.getItem("allChat").json() 
-      delete allchatFromLocalStorage[`${id}`]
-      localStorage.setItem("allChat" , JSON.stringify(allchatFromLocalStorage))
+      const jsonobj = localStorage.getItem("allChat")
+      const allchatFromLocalStorage = jsonobj ? JSON.parse(jsonobj) : {}
+      allchatFromLocalStorage[`${id}`] && delete allchatFromLocalStorage[`${id}`]
+      localStorage.setItem("allChat", JSON.stringify(allchatFromLocalStorage))
       handelDeletechatFromArray(id);
     } catch (error) {
       showToast(error.response?.data?.message || error.message, 1);
@@ -136,7 +141,7 @@ const Sidebar = ({ isNavOpen, setchatCount, setisChatInfoFetching, setSelectedCh
     }
   };
 
- 
+
   const handelDeletechatFromArray = (id) => {
     const arr = allChats
     const newArr = arr.filter((chat) => chat.chatId != id)

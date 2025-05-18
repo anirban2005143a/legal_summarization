@@ -17,9 +17,9 @@ const MobileMenu = ({ LogoComponent, ChatNavigationButton }) => {
   useEffect(() => {
     if (isMenuOpen) {
       // Slide in the menu from the right
-      gsap.fromTo(
+      gsap.to(
         menuRef.current,
-        { x: "100%", opacity: 0 },
+        // { x: "100%", opacity: 0 },
         {
           x: "0%", opacity: 1, duration: 0.5,
         }
@@ -52,7 +52,7 @@ const MobileMenu = ({ LogoComponent, ChatNavigationButton }) => {
 
   return (
     <>
-      <div className='md:hidden px-2 flex justify-between items-center'>
+      <div className='md:hidden px-3 py-3 flex justify-between items-center backdrop-blur-xl'>
         {/* logo component  */}
         {LogoComponent}
         
@@ -90,7 +90,7 @@ const MobileMenu = ({ LogoComponent, ChatNavigationButton }) => {
       {/* Mobile Menu */}
       <div
         ref={menuRef}
-        className={` md:hidden fixed top-0 right-0 h-screen w-screen bg-gray-800/20 backdrop-blur-sm shadow-lg z-50 `}
+        className={` md:hidden fixed top-0 translate-x-[110%] h-screen w-screen bg-gray-800/20 backdrop-blur-sm shadow-lg z-50 `}
 
       >
         <div className="px-10 pt-[50px] h-full">
