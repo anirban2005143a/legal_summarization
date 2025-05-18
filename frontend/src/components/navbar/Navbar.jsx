@@ -6,6 +6,7 @@ import MobileMenu from './Mobile_menu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Desktop_view from './Desktop_view';
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 const LogoComponent = () => {
   {/* Logo */ }
@@ -16,11 +17,29 @@ const LogoComponent = () => {
   </div>)
 }
 
-const Navbar = () => {
+const ChatNavigationButton = ({ setIsNavOpen, isNavOpen, path }) => {
+  {
+    path.includes("/chat") && (
+      <button
+        onClick={() => {
+          setIsNavOpen(!isNavOpen);
+        }}
+        // onBlur={() => {
+        //     setIsNavOpen(false)
+        // }}
+        className=" cursor-pointer  text-white px-4 py-2 rounded-lg shadow-lg"
+      >
+        {isNavOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
+      </button>
+    )
+  }
+}
+
+const Navbar = ({ setIsNavOpen, isNavOpen }) => {
   const [isVisible, setIsVisible] = useState(true);
 
-  const [path, setpath] = useState("/")
   const pathname = usePathname()
+  const [path, setpath] = useState(pathname)
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -37,23 +56,16 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    console.log(pathname)
-    setpath(pathname)
-  }, [])
-
-
 
   return (
     <>
-      <nav className={`fixed w-full ${path === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all  duration-300 py-4 ${!isVisible ? ' -top-[100px]' : ' top-0 '
+      <nav className={`fixed w-full ${path === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all  duration-300 ${!isVisible ? ' -top-[100px]' : ' top-0 '
         }`}>
         {/* Navigation Links - Desktop */}
-        <Desktop_view LogoComponent={<LogoComponent />} />
+        <Desktop_view LogoComponent={<LogoComponent />} ChatNavigationButton={<ChatNavigationButton isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} path={path} />} />
         {/* Mobile menu */}
-        <MobileMenu LogoComponent={<LogoComponent />} />
+        <MobileMenu LogoComponent={<LogoComponent />} ChatNavigationButton={<ChatNavigationButton isNavOpen={isNavOpen} setIsNavOpen={setIsNavOpen} path={path} />} />
       </nav>
-
 
     </>
   );

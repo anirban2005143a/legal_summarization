@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import LegalCaseCard from './LegalCaseCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import FetchData from './FetchData';
-import { DocumentLoader } from './DocumentLoader';
+import { DocumentLoader } from '../Loader/DocumentLoader';
 
 const LegalCasesList = () => {
   const [data, setdata] = useState([])
@@ -19,15 +19,13 @@ const LegalCasesList = () => {
   }
 
   useEffect(() => {
-    if (allCasesRef.current) {
-      try {
-        console.log("again")
-        FetchData({ page, data, setdata, allCasesRef, sethasMore, setisLoading })
-      } catch (error) {
-        console.log(error)
-      }
+    try {
+      console.log("again")
+      FetchData({ page, data, setdata, allCasesRef, sethasMore, setisLoading })
+    } catch (error) {
+      console.log(error)
     }
-  }, [allCasesRef.current, page])
+  }, [page])
 
   const toggleExpand = (id) => {
     setAllExpandedContent(prev => ({
@@ -35,6 +33,7 @@ const LegalCasesList = () => {
       [id]: !prev[id]
     }));
   };
+  
 
   return (
     <div className=' max-w-7xl mx-auto md:px-6 sm:px-4 px-2 pt-[100px] pb-5'>

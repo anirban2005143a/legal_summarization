@@ -61,61 +61,7 @@ const LegalCaseCard = ({ legalCase, isExpand, onToggle, id }) => {
         )}
       </div>
 
-      {/* <div className="border-t border-gray-200  bg-amber-200/10 px-6 py-3">
-        <div className="flex flex-wrap gap-3 justify-between items-center md:text-sm text-xs">
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                onToggle()
-                if (isExpanded) router.push(`/cases/#${id}`)
-                setIsExpanded(!isExpanded)
-              }}
-              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-indigo-50 text-indigo-700 md:hover:bg-indigo-100 transition duration-200"
-            >
-              {isExpanded ? (
-                <>
-                  <ChevronUp className="w-4 h-4 mr-1" />
-                  Collapse
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="w-4 h-4 mr-1" />
-                  Expand
-                </>
-              )}
-            </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                // if(showSummary) router.push(`cases/#${legalCase["id"]}`)
-                setShowSummary(!showSummary)
-              }}
-              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-amber-50 text-amber-700 md:hover:bg-amber-100 transition duration-200"
-            >
-              <FileText className="w-4 h-4 mr-1" />
-              {showSummary ? 'Hide Summary' : 'Show Summary'}
-            </button>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={handleAskAI}
-              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-violet-50 text-violet-700 md:hover:bg-violet-100 transition duration-200"
-            >
-              <MessageSquareText className="w-4 h-4 mr-1" />
-              Ask AI
-            </button>
-            <button
-              onClick={handleDownload}
-              className="inline-flex items-center px-4 py-2  font-medium rounded-md bg-blue-50 text-blue-700 md:hover:bg-blue-100 transition duration-200"
-            >
-              <Download className="w-4 h-4 mr-1" />
-              Download
-            </button>
-          </div>
-        </div>
-      </div> */}
+     
       <div className="border-t border-red-200 bg-red-50/30 px-6 py-3">
         <div className="flex flex-wrap gap-3 justify-between items-center md:text-sm text-xs">
           <div className="flex flex-wrap gap-2">
@@ -123,7 +69,7 @@ const LegalCaseCard = ({ legalCase, isExpand, onToggle, id }) => {
               onClick={(e) => {
                 e.preventDefault()
                 onToggle()
-                if (isExpanded) router.push(`/cases/#${id}`)
+                if (isExpanded) router.push(`/judgments/#${id}`)
                 setIsExpanded(!isExpanded)
               }}
               className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-blue-100 text-blue-800 md:hover:bg-blue-200 transition duration-200 border border-blue-200"
@@ -143,8 +89,8 @@ const LegalCaseCard = ({ legalCase, isExpand, onToggle, id }) => {
             <button
               onClick={(e) => {
                 e.preventDefault()
-                if (!isExpanded && showSummary) router.push(`/cases/#${id}`)
-                if (window.innerWidth <= 450 && showSummary) router.push(`/cases/#${id}`)
+                if (!isExpanded && showSummary) router.push(`/judgments/#${id}`)
+                if (window.innerWidth <= 450 && showSummary) router.push(`/judgments/#${id}`)
                 setShowSummary(!showSummary)
               }}
               className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-amber-100 text-amber-800 md:hover:bg-amber-200 transition duration-200 border border-amber-200"

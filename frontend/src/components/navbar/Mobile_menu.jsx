@@ -6,7 +6,7 @@ import { PanelLeftClose, PanelLeftOpen, X } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 
-const MobileMenu = ({ LogoComponent }) => {
+const MobileMenu = ({ LogoComponent, ChatNavigationButton }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuRef = useRef(null);
@@ -55,6 +55,10 @@ const MobileMenu = ({ LogoComponent }) => {
       <div className='md:hidden px-2 flex justify-between items-center'>
         {/* logo component  */}
         {LogoComponent}
+        
+        {/* chat navigation button */}
+        {ChatNavigationButton}
+
         {/* Toggle Button */}
         <button
           ref={toggleButtonRef}

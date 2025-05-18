@@ -1,4 +1,3 @@
-import LegalCaseCard from "./LegalCaseCard";
 
 const FetchData = async ({ page, data, setdata, allCasesRef, sethasMore, setisLoading }) => {
 
