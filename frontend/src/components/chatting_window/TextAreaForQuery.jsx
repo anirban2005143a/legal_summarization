@@ -6,8 +6,6 @@ import VoiceRecognization from './VoiceRecognization';
 const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
     const [input, setInput] = useState("");
 
-
-
     const textareaRef = useRef(null);
 
     // Auto-resize textarea based on content
@@ -57,7 +55,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
                             }}
                         />
                         <div className=" control-buttons w-[110px] flex justify-center gap-2 h-full">
-                            <VoiceRecognization isReady={isReady} />
+                            <VoiceRecognization isReady={isReady} setInput={setInput} />
                             <button
                                 type="submit"
                                 className={` p-1 text-gray-600 ${isReady ? "cursor-pointer" : "cursor-not-allowed"} hover:text-indigo-500 transition-colors disabled:cursor-not-allowed disabled:opacity-70`}
