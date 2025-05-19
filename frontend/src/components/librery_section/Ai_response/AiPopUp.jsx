@@ -47,10 +47,10 @@ const AIPopup = ({ isOpen, onClose, input }) => {
     console.log(style)
 
     return (
-        <div className={`fixed h-screen top-0 w-full left-0 inset-0 bg-gray-900/10 backdrop-blur-sm flex items-center z-50 md:p-4 p-2 ${style.animateFadeIn}`}>
+        <div className={`fixed h-screen top-0 w-full left-0 inset-0 bg-gray-900/10 backdrop-blur-sm z-50 md:p-4 p-2 ${style.animateFadeIn}`}>
             <div
                 ref={popupRef}
-                className={`bg-white rounded-xl shadow-2xl w-full mx-auto md:w-[60%]  max-w-5xl sticky top-0 max-h-[80vh] min-h-[300px] flex flex-col ${style.animateScaleIn} border border-gray-200`}
+                className={`bg-white rounded-xl shadow-2xl w-[95%] mx-auto md:w-[60%]  max-w-5xl absolute md:top-[10dvh] top-[8dvh] left-1/2 -translate-x-1/2 max-h-[80dvh] min-h-[300px] flex flex-col ${style.animateScaleIn} border border-gray-200`}
             >
                 <div className="flex items-center justify-between md:p-4 p-3 border-b border-gray-100">
                     <div className="flex items-center gap-2">
