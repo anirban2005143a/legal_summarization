@@ -21,17 +21,8 @@ const VoiceRecognization = ({ isReady, setInput }) => {
             recognitionRef.current.start();
 
             recognitionRef.current.onresult = (event) => {
-                let chunks = ""
-
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    const result = event.results[i][0].transcript;
-                    if (event.results[i].isFinal) {
-                        chunks += result + " ";
-                        settext((prev)=> `${prev} ${result}` )
-                    }
-                }
-                setInput((prev)=> `${prev} ${chunks}`)
-                
+                const result = event.results[0][0].transcript;
+                setInput((prev) => `${prev} ${result}`)
             };
 
             recognitionRef.current.onerror = (event) => {
@@ -49,6 +40,14 @@ const VoiceRecognization = ({ isReady, setInput }) => {
         }
     }
 
+    const stopListening = (e) => {
+        e.preventDefault()
+        if (recognitionRef.current) {
+            recognitionRef.current.stop(); // 👈 This stops listening manually
+            setIsListening(false);
+        }
+    };
+
     useEffect(() => {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (SpeechRecognition) {
@@ -58,7 +57,7 @@ const VoiceRecognization = ({ isReady, setInput }) => {
             const recognition = new SpeechRecognition();
             recognition.lang = 'en-US';         // Set language
             recognition.continuous = false;     // Stop automatically after speaking
-            recognition.interimResults = true; // Only final results
+            recognition.interimResults = false; // Only final results
 
             //set ref
             recognitionRef.current = recognition
@@ -97,9 +96,15 @@ const VoiceRecognization = ({ isReady, setInput }) => {
                         {isListening ? 'Listening...' : 'Not listening'}
                     </p>
                     <p className='pb-2 md:text-sm text-xs text-gray-700 user-select-none'>Stops automatically after speaking</p>
-                    <div className=' p-3 border-t md:max-w-[60%] max-w-[90%] '>
-                        {!text && <p className=' md:text-base text-sm text-gray-700 text-center'>Output will show here</p>}
-                        {text && <p className=' md:text-base text-sm text-gray-800'>{text}</p>}
+                    <div className=' border-t px-5 '>
+                        <div className='p-2 my-3  bg-red-400 rounded-full animate-pulse'>
+                            {/* <MicOff className=' w-10 h-10 bg-red-800 p-3 text-white rounded-full' /> */}
+                            <button
+                                onClick={stopListening}
+                                className='w-15 h-15 cursor-pointer bg-red-700 rounded-full text-white flex items-center justify-center'>
+                                Stop
+                            </button>
+                        </div>
                     </div>
                 </div>
             </>}
