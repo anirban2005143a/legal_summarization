@@ -44,7 +44,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
                         <textarea
                             ref={textareaRef}
                             value={input}
-                            onInput={(e) => setInput((prev)=> (`${prev} ${e.target.value}`))}
+                            onInput={(e) => setInput((prev) => (`${prev} ${e.target.value}`))}
                             onKeyDown={handelAskAI}
                             placeholder="Type your message..."
                             rows="1"

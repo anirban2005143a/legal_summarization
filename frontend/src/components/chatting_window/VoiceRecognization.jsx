@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { showToast } from './functions/ShowToast';
 import { Mic, MicOff } from 'lucide-react';
 
-const VoiceRecognization = ({ isReady, setInput }) => {
+const VoiceRecognization = ({ isReady, setquery }) => {
 
     //state for voice recognization
     const [isListening, setIsListening] = useState(false);
@@ -22,7 +22,7 @@ const VoiceRecognization = ({ isReady, setInput }) => {
 
             recognitionRef.current.onresult = (event) => {
                 const result = event.results[0][0].transcript;
-                setInput((prev) => `${prev} ${result}`)
+                setquery((prev) => `${prev} ${result}`)
             };
 
             recognitionRef.current.onerror = (event) => {
