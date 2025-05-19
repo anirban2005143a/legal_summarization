@@ -21,10 +21,17 @@ const VoiceRecognization = ({ isReady, setInput }) => {
             recognitionRef.current.start();
 
             recognitionRef.current.onresult = (event) => {
-                setIsListening(false)
-                const speechResult = event.results[0][0].transcript;
-                setInput((prev) => `${prev} ${speechResult}`)
-                console.log('Speech recognized:', speechResult);
+                let chunks = ""
+
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    const result = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        chunks += result + " ";
+                        settext((prev)=> `${prev} ${result}` )
+                    }
+                }
+                setInput((prev)=> `${prev} ${chunks}`)
+                
             };
 
             recognitionRef.current.onerror = (event) => {
@@ -37,8 +44,8 @@ const VoiceRecognization = ({ isReady, setInput }) => {
                 setIsListening(false);
             };
         } catch (error) {
-            console.log("voice recognization error:"  , error)
-            showToast(error.message , 1)
+            console.log("voice recognization error:", error)
+            showToast(error.message, 1)
         }
     }
 
@@ -51,7 +58,7 @@ const VoiceRecognization = ({ isReady, setInput }) => {
             const recognition = new SpeechRecognition();
             recognition.lang = 'en-US';         // Set language
             recognition.continuous = false;     // Stop automatically after speaking
-            recognition.interimResults = false; // Only final results
+            recognition.interimResults = true; // Only final results
 
             //set ref
             recognitionRef.current = recognition
