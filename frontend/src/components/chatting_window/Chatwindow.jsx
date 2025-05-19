@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Send, Bot, User, Loader2, MicOff, Mic } from "lucide-react";
 import { saveChatResponse } from "./functions/saveChat";
 import { getChatInfo } from "./functions/getChatInfo";
+import { v4 as uuidv4 } from "uuid";
 
 const ChatWindow = ({ }) => {
 
@@ -25,14 +26,14 @@ const ChatWindow = ({ }) => {
   const [isBrowserSupported, setIsBrowserSupported] = useState(true);
 
 
-  const handleSubmit = (e) => {
+  const handelSubmitQuery = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
     setisReady(false);
     const newMessage = {
       question: input,
-      answer: [],
-      // _id: uuidv4(),
+      answer: undefined,
+      _id: uuidv4(),
       createdAt: new Date().toISOString(),
     };
 
@@ -41,10 +42,10 @@ const ChatWindow = ({ }) => {
     setInput("");
   };
 
-  const handleKeyDown = (e) => {
+  const handelAskAI = (e) => {
     if (e.key === "Enter" && !isFetching && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e);
+      handelSubmitQuery(e);
     }
     // Shift+Enter will naturally create a new line
   };
@@ -90,7 +91,7 @@ const ChatWindow = ({ }) => {
     const res = await new Promise((res, rej) => {
       setTimeout(() => {
         res("demo reponse from ai model")
-      }, 1000);
+      }, 5000);
     });
     console.log(res);
 
@@ -120,18 +121,18 @@ const ChatWindow = ({ }) => {
         question,
         answer
       );
-      const assistantMessage = {
-        question: null,
-        answer: [answer],
-        // _id: uuidv4(),
-        createdAt: new Date().toISOString(),
-      };
+
+      if (messages.length > 0 && messages[messages.length - 1].question) {
+        const updatedMessage = messages
+        updatedMessage[updatedMessage.length - 1].answer = `${answer}`
+        setMessages(updatedMessage)
+      }
 
       setquestion("");
       setanswer("");
       setisReady(true);
       setisFetching(false);
-      setMessages((prev) => [...prev, assistantMessage]);
+      // setMessages((prev) => [...prev, assistantMessage]);
     }
   }, [answer]);
 
@@ -213,7 +214,7 @@ const ChatWindow = ({ }) => {
       startListening();
     }
   };
-  // console.log(messages)
+  console.log(messages)
   return (
     <>
 
@@ -285,13 +286,13 @@ const ChatWindow = ({ }) => {
 
         {/* Input Form */}
         <div className="border-t border-gray-700 bg-gray-800 p-4">
-          <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
+          <form onSubmit={handelSubmitQuery} className="max-w-4xl mx-auto">
             <div className="relative flex items-end">
               <textarea
                 ref={textareaRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={handelAskAI}
                 placeholder="Type your message... (Shift+Enter for new line)"
                 rows="1"
                 className="w-full py-2 px-3 pr-10 rounded-xl border border-gray-600 bg-gray-700 text-gray-100 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors placeholder-gray-400 resize-none"
@@ -321,7 +322,7 @@ const ChatWindow = ({ }) => {
                 type="submit"
                 className="absolute right-4 bottom-2 p-1 text-gray-400 cursor-pointer hover:text-blue-100 transition-colors disabled:opacity-50"
                 disabled={!isReady || !input.trim()}
-                onClick={handleSubmit}
+              // onClick={handelSubmitQuery}
               >
                 <Send className="w-5 h-5" />
               </button>

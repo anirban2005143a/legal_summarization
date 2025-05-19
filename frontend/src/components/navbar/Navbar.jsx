@@ -6,7 +6,6 @@ import MobileMenu from './Mobile_menu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Desktop_view from './Desktop_view';
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 const LogoComponent = () => {
   {/* Logo */ }

@@ -9,7 +9,6 @@ const Desktop_view = ({ LogoComponent }) => {
                 {/* logo component  */}
                 {LogoComponent}
 
-
                 {/* Navigation Links - Desktop */}
                 <NavLinks />
 
