@@ -21,7 +21,7 @@ const ChatWindow = ({ }) => {
   const massagesRef = useRef(null);
 
 
-  const handelSubmitQuery = (input ,setInput) => {
+  const handelSubmitQuery = (input, setInput) => {
     if (!input.trim()) return;
     setisReady(false);
     const newMessage = {
@@ -130,13 +130,13 @@ const ChatWindow = ({ }) => {
   return (
     <>
 
-      <div className="flex flex-col mx-auto h-full md:w-[60%] md:min-w-[600px] w-full max-w-[1500px]  ">
+      <div className="flex flex-col mx-auto h-full md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] ">
         {/* Messages Container */}
-        <div ref={massagesRef} className="flex-1 overflow-y-auto p-4 space-y-4  ">
+        <div ref={massagesRef} className="flex-1 overflow-y-auto p-4 space-y-4 overflow-x-hidden ">
 
           {!isChatInfoFetching &&
             messages &&
-            messages.map((message, ind) => {
+            messages.map((message) => {
               return (
                 <div key={message._id} className="flex flex-col gap-4">
                   {/* User Message */}
@@ -146,7 +146,7 @@ const ChatWindow = ({ }) => {
                         <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-indigo-100">
                           <User className="w-6 h-6 text-white bg-indigo-600 rounded-full p-1" />
                         </div>
-                        <div className="px-4 py-2 w-full bg-indigo-600 text-white rounded-br-2xl rounded-l-2xl shadow-sm">
+                        <div className="px-4 py-2 w-full bg-indigo-600 text-white rounded-br-2xl rounded-l-2xl shadow-sm overflow-x-auto">
                           <p className="text-sm">{message.question}</p>
                         </div>
                       </div>
