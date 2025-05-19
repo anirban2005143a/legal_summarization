@@ -175,7 +175,7 @@ const ChatWindow = ({ }) => {
           {/* Loading Message */}
           {!isChatInfoFetching && isFetching && (
             <div className="flex justify-start">
-              <div className="flex gap-3 w-[80%] flex-row">
+              <div className="flex gap-3 w-[60%] flex-row">
                 <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-100">
                   <Bot className="w-6 h-6 text-indigo-600" />
                 </div>

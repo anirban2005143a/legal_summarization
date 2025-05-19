@@ -32,7 +32,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
     const handelAskAI = (e) => {
         if (e.key === "Enter" && !isFetching && !e.shiftKey) {
             e.preventDefault();
-            handelSubmitQuery(input);
+            handelSubmitQuery(input , setInput);
         }
     };
 
