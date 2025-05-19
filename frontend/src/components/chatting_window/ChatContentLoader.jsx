@@ -1,9 +1,9 @@
 import { Bot, User } from 'lucide-react';
 import React from 'react';
 
-const ChatContentLoader = ({ messageCount = 5 }) => {
+const ChatContentLoader = ({ messageCount = 5 , className }) => {
   return (
-    <div className="flex flex-col pt-[80px] justify-between md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] mx-auto h-[100dvh]">
+    <div className={`flex flex-col justify-between md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] mx-auto h-full ${className || ""}`}>
       {/* Messages area */}
       <div className="overflow-y-auto p-4 space-y-6">
         {Array.from({ length: messageCount }).map((_, index) => (

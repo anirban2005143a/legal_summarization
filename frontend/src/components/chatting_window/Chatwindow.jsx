@@ -138,7 +138,7 @@ const ChatWindow = ({ }) => {
             messages &&
             messages.map((message) => {
               return (
-                <div key={message._id} className="flex flex-col gap-4">
+                <div key={uuidv4()} className="flex flex-col gap-4">
                   {/* User Message */}
                   {message.question && (
                     <div className="flex justify-end">

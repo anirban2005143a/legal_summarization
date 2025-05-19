@@ -3,10 +3,11 @@ import NavbarContentLoader from '@/components/navbar/NavbarContentLoader'
 
 const Loading = () => {
     return (
-        <div className=' overflow-hidden'>
+        <div className=' h-[100dvh]'>
             <NavbarContentLoader />
-            <ChatContentLoader />
+            <ChatContentLoader className="pt-[150px] " />
         </div>
+
     )
 }
 
