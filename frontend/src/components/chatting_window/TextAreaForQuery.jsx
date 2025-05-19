@@ -1,14 +1,12 @@
 "use state"
 import { Mic, MicOff, Send } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react'
+import VoiceRecognization from './VoiceRecognization';
 
 const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
     const [input, setInput] = useState("");
 
-    //state for voice recognization
-    const [isListening, setIsListening] = useState(false);
-    const recognitionRef = useRef(null);
-    const [isBrowserSupported, setIsBrowserSupported] = useState(true);
+
 
     const textareaRef = useRef(null);
 
@@ -32,7 +30,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
     const handelAskAI = (e) => {
         if (e.key === "Enter" && !isFetching && !e.shiftKey) {
             e.preventDefault();
-            handelSubmitQuery(input , setInput);
+            handelSubmitQuery(input, setInput);
         }
     };
 
@@ -42,7 +40,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
             <div className="border-t border-gray-500 p-4 " >
                 <form onSubmit={(e) => {
                     e.preventDefault()
-                    handelSubmitQuery(input ,setInput)
+                    handelSubmitQuery(input, setInput)
                 }} className="max-w-4xl mx-auto">
                     <div className="relative flex items-center rounded-xl border border-gray-300 bg-gray-200 ">
                         <textarea
@@ -59,16 +57,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
                             }}
                         />
                         <div className=" control-buttons w-[110px] flex justify-center gap-2 h-full">
-                            {isBrowserSupported && (
-                                <button
-                                    type="button"
-                                    className={`p-1 cursor-pointer transition-colors outline-none ${isListening ? "text-red-500 hover:text-red-400" : "text-gray-600 hover:text-indigo-500"
-                                        }`}
-                                    disabled={!isReady}
-                                >
-                                    {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                                </button>
-                            )}
+                            <VoiceRecognization isReady={isReady} />
                             <button
                                 type="submit"
                                 className={` p-1 text-gray-600 ${isReady ? "cursor-pointer" : "cursor-not-allowed"} hover:text-indigo-500 transition-colors disabled:cursor-not-allowed disabled:opacity-70`}
