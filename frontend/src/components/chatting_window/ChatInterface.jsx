@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ChatWindow from './Chatwindow';
 import Navbar from '../navbar/Navbar';
+import { ToastContainer } from 'react-toastify';
 
 const ChatInterface = () => {
 
@@ -10,7 +11,7 @@ const ChatInterface = () => {
     <>
       <div id='chatInterface' className=' relative h-full '>
         <Navbar />
-
+        <ToastContainer/>
         {/* chat window  */}
         <div className="workSpace pt-[55px] h-full ">
           <ChatWindow />

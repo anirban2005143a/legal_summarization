@@ -11,7 +11,7 @@ export const showToast = (message, err) => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: "light",
         });
     } else {
         toast.success(message, {
@@ -22,7 +22,7 @@ export const showToast = (message, err) => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: "light",
         });
     }
 };

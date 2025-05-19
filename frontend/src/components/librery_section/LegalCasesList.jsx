@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import LegalCaseCard from './LegalCaseCard';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import FetchData from './FetchData';
-import { DocumentLoader } from '../Loader/DocumentLoader';
+import { DocumentLoader } from './DocumentLoader';
 
 const LegalCasesList = () => {
   const [data, setdata] = useState([])
