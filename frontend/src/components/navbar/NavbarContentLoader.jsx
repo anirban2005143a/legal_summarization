@@ -1,35 +1,26 @@
-import React from 'react'
-import { Scale } from 'lucide-react';
-import Skeleton from './Skeleton';
+import React from 'react';
 
-const NavbarContentLoader = () => {
+const NavbarContentLoader= () => {
   return (
-     <div className="w-full bg-[#faf7f2] border-b border-gray-200 py-4 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Logo Section */}
-        <div className="flex items-center space-x-3">
-          <Scale className="h-8 w-8 text-gray-300" />
-          <div className="flex flex-col">
-            <Skeleton className="h-6 w-36 mb-1" />
-            <Skeleton className="h-3 w-44" />
-          </div>
-        </div>
-
-        {/* Nav Items */}
-        <div className="hidden md:flex items-center space-x-8">
-          <Skeleton className="h-5 w-16" />
-          <Skeleton className="h-5 w-24" />
-          <Skeleton className="h-5 w-20" />
-          <Skeleton className="h-5 w-28" />
-        </div>
-
-        {/* Mobile Nav Placeholder */}
-        <div className="md:hidden">
-          <Skeleton className="h-6 w-6 rounded" />
+    <nav className="bg-[#F8F4F1] px-6 py-4 flex items-center justify-between">
+      {/* Logo and Company Name */}
+      <div className="flex items-center space-x-3">
+        <div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />
+        <div className="space-y-2">
+          <div className="h-4 w-32 bg-gray-300 rounded animate-pulse" />
+          <div className="h-3 w-48 bg-gray-200 rounded animate-pulse" />
         </div>
       </div>
-    </div>
-  )
-}
 
-export default NavbarContentLoader
+      {/* Navigation Links */}
+      <div className="flex items-center space-x-8">
+        <div className="h-4 w-16 bg-gray-300 rounded animate-pulse" />
+        <div className="h-4 w-24 bg-gray-300 rounded animate-pulse" />
+        <div className="h-4 w-20 bg-gray-300 rounded animate-pulse" />
+        <div className="h-4 w-24 bg-gray-300 rounded animate-pulse ml-4" />
+      </div>
+    </nav>
+  );
+};
+
+export default NavbarContentLoader;

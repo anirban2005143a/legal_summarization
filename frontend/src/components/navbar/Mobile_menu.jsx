@@ -8,7 +8,7 @@ const MobileMenu = ({setIsMenuOpen , menuRef}) => {
             {/* Mobile Menu */}
             <div
                 ref={menuRef}
-                className={` fixed top-0 translate-x-[110%] h-screen w-screen bg-gray-800/20 backdrop-blur-sm shadow-lg z-50 `}
+                className={` fixed top-0 translate-x-[110%] h-screen w-screen bg-gray-800/38 backdrop-blur-sm shadow-lg z-50 `}
 
             >
                 <div className="px-10 pt-[50px] h-full">
@@ -21,27 +21,27 @@ const MobileMenu = ({setIsMenuOpen , menuRef}) => {
                     >
                         <X className='text-black font-bold w-7 h-7' />
                     </button>
-                    <div className=' flex flex-col items-start gap-10 pt-[40px] text-xl font-semibold underline-offset-4 text-[#000000]'>
+                    <div className=' flex flex-col items-start gap-10 pt-[40px] text-xl font-semibold underline-offset-4 text-[#252222]'>
                         <Link onClick={() => {
                             document.body.style.overflowY = "auto"
                             setIsMenuOpen(false)
                         }} href={`/`} className="  relative nav-menu-mobile">
                             Home
-                            <span className="absolute nav-menu-underline -bottom-1 left-0 w-full h-0.5 bg-red-600 group-hover:w-full transition-all duration-300"></span>
+                            <span className="absolute nav-menu-underline -bottom-1 left-0 w-full h-[1px] bg-red-500 group-hover:w-full transition-all duration-300"></span>
                         </Link>
                         <Link onClick={() => {
                             document.body.style.overflowY = "auto"
                             setIsMenuOpen(false)
                         }} href='/judgments' className=" relative nav-menu-mobile">
                             Judgments
-                            <span className="absolute nav-menu-underline -bottom-1 left-0 w-full h-0.5 bg-red-600 group-hover:w-full transition-all duration-300"></span>
+                            <span className="absolute nav-menu-underline -bottom-1 left-0 w-full h-[1px] bg-red-500 group-hover:w-full transition-all duration-300"></span>
                         </Link>
                         <Link onClick={() => {
                             document.body.style.overflowY = "auto"
                             setIsMenuOpen(false)
                         }} href='/chat' className=" relative nav-menu-mobile">
                             Ai Assistant
-                            <span className="absolute nav-menu-underline -bottom-1 left-0 w-full h-0.5 bg-red-600 group-hover:w-full transition-all duration-300"></span>
+                            <span className="absolute nav-menu-underline -bottom-1 left-0 w-full h-[1px] bg-red-500 group-hover:w-full transition-all duration-300"></span>
                         </Link>
                     </div>
                 </div>

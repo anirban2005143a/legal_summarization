@@ -3,9 +3,9 @@ import { Skeleton } from './Sckeleton';
 
 export function HeroContentLoader() {
   return (
-    <div className="w-full min-h-screen bg-[#f8f5f2] p-6 lg:p-12 ">
+    <div className="w-full min-h-screen bg-[#f8f5f2] md:p-6 py-12 lg:px-6 ">
       <div className="max-w-[1500px] mx-auto pt-[60px]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-18">
           <div className="lg:col-span-7">
             <div className="mb-8">
               <Skeleton className="h-12 w-3/4 mb-3" />

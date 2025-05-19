@@ -5,6 +5,7 @@ import { Send, Bot, User, Loader2, MicOff, Mic } from "lucide-react";
 import { saveChatResponse } from "./functions/saveChat";
 import { getChatInfo } from "./functions/getChatInfo";
 import { v4 as uuidv4 } from "uuid";
+import ChatContentLoader from "./ChatContentLoader";
 
 const ChatWindow = ({ }) => {
 
@@ -76,7 +77,7 @@ const ChatWindow = ({ }) => {
       const newMessage = {
         question: undefined,
         answer: ["How can i help you?"],
-        // _id: uuidv4(),
+        _id: uuidv4(),
         createdAt: new Date().toISOString(),
       };
 
@@ -91,7 +92,7 @@ const ChatWindow = ({ }) => {
     const res = await new Promise((res, rej) => {
       setTimeout(() => {
         res("demo reponse from ai model")
-      }, 10000);
+      }, 2000);
     });
     console.log(res);
 
@@ -132,7 +133,6 @@ const ChatWindow = ({ }) => {
       setanswer("");
       setisReady(true);
       setisFetching(false);
-      // setMessages((prev) => [...prev, assistantMessage]);
     }
   }, [answer]);
 
@@ -215,22 +215,21 @@ const ChatWindow = ({ }) => {
     }
   };
   console.log(messages)
+
+  if(isChatInfoFetching) return <ChatContentLoader />
+
   return (
     <>
+
       <div className="flex flex-col mx-auto h-full md:w-[60%] md:min-w-[600px] w-full max-w-[1500px]  ">
         {/* Messages Container */}
         <div ref={massagesRef} className="flex-1 overflow-y-auto p-4 space-y-4  ">
-          {isChatInfoFetching && (
-            <div className="h-full w-full flex justify-center items-center">
-              <Loader2 size={50} color="#4F46E5" className="animate-spin" />
-            </div>
-          )}
 
           {!isChatInfoFetching &&
             messages &&
             messages.map((message, ind) => {
               return (
-                <div key={ind} className="flex flex-col gap-4">
+                <div key={message._id} className="flex flex-col gap-4">
                   {/* User Message */}
                   {message.question && (
                     <div className="flex justify-end">
@@ -267,14 +266,15 @@ const ChatWindow = ({ }) => {
           {/* Loading Message */}
           {!isChatInfoFetching && isFetching && (
             <div className="flex justify-start">
-              <div className="flex gap-3 max-w-[80%] flex-row">
+              <div className="flex gap-3 w-[80%] flex-row">
                 <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-100">
                   <Bot className="w-6 h-6 text-indigo-600" />
                 </div>
-                <div className="px-4 py-2 w-full bg-gray-100 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
-                  <div className="flex items-center gap-3">
-                    <p className="text-sm">Processing...</p>
-                    <Loader2 className="animate-spin text-indigo-600" />
+                {/* Message content */}
+                <div className=" w-full">
+                  <div className="bg-gray-200/80 rounded-xl px-2 py-3 animate-pulse">
+                    <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-gray-300 rounded w-1/2"></div>
                   </div>
                 </div>
               </div>
@@ -291,20 +291,20 @@ const ChatWindow = ({ }) => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handelAskAI}
-                placeholder="Type your message... (Shift+Enter for new line)"
+                placeholder="Type your message..."
                 rows="1"
-                className="w-full py-2 px-3 pr-10  text-black transition-colors placeholder-gray-600 resize-none"
+                className="w-full py-2 px-3 focus:outline-none text-black transition-colors placeholder-gray-600 resize-none"
                 style={{
                   minHeight: "44px",
                   maxHeight: "150px",
                 }}
               />
-              <div className=" control-buttons w-[100px] flex gap-2 h-full">
+              <div className=" control-buttons w-[110px] flex justify-center gap-2 h-full">
                 {isBrowserSupported && (
                   <button
                     type="button"
                     onClick={toggleListening}
-                    className={`p-1 cursor-pointer transition-colors ${isListening ? "text-red-500 hover:text-red-400" : "text-gray-600 hover:text-indigo-500"
+                    className={`p-1 cursor-pointer transition-colors outline-none ${isListening ? "text-red-500 hover:text-red-400" : "text-gray-600 hover:text-indigo-500"
                       }`}
                     disabled={!isReady}
                   >

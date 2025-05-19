@@ -35,7 +35,6 @@ const MobileView = ({ LogoComponent }) => {
           opacity: 1,
           duration: 0.2,
           stagger: 0.2,
-          delay: 0.3,
         }
       );
     } else {
@@ -43,7 +42,7 @@ const MobileView = ({ LogoComponent }) => {
       gsap.to(menuRef.current, {
         x: "100%",
         opacity: 0,
-        duration: 0.2,
+        duration: 0.4,
       });
     }
   }, [isMenuOpen]);

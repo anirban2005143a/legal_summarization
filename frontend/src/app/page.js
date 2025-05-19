@@ -1,4 +1,4 @@
-// "use client"
+
 import HeroSection from "@/components/HeroSection/HeroSection";
 import Navbar from "@/components/navbar/Navbar";
 
