@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Logo from '../Logo/Logo';
-import MobileMenu from './Mobile_menu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Desktop_view from './Desktop_view';
+import MobileView from './Mobile_view';
+import DesktopView from './Desktop_view';
 
 const LogoComponent = () => {
   {/* Logo */ }
@@ -43,9 +43,9 @@ const Navbar = () => {
       <nav className={`fixed w-full ${pathname === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all  duration-300 ${!isVisible ? ' -top-[100px]' : ' top-0 '
         }`}>
         {/* Navigation Links - Desktop */}
-        <Desktop_view LogoComponent={<LogoComponent />}  />
+        <DesktopView LogoComponent={<LogoComponent />}  />
         {/* Mobile menu */}
-        <MobileMenu LogoComponent={<LogoComponent />} />
+        <MobileView LogoComponent={<LogoComponent />} />
       </nav>
 
     </>

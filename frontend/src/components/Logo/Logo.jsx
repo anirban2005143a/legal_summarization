@@ -1,9 +1,8 @@
-"use client"
-
 import React from 'react';
 import { Scale } from 'lucide-react';
 
 const Logo = () => {
+
   return (
     <div className="flex items-center gap-2">
       <Scale className="h-6 w-6 text-maroon-700" />

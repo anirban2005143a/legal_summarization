@@ -91,7 +91,7 @@ const ChatWindow = ({ }) => {
     const res = await new Promise((res, rej) => {
       setTimeout(() => {
         res("demo reponse from ai model")
-      }, 5000);
+      }, 10000);
     });
     console.log(res);
 
@@ -217,46 +217,42 @@ const ChatWindow = ({ }) => {
   console.log(messages)
   return (
     <>
-
-      <div className="flex flex-col mx-auto h-full md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] rounded-t-2xl">
+      <div className="flex flex-col mx-auto h-full md:w-[60%] md:min-w-[600px] w-full max-w-[1500px]  ">
         {/* Messages Container */}
-        <div
-          ref={massagesRef}
-          className="flex-1 overflow-y-auto   p-4 space-y-4"
-        >
+        <div ref={massagesRef} className="flex-1 overflow-y-auto p-4 space-y-4  ">
           {isChatInfoFetching && (
-            <div className=" h-full w-full flex justify-center items-center  ">
-              <Loader2 size={50} color="blue" className=" animate-spin" />
+            <div className="h-full w-full flex justify-center items-center">
+              <Loader2 size={50} color="#4F46E5" className="animate-spin" />
             </div>
           )}
 
           {!isChatInfoFetching &&
             messages &&
             messages.map((message, ind) => {
-              // Transform question messages (user role)
               return (
-                <div key={ind} className=" flex flex-col gap-4">
-                  {/* Message Item */}
+                <div key={ind} className="flex flex-col gap-4">
+                  {/* User Message */}
                   {message.question && (
                     <div className="flex justify-end">
                       <div className="flex gap-3 max-w-[80%] flex-row-reverse">
-                        <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-700">
-                          <User className="w-6 h-6 text-white bg-blue-600 rounded-full p-1" />
+                        <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-indigo-100">
+                          <User className="w-6 h-6 text-white bg-indigo-600 rounded-full p-1" />
                         </div>
-                        <div className="px-4 py-2 w-full bg-blue-600 text-white rounded-br-2xl rounded-l-2xl">
+                        <div className="px-4 py-2 w-full bg-indigo-600 text-white rounded-br-2xl rounded-l-2xl shadow-sm">
                           <p className="text-sm">{message.question}</p>
                         </div>
                       </div>
                     </div>
                   )}
 
+                  {/* Bot Message */}
                   {message.answer && (
                     <div className="flex justify-start">
                       <div className="flex gap-3 max-w-[80%] flex-row">
-                        <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-700">
-                          <Bot className="w-6 h-6 text-white bg-purple-600 rounded-full p-1" />
+                        <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-purple-100">
+                          <Bot className="w-6 h-6 text-indigo-600" />
                         </div>
-                        <div className="px-4 py-2 w-full bg-gray-800 text-gray-100 rounded-bl-2xl rounded-r-2xl">
+                        <div className="px-4 py-2 w-full bg-gray-100 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
                           <div className="text-sm">
                             <p>{message.answer}</p>
                           </div>
@@ -265,18 +261,20 @@ const ChatWindow = ({ }) => {
                     </div>
                   )}
                 </div>
-              );
+              )
             })}
+
+          {/* Loading Message */}
           {!isChatInfoFetching && isFetching && (
             <div className="flex justify-start">
               <div className="flex gap-3 max-w-[80%] flex-row">
-                <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-700">
-                  <Bot className="w-6 h-6 text-white bg-purple-600 rounded-full p-1" />
+                <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-100">
+                  <Bot className="w-6 h-6 text-indigo-600" />
                 </div>
-                <div className="px-4 py-2 w-full bg-gray-800 text-gray-100 rounded-bl-2xl rounded-r-2xl">
-                  <div className=" flex items-center gap-3">
-                    <p className="text-sm">Fetching...</p>
-                    <Loader2 className=" animate-spin" />
+                <div className="px-4 py-2 w-full bg-gray-100 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
+                  <div className="flex items-center gap-3">
+                    <p className="text-sm">Processing...</p>
+                    <Loader2 className="animate-spin text-indigo-600" />
                   </div>
                 </div>
               </div>
@@ -285,9 +283,9 @@ const ChatWindow = ({ }) => {
         </div>
 
         {/* Input Form */}
-        <div className="border-t border-gray-700 bg-gray-800 p-4">
+        <div className="border-t border-gray-500 p-4 ">
           <form onSubmit={handelSubmitQuery} className="max-w-4xl mx-auto">
-            <div className="relative flex items-end">
+            <div className="relative flex items-center rounded-xl border border-gray-300 bg-gray-200 ">
               <textarea
                 ref={textareaRef}
                 value={input}
@@ -295,43 +293,39 @@ const ChatWindow = ({ }) => {
                 onKeyDown={handelAskAI}
                 placeholder="Type your message... (Shift+Enter for new line)"
                 rows="1"
-                className="w-full py-2 px-3 pr-10 rounded-xl border border-gray-600 bg-gray-700 text-gray-100 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors placeholder-gray-400 resize-none"
+                className="w-full py-2 px-3 pr-10  text-black transition-colors placeholder-gray-600 resize-none"
                 style={{
                   minHeight: "44px",
                   maxHeight: "150px",
                 }}
               />
-              {isBrowserSupported && (
+              <div className=" control-buttons w-[100px] flex gap-2 h-full">
+                {isBrowserSupported && (
+                  <button
+                    type="button"
+                    onClick={toggleListening}
+                    className={`p-1 cursor-pointer transition-colors ${isListening ? "text-red-500 hover:text-red-400" : "text-gray-600 hover:text-indigo-500"
+                      }`}
+                    disabled={!isReady}
+                  >
+                    {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </button>
+                )}
                 <button
-                  type="button"
-                  onClick={toggleListening}
-                  className={`absolute right-12 bottom-2 p-1 cursor-pointer transition-colors ${isListening
-                    ? "text-red-400 hover:text-red-300"
-                    : "text-gray-400 hover:text-blue-100"
-                    }`}
-                  disabled={!isReady}
+                  type="submit"
+                  className={` p-1 text-gray-600 ${isReady ? "cursor-pointer" : "cursor-not-allowed"} hover:text-indigo-500 transition-colors disabled:cursor-not-allowed disabled:opacity-70`}
+                  disabled={!isReady || !input.trim()}
                 >
-                  {isListening ? (
-                    <MicOff className="w-5 h-5" />
-                  ) : (
-                    <Mic className="w-5 h-5" />
-                  )}
+                  <Send className="w-5 h-5" />
                 </button>
-              )}
-              <button
-                type="submit"
-                className="absolute right-4 bottom-2 p-1 text-gray-400 cursor-pointer hover:text-blue-100 transition-colors disabled:opacity-50"
-                disabled={!isReady || !input.trim()}
-              // onClick={handelSubmitQuery}
-              >
-                <Send className="w-5 h-5" />
-              </button>
+              </div>
             </div>
+
           </form>
         </div>
       </div>
-
     </>
+
   );
 };
 

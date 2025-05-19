@@ -15,7 +15,7 @@ const NavItem = ({ href, label, hasDropdown = false }) => {
           onMouseLeave={() => { setisHovered(false) }}
         >
           {label}
-          <span className={`absolute nav-menu-underline -bottom-1 left-0 ${isHovered ? "w-full" : "w-0"} h-0.5 bg-gradient-to-r from-red-800 to-red-700 group-hover:w-full transition-all duration-300`}></span>
+          <span className={`absolute nav-menu-underline -bottom-1 left-0 ${isHovered ? "w-full" : "w-0"} h-[1px] bg-gradient-to-r from-red-800 to-red-700 group-hover:w-full transition-all duration-300`}></span>
         </span>
         {hasDropdown && (
           <svg
@@ -56,7 +56,7 @@ const NavLinks = () => {
       <NavItem href="/" label="Home" />
       <NavItem href="/judgments" label="Judgments" />
       <NavItem href="#" label="Services" hasDropdown />
-      <NavItem href="/chat/123" label="Ai Assistant" />
+      <NavItem href="/chat" label="Ai Assistant" />
     </ul>
   );
 };

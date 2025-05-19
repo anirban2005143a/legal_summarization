@@ -12,7 +12,7 @@ const ChatInterface = () => {
         <Navbar />
 
         {/* chat window  */}
-        <div className="workSpace pt-[80px] h-screen ">
+        <div className="workSpace pt-[55px] h-screen ">
           <ChatWindow />
         </div>
       </div>
