@@ -2,9 +2,8 @@
 import LegalCasesList from '@/components/librery_section/LegalCasesList'
 import Navbar from '@/components/navbar/Navbar'
 import React from 'react'
-import Loading from './loading'
 
-const  CasesPage = async() => {
+const JudgementPage = async () => {
 
   return (
     <>
@@ -14,4 +13,4 @@ const  CasesPage = async() => {
   )
 }
 
-export default CasesPage
+export default JudgementPage

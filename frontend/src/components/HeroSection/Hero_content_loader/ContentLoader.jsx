@@ -6,7 +6,7 @@ export function HeroContentLoader() {
     <div className="w-full min-h-screen bg-[#f8f5f2] md:p-6 py-12 lg:px-6 ">
       <div className="max-w-[1500px] mx-auto pt-[60px]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-18">
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 px-3">
             <div className="mb-8">
               <Skeleton className="h-12 w-3/4 mb-3" />
               <Skeleton className="h-12 w-1/2" />
@@ -38,8 +38,8 @@ export function HeroContentLoader() {
             </div>
 
             <div className="flex flex-wrap gap-4 mb-10">
-              <Skeleton className="h-12 w-48 rounded-md" />
-              <Skeleton className="h-12 w-48 rounded-md" />
+              <Skeleton className="h-12 md:w-48 w-full rounded-md" />
+              <Skeleton className="h-12 md:w-48 w-full rounded-md" />
             </div>
 
             <div className="flex items-center space-x-2 mt-4">
@@ -50,7 +50,7 @@ export function HeroContentLoader() {
             </div>
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 px-3">
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="bg-[#901C1C] p-4 ">
                 <div className="flex justify-between items-center">

@@ -3,9 +3,9 @@ import React from 'react';
 
 const ChatContentLoader = ({ messageCount = 5 }) => {
   return (
-    <div className="flex flex-col md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] mx-auto">
+    <div className="flex flex-col pt-[80px] justify-between md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] mx-auto h-[100dvh]">
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+      <div className="overflow-y-auto p-4 space-y-6">
         {Array.from({ length: messageCount }).map((_, index) => (
           <React.Fragment key={index}>
             {/* Bot message loader */}

@@ -2,22 +2,22 @@ import React from 'react';
 
 const NavbarContentLoader= () => {
   return (
-    <nav className="bg-[#F8F4F1] px-6 py-4 flex items-center justify-between">
+    <nav className="bg-[#F8F4F1] fixed top-0 left-0 w-full px-3 py-4 flex items-center justify-between">
       {/* Logo and Company Name */}
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center gap-2">
         <div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />
         <div className="space-y-2">
-          <div className="h-4 w-32 bg-gray-300 rounded animate-pulse" />
-          <div className="h-3 w-48 bg-gray-200 rounded animate-pulse" />
+          <div className="h-4 md:w-32 w-20 bg-gray-300 rounded animate-pulse" />
+          <div className="h-3 md:w-48 w-30 bg-gray-200 rounded animate-pulse" />
         </div>
       </div>
 
       {/* Navigation Links */}
-      <div className="flex items-center space-x-8">
-        <div className="h-4 w-16 bg-gray-300 rounded animate-pulse" />
-        <div className="h-4 w-24 bg-gray-300 rounded animate-pulse" />
-        <div className="h-4 w-20 bg-gray-300 rounded animate-pulse" />
-        <div className="h-4 w-24 bg-gray-300 rounded animate-pulse ml-4" />
+      <div className="flex items-center gap-2">
+        <div className="h-4 md:block hidden w-16 bg-gray-300 rounded animate-pulse" />
+        <div className="h-4 md:block hidden w-24 bg-gray-300 rounded animate-pulse" />
+        <div className="h-4 md:block hidden w-20 bg-gray-300 rounded animate-pulse" />
+        <div className="md:h-4 h-8 md:w-24 w-8 bg-gray-300 rounded animate-pulse  " />
       </div>
     </nav>
   );

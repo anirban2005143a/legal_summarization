@@ -8,7 +8,7 @@ function Chat() {
   return (
     <>
       <BackGround />
-      <div className="app w-screen h-screen  overflow-hidden">
+      <div className="app h-[100dvh]  overflow-hidden">
         <ChatInterface />
       </div>
     </>
