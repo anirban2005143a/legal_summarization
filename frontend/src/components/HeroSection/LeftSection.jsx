@@ -87,7 +87,7 @@ const LeftSection = ({width}) => {
             </div>
 
             <div className="flex sm:flex-row flex-col gap-4 pt-2">
-                <button className="bg-[#b37a19] text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#987c5e] transition-colors flex items-center justify-center">
+                <button className="bg-[#b37a19] text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#67450b] transition-colors flex items-center justify-center">
                     <FileText className="mr-2 h-5 w-5" />
                     Try Document Analysis
                 </button>

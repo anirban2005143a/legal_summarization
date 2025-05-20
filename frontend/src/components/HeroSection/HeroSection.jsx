@@ -25,7 +25,7 @@ const HeroSection = () => {
   return (
     <>
       {!width && <HeroContentLoader />}
-      {width && <div className="relative overflow-hidden bg-gradient-to-b from-[#f8f1e9] to-white pt-[40px] ">
+      {width && <div className="relative overflow-hidden  pt-[40px] ">
         <BackGround />
 
         {/* Main content */}

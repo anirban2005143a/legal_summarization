@@ -4,8 +4,8 @@ const BackGround = () => {
     return (
         <>
             {/* Enhanced decorative background elements */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-                <div className="absolute -top-[10%] -right-[10%] w-[50%] h-[70%] bg-[#7b54111b] rounded-full blur-[75px]"></div>
+            <div className="fixed top-0 left-0 h-[100dvh] overflow-hidden">
+                <div className="absolute -top-[10%] -right-[10%] w-[50%] h-[70%] bg-[#74603e1b] rounded-full blur-[75px]"></div>
                 <div className="absolute -bottom-[10%] right-[20%] w-[30%] h-[40%] bg-[#d4812e1f] rounded-full blur-[75px]"></div>
 
                 {/* Decorative patterns */}
