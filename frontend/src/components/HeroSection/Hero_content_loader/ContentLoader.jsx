@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton } from './Sckeleton';
+import { Skeleton } from '../../ui/Sckeleton';
 
 export function HeroContentLoader() {
   return (
