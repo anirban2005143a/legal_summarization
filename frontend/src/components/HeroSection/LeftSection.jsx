@@ -92,7 +92,7 @@ const LeftSection = ({width}) => {
                     Try Document Analysis
                 </button>
 
-                <Link href={"/cases"}
+                <Link href={"/judgments"}
                  className="group border text-sm border-gray-300 bg-[#ffdda12c] text-gray-700 md:px-5 px-3 py-3 rounded-lg md:hover:border-[#7b4f11] md:hover:text-[#7b4d11] transition-colors flex items-center justify-center">
                     <BookOpen className="mr-2 h-5 w-5 md:group-hover:text-[#7b4d11]" />
                     Browse Library

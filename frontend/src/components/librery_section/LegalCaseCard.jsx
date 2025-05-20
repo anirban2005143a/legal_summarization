@@ -54,7 +54,7 @@ const LegalCaseCard = ({ legalCase, isExpand, onToggle, id }) => {
         </div>
 
         {showSummary && (
-          <div className="mt-4 bg-amber-50 p-4 rounded-md border-l-4 border-amber-500 animate-slideDown">
+          <div className="mt-4 bg-[#ffb71d16] p-4 rounded-md border-l-4 border-amber-500 animate-slideDown">
             <h3 className="md:text-lg text-base font-semibold text-gray-900 mb-2">Summary</h3>
             <p className="text-gray-700 text-sm">{legalCase["summary"]}</p>
           </div>

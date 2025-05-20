@@ -17,7 +17,7 @@ const NavItem = ({ href, label, hasDropdown = false }) => {
           {label}
           <span className={`absolute nav-menu-underline -bottom-1 left-0 ${isHovered ? "w-full" : "w-0"} h-[2px] bg-gradient-to-r from-amber-800 to-amber-700 group-hover:w-full transition-all duration-300`}></span>
         </span>
-        {hasDropdown && (
+        {/* {hasDropdown && (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4 ml-1 transform group-hover:rotate-180 transition-transform duration-200"
@@ -27,10 +27,10 @@ const NavItem = ({ href, label, hasDropdown = false }) => {
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
-        )}
+        )} */}
       </Link>
 
-      {hasDropdown && (
+      {/* {hasDropdown && (
         <div className="absolute left-0 mt-1 w-48 bg-white shadow-lg rounded-md py-2 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top scale-95 group-hover:scale-100">
           <Link href="#" className="block px-4 py-2 text-gray-700 hover:bg-maroon-50 hover:text-maroon-700">
             Supreme Court
@@ -45,7 +45,7 @@ const NavItem = ({ href, label, hasDropdown = false }) => {
             Tribunals
           </Link>
         </div>
-      )}
+      )} */}
     </li>
   );
 };
@@ -55,8 +55,9 @@ const NavLinks = () => {
     <ul className="hidden md:flex items-center space-x-1 text-sm ">
       <NavItem href="/" label="Home" />
       <NavItem href="/judgments" label="Judgments" />
-      <NavItem href="#" label="Services" hasDropdown />
+      {/* <NavItem href="#" label="Services" hasDropdown /> */}
       <NavItem href="/chat" label="Ai Assistant" />
+      <NavItem href="/feedback" label="Feedback" />
     </ul>
   );
 };
