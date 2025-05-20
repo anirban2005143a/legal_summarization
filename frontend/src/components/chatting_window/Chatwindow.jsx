@@ -160,7 +160,7 @@ const ChatWindow = ({ }) => {
                         <div className="flex-shrink-0 h-8 w-8  rounded-full flex items-center justify-center bg-purple-100">
                           <Bot className="w-6 h-6 text-white p-1 bg-purple-600 rounded-full" />
                         </div>
-                        <div className="px-4 py-2 w-full bg-gray-100 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
+                        <div className="px-4 py-2 w-full bg-gray-100/20 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
                           <div className="text-sm">
                             <p>{message.answer}</p>
                           </div>

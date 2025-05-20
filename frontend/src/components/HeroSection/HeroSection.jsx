@@ -3,9 +3,9 @@
 import { BookOpen, FileText, Scale, CheckCircle, ChevronRight, Search } from "lucide-react"
 import RightComponent from "./RightComponent"
 import LeftSection from "./LeftSection"
-import BackGround from "./BackGround"
 import { useEffect, useState } from "react"
 import HeroContentLoader from "./Hero_content_loader/ContentLoader"
+import BackGround from "./BackGround"
 
 const HeroSection = () => {
   const [width, setwidth] = useState(null)
@@ -25,7 +25,7 @@ const HeroSection = () => {
   return (
     <>
       {!width && <HeroContentLoader />}
-      {width && <div className="relative overflow-hidden bg-gradient-to-b from-[#f8f2e9] to-white pt-[40px] ">
+      {width && <div className="relative overflow-hidden bg-gradient-to-b from-[#f8f1e9] to-white pt-[40px] ">
         <BackGround />
 
         {/* Main content */}

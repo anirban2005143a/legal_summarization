@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import ChatInterface from './ChatInterface';
-import BackGround from './BackGround';
+import BackGround from '../Background/BackGround';
 
 function Chat() {
 

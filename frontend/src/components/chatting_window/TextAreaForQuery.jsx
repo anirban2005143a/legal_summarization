@@ -40,7 +40,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
                     e.preventDefault()
                     handelSubmitQuery(input, setInput)
                 }} className="max-w-4xl mx-auto">
-                    <div className="relative flex items-center rounded-xl border border-gray-300 bg-gray-200 ">
+                    <div className="relative flex items-center rounded-xl border border-gray-300 bg-orange-200/10 ">
                         <textarea
                             ref={textareaRef}
                             value={input}
@@ -48,7 +48,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
                             onKeyDown={handelAskAI}
                             placeholder="Type your message..."
                             rows="1"
-                            className="w-full py-2 px-3 focus:outline-none text-black transition-colors placeholder-gray-600 resize-none"
+                            className="w-full py-2 px-3 focus:outline-none text-black transition-colors placeholder-gray-400 resize-none"
                             style={{
                                 minHeight: "44px",
                                 maxHeight: "150px",
