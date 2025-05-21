@@ -3,7 +3,7 @@ import React from 'react';
 const NavbarContentLoader = () => {
   return (
     <nav className="bg-[#F8F4F1] fixed top-0 left-0 w-full px-3 py-4">
-      <div className='md:w-[60%] md:min-w-[600px] max-w-[1000px] mx-auto w-full flex items-center justify-between'>
+      <div className='max-w-[1500px] mx-auto w-full flex items-center justify-between'>
 
         {/* Logo and Company Name */}
         <div className="flex items-center gap-2">
