@@ -74,12 +74,12 @@ const ChatWindow = ({ }) => {
 
   const getAnswer = async (input) => {
     // const res = await getresponse(input);
-    // const res = await new Promise((res, rej) => {
-    //   setTimeout(() => {
-    //     res("demo reponse from ai model")
-    //   }, 2000);
-    // });
-    // console.log(res);
+    const res = await new Promise((res, rej) => {
+      setTimeout(() => {
+        res("demo reponse from ai model")
+      }, 2000);
+    });
+    console.log(res);
 
     setanswer(res);
   };

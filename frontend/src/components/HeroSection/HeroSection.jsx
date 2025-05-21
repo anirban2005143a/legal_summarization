@@ -11,10 +11,7 @@ const HeroSection = () => {
   const [width, setwidth] = useState(null)
 
   useEffect(() => {
-    setTimeout(() => {
-      setwidth(window.innerWidth)
-
-    }, 5000);
+    setwidth(window.innerWidth)
     const changeWidth = () => {
       setwidth(window.innerWidth)
     }
