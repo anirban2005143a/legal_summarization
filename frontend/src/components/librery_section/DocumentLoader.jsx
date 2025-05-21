@@ -4,9 +4,9 @@ export const DocumentLoader = ({ className }) => {
 
     return (
         <div className={`max-w-[1500px] mx-auto ${className || ''}`}>
-        {[1, 2, 3, 4, 5].map(() => {
+        {[1, 2, 3, 4, 5].map((elem , ind) => {
             return (
-            <div className={`w-full my-5 rounded-lg bg-white md:p-6 p-3 shadow-lg border-[1px] border-gray-500/20 `}>
+            <div key={ind} className={`w-full my-5 rounded-lg bg-white md:p-6 p-3 shadow-lg border-[1px] border-gray-500/20 `}>
                 {/* Title skeleton */}
                 <div className="mb-4 space-y-2">
                     <div className="h-7 w-1/3 animate-pulse rounded bg-gray-200" />
