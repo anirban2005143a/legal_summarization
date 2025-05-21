@@ -40,7 +40,7 @@ const TextAreaForQuery = ({ handelSubmitQuery, isReady, isFetching }) => {
                     e.preventDefault()
                     handelSubmitQuery(input, setInput)
                 }} className="max-w-4xl mx-auto">
-                    <div className="relative flex items-center rounded-xl border border-gray-300 bg-orange-200/10 ">
+                    <div className="relative flex items-center rounded-xl border border-gray-500/40 bg-gray-200/30 ">
                         <textarea
                             ref={textareaRef}
                             value={input}

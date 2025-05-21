@@ -74,12 +74,12 @@ const ChatWindow = ({ }) => {
 
   const getAnswer = async (input) => {
     // const res = await getresponse(input);
-    const res = await new Promise((res, rej) => {
-      setTimeout(() => {
-        res("demo reponse from ai model")
-      }, 2000);
-    });
-    console.log(res);
+    // const res = await new Promise((res, rej) => {
+    //   setTimeout(() => {
+    //     res("demo reponse from ai model")
+    //   }, 2000);
+    // });
+    // console.log(res);
 
     setanswer(res);
   };
@@ -176,15 +176,13 @@ const ChatWindow = ({ }) => {
           {!isChatInfoFetching && isFetching && (
             <div className="flex justify-start">
               <div className="flex gap-3 w-[60%] flex-row">
-                <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-gray-100">
-                  <Bot className="w-6 h-6 text-indigo-600" />
+                <div className="flex-shrink-0 h-8 w-8  rounded-full flex items-center justify-center bg-purple-100">
+                  <Bot className="w-6 h-6 text-white p-1 bg-purple-600 rounded-full" />
                 </div>
                 {/* Message content */}
-                <div className=" w-full">
-                  <div className="bg-gray-200/80 rounded-xl px-2 py-3 animate-pulse">
-                    <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
-                    <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                  </div>
+                <div className="bg-gray-200/60 px-2 py-3 w-full animate-pulse rounded-bl-2xl rounded-r-2xl">
+                  <div className="h-4 bg-gray-300/60 rounded-full w-3/4 mb-2"></div>
+                  <div className="h-4 bg-gray-300/60 rounded-full w-1/2"></div>
                 </div>
               </div>
             </div>
