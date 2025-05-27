@@ -22,8 +22,8 @@ const RightComponent = ({width}) => {
                 <div className=" p-3 xl:py-5 xl:pb-12 pb-10 ">
                     {/* Document title */}
                     <div className=" pb-2 border-b border-gray-500">
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="px-2 py-1 bg-[#7b511123] rounded text-xs xl:text-sm text-[#7b5811] font-medium">
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                            <div className="px-2 py-1 w-fit bg-[#7b511123] rounded text-xs xl:text-sm text-[#7b5811] font-medium">
                                 Civil Appeal No. 3456 of 2023
                             </div>
                             <div className="text-xs xl:text-base text-gray-500">Filed on: 12 Mar 2023</div>
@@ -59,11 +59,11 @@ const RightComponent = ({width}) => {
 
                         {/* Key points section */}
                         <div className=" pt-4 border-t border-gray-400">
-                            <h4 className="font-medium text-gray-900 mb-1 text-xs xl:text-base flex items-center">
+                            <h4 className="font-medium text-gray-900 mb-2 text-xs xl:text-base flex items-center">
                                 <CheckCircle className="h-4 w-4 text-[#7b4f11] mr-2" />
                                 Key Points
                             </h4>
-                            <ul className="space-y-0 text-xs xl:text-base">
+                            <ul className="space-y-2 text-xs xl:text-base">
                                 <li className="flex items-center">
                                     <div className="h-5 w-5 rounded-full bg-[#7b51111e] flex items-center justify-center text-[#7b4911] text-xs xl:text-base mr-2 mt-0.5">
                                         1

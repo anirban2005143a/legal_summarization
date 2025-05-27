@@ -21,14 +21,16 @@ const HeroSection = () => {
     }
   }, [])
 
+  if(!width) return null
+
   return (
     <>
-      {!width && <HeroContentLoader />}
-      {width && <div className="relative overflow-hidden  md:pt-[90px]  xl:pt-[120px] ">
+      {/* {!width && <HeroContentLoader />} */}
+      {width && <div className="relative overflow-hidden  pt-[90px]  xl:pt-[120px] ">
         <BackGround />
 
         {/* Main content */}
-        <div className=" mx-auto px-6  relative z-10">
+        <div className=" mx-auto sm:px-6 px-3  relative z-10">
           <div className={`flex ${width > 900 ? " flex-row " : " flex-col "} max-w-[1500px] mx-auto ${width > 900 ? " gap-4 " : " gap-15 "} justify-between items-start `}>
             {/* Left Content  */}
             <LeftSection width={width} />

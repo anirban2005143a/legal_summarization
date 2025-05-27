@@ -36,7 +36,7 @@ const LegalCasesList = () => {
   
 
   return (
-    <div className=' max-w-[1500px] mx-auto md:px-6 sm:px-4 px-2 pt-[100px] pb-5'>
+    <div className=' max-w-[1500px] mx-auto md:px-6 sm:px-4 px-2 pt-[80px] pb-5'>
 
       {isLoading && <DocumentLoader />}
 

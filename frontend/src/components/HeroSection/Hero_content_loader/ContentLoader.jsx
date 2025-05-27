@@ -6,7 +6,7 @@ export function HeroContentLoader() {
   return (
     <>
       <BackGround/>
-      <div className="min-h-[100dvh] max-w-[1500px] mx-auto md:p-6 lg:px-6 md:pt-[95px]  xl:pt-[120px]">
+      <div className="min-h-[100dvh] max-w-[1500px] mx-auto md:px-6 lg:px-6 pt-[90px] xl:pt-[120px]">
         <div className="flex md:flex-row flex-col md:gap-4 gap-15 justify-between items-start">
           <div className="md:w-[55%] px-5">
             <div className="mb-8">

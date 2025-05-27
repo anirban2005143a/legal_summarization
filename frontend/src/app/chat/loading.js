@@ -3,9 +3,9 @@ import NavbarContentLoader from '@/components/navbar/NavbarContentLoader'
 
 const Loading = () => {
     return (
-        <div className=' h-[100dvh]'>
+        <div className=' h-[100dvh] md:px-6 sm:px-4 px-2'>
             <NavbarContentLoader />
-            <ChatContentLoader className="pt-[150px] " />
+            <ChatContentLoader className="pt-[90px] " />
         </div>
 
     )

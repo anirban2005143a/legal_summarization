@@ -13,7 +13,7 @@ const JudgementPage = async () => {
       <BackGround />
       <Navbar />
       <LegalCasesList />
-      {/* <div className=' overflow-hidden'>
+      {/* <div className=' overflow-hidden md:px-6 sm:px-4 px-2'>
         <NavbarContentLoader />
         <DocumentLoader className="pt-[80px] " />
       </div> */}

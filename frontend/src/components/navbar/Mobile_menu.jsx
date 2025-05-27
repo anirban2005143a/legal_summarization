@@ -8,7 +8,7 @@ const MobileMenu = ({ setIsMenuOpen, menuRef }) => {
             {/* Mobile Menu */}
             <div
                 ref={menuRef}
-                className={` fixed top-0 translate-x-[110%] h-screen w-screen bg-[#000000c2] backdrop-blur-sm shadow-lg z-50 `}
+                className={` fixed top-0 translate-x-[150%] h-screen w-screen bg-[#000000c2] backdrop-blur-sm shadow-lg z-50 `}
 
             >
                 <div className="px-10 pt-[50px] h-full">

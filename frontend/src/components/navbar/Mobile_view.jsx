@@ -40,7 +40,7 @@ const MobileView = ({ LogoComponent }) => {
     } else {
       // Slide out the menu to the right
       gsap.to(menuRef.current, {
-        x: "100%",
+        x: "150%",
         opacity: 0,
         duration: 0.4,
       });
