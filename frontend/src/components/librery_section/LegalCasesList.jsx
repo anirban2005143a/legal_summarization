@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import LegalCaseCard from './LegalCaseCard';
 import FetchData from './FetchData';
 import { DocumentLoader } from './DocumentLoader';
+import LoadMoreButton from './LoadMoreJudgement';
 
 const LegalCasesList = () => {
 
@@ -43,9 +44,12 @@ const LegalCasesList = () => {
 
       </div>
 
+      <LoadMoreButton />
 
     </div>
   );
 };
 
 export default LegalCasesList;
+
+
