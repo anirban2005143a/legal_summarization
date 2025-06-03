@@ -1,122 +1,95 @@
-"use client"
+import React from 'react';
+import { FileText, BookOpen, ChevronRight, Calendar, ExternalLink, Tag, Clock } from 'lucide-react';
+import Link from 'next/link';
 
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, FileText, Download, MessageSquareText } from 'lucide-react';
-import { downloadAsTextFile } from '@/utils/fileUtils';
-import { useRouter } from 'next/navigation';
-import AskAiButton from './Ai_response/AskAiButton';
-import AiSummarization from './Ai_response/AiSummarization';
-
-const LegalCaseCard = ({ legalCase, isExpand, onToggle, id }) => {
-  const [isExpanded, setIsExpanded] = useState(isExpand);
-  const [showSummary, setShowSummary] = useState(false);
-
-  const router = useRouter()
-
-  // Function to truncate content for preview
-  const truncateContent = (content, maxLength = 300) => {
-    if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength) + '...';
+const LegalCaseCard = () => {
+  const document = {
+    tid: 'DOC-2023-0042',
+    publishdate: '2023-11-15T09:30:00Z',
+    title: 'Annual Financial Report 2023',
+    headline: 'The company achieved record revenue of $4.2 billion in FY2023, representing a 12% year-over-year growth. Key initiatives included expansion into three new markets and successful launch of our premium product line.',
+    docsource: 'Corporate Communications',
+    covers: [
+      { title: 'Financial Statements' },
+      { title: 'Executive Summary' }
+    ]
   };
 
-  // Handle downloading content
-  const handleDownload = () => {
-    const fileName = `${legalCase["heading"].replace(/\s+/g, '_')}.txt`;
-    const contentToDownload = `
-        ${legalCase["heading"]}
-        ${'-'.repeat(legalCase["heading"].length)}
-
-        FULL CONTENT:
-        ${legalCase["main_content"]}
-
-        SUMMARY:
-        ${legalCase["summary"]}
-        `;
-    downloadAsTextFile(fileName, contentToDownload);
-  };
-
-  // Handle ask AI button click
-  const handleAskAI = () => {
-    alert('AI Assistant feature will be integrated in the next version.');
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
   return (
-    <section id={`${id}`} className=" bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 md:hover:shadow-xl border border-gray-200 mb-6">
-      <div className="md:p-6 p-3">
-        <h2 className="md:text-2xl text-lg font-bold text-gray-900 mb-4">{legalCase["heading"]}</h2>
+    <div className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200">
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-gray-50 to-white px-6 py-4 border-b border-gray-100">
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex items-center space-x-2">
+            <Tag size={16} className="text-blue-500" />
+            <span className="bg-blue-50 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full border border-blue-100">
+              {document.tid}
+            </span>
+          </div>
+          <div className="flex items-center text-gray-500 text-xs">
+            <Calendar size={14} className="mr-1.5" />
+            {formatDate(document.publishdate)}
+          </div>
+        </div>
+        
+        <h2 className="text-lg font-semibold text-gray-900 ">
+          {document.title}
+        </h2>
+      </div>
 
-        <div className="prose max-w-none text-gray-700 text-sm">
-          {isExpanded ? (
-            <p className="whitespace-pre-line animate-fadeIn">{legalCase["main_content"]}</p>
-          ) : (
-            <p className=' whitespace-pre-line'>{truncateContent(legalCase["main_content"])}</p>
+      {/* Content Section */}
+      <div className="px-6 py-4">
+        <div className="text-sm text-gray-600 mb-4 leading-relaxed">
+          <div 
+            className="line-clamp-3" 
+          >{document.headline}</div>
+        </div>
+        
+        {/* Metadata Section */}
+        <div className="space-y-3 pt-3 border-t border-gray-100">
+          <div className="flex items-center text-gray-600 group-hover:text-gray-700 transition-colors">
+            <FileText size={15} className="mr-2.5 text-blue-500" />
+            <span className="text-sm font-medium">{document.docsource}</span>
+          </div>
+          
+          {document.covers && document.covers.length > 0 && (
+            <div className="flex md:items-center items-start space-x-2.5">
+              <BookOpen size={15} className="mt-0.5 text-blue-500 flex-shrink-0" />
+              <div className="flex flex-wrap gap-2">
+                {document.covers.map((cover, index) => (
+                  <span 
+                    key={index}
+                    className="text-sm bg-gray-50 text-gray-600 px-2.5 py-1 rounded-md border border-gray-100 hover:border-gray-200 transition-colors"
+                  >
+                    {cover.title}
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
         </div>
 
-        {showSummary && (
-          <div className="mt-4 bg-[#ffb71d16] p-4 rounded-md border-l-4 border-amber-500 animate-slideDown">
-            <h3 className="md:text-lg text-base font-semibold text-gray-900 mb-2">Summary</h3>
-            <p className="text-gray-700 text-sm">{legalCase["summary"]}</p>
-          </div>
-        )}
-      </div>
-
-     
-      <div className="border-t border-red-200 bg-red-50/30 px-6 py-3">
-        <div className="flex flex-wrap gap-3 justify-between items-center md:text-sm text-xs">
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                onToggle()
-                if (isExpanded) router.push(`/judgments/#${id}`)
-                setIsExpanded(!isExpanded)
-              }}
-              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-blue-100 text-blue-800 md:hover:bg-blue-200 transition duration-200 border border-blue-200"
-            >
-              {isExpanded ? (
-                <>
-                  <ChevronUp className="w-4 h-4 mr-1" />
-                  Collapse
-                </>
-              ) : (
-                <>
-                  <ChevronDown className="w-4 h-4 mr-1" />
-                  Expand
-                </>
-              )}
-            </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                if (!isExpanded && showSummary) router.push(`/judgments/#${id}`)
-                if (window.innerWidth <= 450 && showSummary) router.push(`/judgments/#${id}`)
-                setShowSummary(!showSummary)
-              }}
-              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-amber-100 text-amber-800 md:hover:bg-amber-200 transition duration-200 border border-amber-200"
-            >
-              <FileText className="w-4 h-4 mr-1" />
-              {showSummary ? 'Hide Summary' : 'Show Summary'}
-            </button>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {/* ask ai for summary  */}
-            <AiSummarization input={legalCase["main_content"]} />
-            {/* download data  */}
-            <button
-              onClick={handleDownload}
-              className="inline-flex items-center px-4 py-2 font-medium rounded-md bg-white text-red-700 md:hover:bg-red-50 transition duration-200 border border-red-300"
-            >
-              <Download className="w-4 h-4 mr-1" />
-              Download
-            </button>
+        {/* Action Section */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="w-full flex items-center justify-start text-sm font-semibold text-blue-600 px-3 py-2 rounded-lg  transition-all duration-200 group/button">
+            <Link
+            href={"#"}
+            tabIndex={0}
+            className="flex items-start hover:underline underline-offset-4 cursor-pointer">
+              <ExternalLink size={16} className="mr-2" />
+              View complete document
+            </Link>
+            {/* <ChevronRight size={16} className="text-blue-400 group-hover/button:translate-x-1 transition-transform duration-200" /> */}
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
 export default LegalCaseCard;
-

@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import Logo from '../Logo/Logo';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import MobileView from './Mobile_view';
-import DesktopView from './Desktop_view';
+import MobileMenu from './Mobile_menu';
+import Mobile_menu_button from './Mobile_menu_button';
+import DesktopMenu from './Desktop_menu';
+import {motion} from "framer-motion"
 
 const LogoComponent = () => {
   {/* Logo */ }
@@ -19,6 +21,7 @@ const LogoComponent = () => {
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const pathname = usePathname()
 
@@ -39,16 +42,27 @@ const Navbar = () => {
 
 
   return (
-    <>
-      <nav className={`fixed w-full ${pathname === "/" ? "bg-transparent" : "bg-orange-50"} z-30 transition-all  duration-300 ${!isVisible ? ' -top-[100px]' : ' top-0 '
-        }`}>
-        {/* Navigation Links - Desktop */}
-        <DesktopView LogoComponent={<LogoComponent />}  />
-        {/* Mobile menu */}
-        <MobileView LogoComponent={<LogoComponent />} />
-      </nav>
+    <motion.header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 `}
+      animate={{ y: isVisible ? 0 : -100 }}
+      transition={{ duration: 0.2, ease: "linear" }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  backdrop-blur-md">
+        <nav className="flex justify-between h-16 items-center">
+          {/* Logo */}
+          <LogoComponent />
 
-    </>
+          {/* Desktop Navigation */}
+          <DesktopMenu />
+
+          {/* Mobile Menu Button */}
+          <Mobile_menu_button setMobileMenuOpen={setMobileMenuOpen} mobileMenuOpen={mobileMenuOpen} />
+
+          {/* Mobile Navigation */}
+          <MobileMenu setMobileMenuOpen={setMobileMenuOpen} mobileMenuOpen={mobileMenuOpen} />
+        </nav>
+      </div>
+    </motion.header>
   );
 };
 
