@@ -2,18 +2,8 @@ import { FileText, BookOpen, Calendar, ExternalLink, Tag, Clock } from 'lucide-r
 import Link from 'next/link';
 import { useCallback } from 'react';
 
-const LegalCaseCard = () => {
-  const document = {
-    tid: 'DOC-2023-0042',
-    publishdate: '2023-11-15T09:30:00Z',
-    title: 'Annual Financial Report 2023',
-    headline: 'The company achieved record revenue of $4.2 billion in FY2023, representing a 12% year-over-year growth. Key initiatives included expansion into three new markets and successful launch of our premium product line.',
-    docsource: 'Corporate Communications',
-    covers: [
-      { title: 'Financial Statements' },
-      { title: 'Executive Summary' }
-    ]
-  };
+const LegalCaseCard = ({document}) => {
+
 
   const formatDate = useCallback(
     (dateString) => {
@@ -23,6 +13,7 @@ const LegalCaseCard = () => {
     [],
   )
 
+
   return (
     <div className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200">
       {/* Header Section */}
@@ -31,10 +22,10 @@ const LegalCaseCard = () => {
           <div className="flex items-center space-x-2">
             <Tag size={16} className="text-amber-800" />
             <span className="bg-amber-50 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-amber-100">
-              {document.tid}
+              Doc ID: {document.tid}
             </span>
           </div>
-          <div className="flex items-center text-gray-500 text-xs">
+          <div className="flex items-start text-gray-500 text-xs">
             <Calendar size={14} className="mr-1.5" />
             {formatDate(document.publishdate)}
           </div>
@@ -43,6 +34,7 @@ const LegalCaseCard = () => {
         <h2 className="text-lg font-semibold text-gray-900 ">
           {document.title}
         </h2>
+        <span className=' text-xs italic text-gray-700'>{document.author} {document.author ? "|" : ""} {document.docsource} </span>
       </div>
 
       {/* Content Section */}
@@ -50,15 +42,16 @@ const LegalCaseCard = () => {
         <div className="text-sm text-gray-600 mb-4 leading-relaxed">
           <div
             className="line-clamp-3"
-          >{document.headline}</div>
+            dangerouslySetInnerHTML={{__html : document.headline}}
+          />
         </div>
 
         {/* Metadata Section */}
         <div className="space-y-3 pt-3 border-t border-gray-200">
-          <div className="flex items-center text-gray-600 group-hover:text-gray-700 transition-colors">
+          {/* <div className="flex items-center text-gray-600 group-hover:text-gray-700 transition-colors">
             <FileText size={15} className="mr-2.5 text-amber-800" />
             <span className="text-sm font-medium">{document.docsource}</span>
-          </div>
+          </div> */}
 
           {document.covers && document.covers.length > 0 && (
             <div className="flex md:items-center items-start space-x-2.5">

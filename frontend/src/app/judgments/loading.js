@@ -1,4 +1,4 @@
-import { DocumentLoader } from '@/components/librery_section/DocumentLoader'
+import { DocumentLoader } from '@/components/judgments/DocumentLoader'
 import NavbarContentLoader from '@/components/navbar/NavbarContentLoader'
 
 const Loading = () => {

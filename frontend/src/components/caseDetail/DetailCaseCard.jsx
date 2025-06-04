@@ -176,7 +176,7 @@ export const DetailCaseCard = ({ data }) => {
                     </div>
 
                     {/* Footer */}
-                    <div className="bg-amber-50 px-6 py-4 border-t border-gray-300">
+                    <div className="bg-[#ab691d27] px-6 py-4 border-t border-gray-300">
                         <div className="flex flex-col md:flex-row items-center justify-between text-sm ">
                             <p>{data.docsource}</p>
                             <div className="mt-2 md:mt-0 flex items-center">

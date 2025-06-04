@@ -69,10 +69,10 @@
 //                                     className={`
 //                                             p-4 rounded-lg border-[1px] transition-all bg-amber-50 duration-200 flex flex-col items-center gap-2
 //                                             ${feedbackType === id
-//                                             ? 'border-blue-700 '
+//                                             ? 'border-amber-900 '
 //                                             : 'border-gray-400   hover:bg-gray-800 hover:border-gray-600'}`}
 //                                 >
-//                                     <Icon className={`w-6 h-6 ${feedbackType === id ? 'text-blue-600' : 'text-gray-500'}`} />
+//                                     <Icon className={`w-6 h-6 ${feedbackType === id ? 'text-amber-600' : 'text-gray-500'}`} />
 //                                     <span className="text-sm text-center">{label}</span>
 //                                 </button>
 //                             ))}
@@ -188,8 +188,8 @@ export default function FeedbackForm() {
                                     className={`
                                         p-3 rounded-lg border flex flex-col items-center gap-2 transition-all duration-100 ease-out
                                         ${feedbackType === id
-                                            ? 'border-blue-500 bg-blue-50 text-blue-600'
-                                            : 'border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50'}
+                                            ? 'border-amber-600 bg-amber-50 text-amber-600'
+                                            : 'border-gray-200 bg-white text-gray-600 hover:border-amber-200 hover:bg-amber-50'}
                                     `}
                                 >
                                     <Icon className="w-5 h-5" />
@@ -209,7 +209,7 @@ export default function FeedbackForm() {
                                 id="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:ring-1 focus:ring-blue-500  outline-none transition-colors"
+                                className="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:ring-1 focus:ring-amber-600  outline-none transition-colors"
                                 placeholder="your@email.com"
                             />
                         </div>
@@ -224,7 +224,7 @@ export default function FeedbackForm() {
                                 required
                                 onChange={(e) => setFeedback(e.target.value)}
                                 rows={4}
-                                className="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:ring-1 focus:ring-blue-500  outline-none transition-colors resize-none"
+                                className="w-full px-4 py-2.5 text-sm rounded-lg border border-gray-300 focus:ring-1 focus:ring-amber-600  outline-none transition-colors resize-none"
                                 placeholder="Please share your detailed feedback..."
                             />
                         </div>
@@ -234,7 +234,7 @@ export default function FeedbackForm() {
                         <button
                             type="submit"
                             disabled={isLoading || !feedback}
-                            className="w-full cursor-pointer sm:w-auto px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full cursor-pointer sm:w-auto px-6 py-2.5 bg-amber-800 hover:bg-amber-900 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             {isLoading ? (
                                 <>
