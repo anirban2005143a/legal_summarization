@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
     Calendar,
     FileText,
@@ -14,6 +14,11 @@ import {
 } from 'lucide-react';
 import BackGround from "../Background/BackGround";
 import AskAiButton from "../Ai_response/AskAiButton";
+import { useParams } from "next/navigation";
+import DetailCaseCardContentLoader from "./DetailCaseContentLoader";
+import { fetchDocById } from "@/utils/fetchDocById";
+import { showToast } from "@/utils/ShowToast";
+import { ToastContainer } from "react-toastify";
 
 const LongExpandableContent = ({ content }) => {
     const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -60,11 +65,39 @@ const LongExpandableContent = ({ content }) => {
     )
 }
 
-export const DetailCaseCard = ({ data }) => {
+export const DetailCaseCard = ({ }) => {
+
+    const [data, setdata] = useState(null)
+    const [isLoading, setisLoading] = useState(true)
+    const { caseid } = useParams()
+    console.log(caseid)
+
+    const fetchData = useCallback(
+        async () => {
+            try {
+                const doc = await fetchDocById(caseid)
+                setdata(doc)
+            } catch (error) {
+                showToast(error.message, 1)
+            }finally{
+                setisLoading(false)
+            }
+        },
+        [],
+    )
+
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    if (isLoading) return <DetailCaseCardContentLoader />
+
     return (
         <>
+            <ToastContainer />
             <BackGround />
-            <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 mt-[50px]">
+            {data && <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 mt-[50px]">
                 <div className="max-w-5xl mx-auto bg-white shadow-sm rounded-lg overflow-hidden border border-amber-100">
                     {/* Document Header */}
                     <div className="bg-amber-800 text-amber-50 px-6 py-5">
@@ -72,7 +105,7 @@ export const DetailCaseCard = ({ data }) => {
                             <div>
                                 <div className="text-2xl md:text-2xl flex items-center font-bold tracking-tight">
                                     <Scale className="mr-2 h-8 w-8 text-amber-50" />
-                                    <h2 className="w-[95%] text-amber-50">{data.title}</h2>
+                                    <h2 className="w-[95%] text-amber-50">{data.author} {data.author ? "|" : ""} {data.title}</h2>
                                 </div>
                                 <p className="text-amber-50 mt-1 text-sm">{data.docsource}</p>
                             </div>
@@ -133,7 +166,7 @@ export const DetailCaseCard = ({ data }) => {
                                         </div>
                                         <div>
                                             <p className="text-xs font-medium text-amber-700">References</p>
-                                            <p className="text-sm ">{data.numcitedby.toLocaleString()}</p>
+                                            <p className="text-sm ">{data.numcitedby?.toLocaleString()}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -146,7 +179,7 @@ export const DetailCaseCard = ({ data }) => {
                                         <div>
                                             <p className="text-xs font-medium text-amber-700">Coverage</p>
                                             <p className="text-sm ">
-                                                {data.covers.map((cover, index) => (
+                                                {data.covers?.map((cover, index) => (
                                                     <span key={index}>
                                                         {cover.title}{index < data.covers.length - 1 ? ', ' : ''}
                                                     </span>
@@ -165,7 +198,7 @@ export const DetailCaseCard = ({ data }) => {
                                 Related Search Queries
                             </h3>
                             <div className="flex flex-wrap gap-2">
-                                {data.relatedqs.map((query, index) => (
+                                {data.relatedqs?.map((query, index) => (
                                     <span
                                         key={index}
                                         className="inline-flex cursor-pointer items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100/20   border border-amber-100 hover:bg-amber-100/50 transition-colors"
@@ -188,7 +221,8 @@ export const DetailCaseCard = ({ data }) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
         </>
+
     );
 };
