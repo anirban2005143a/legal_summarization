@@ -1,10 +1,8 @@
-import { FileText, BookOpen, Calendar, ExternalLink, Tag, Clock } from 'lucide-react';
+import { BookOpen, Calendar, ExternalLink, Tag, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback } from 'react';
 
-const LegalCaseCard = ({document}) => {
-
-
+const LegalCaseCard = ({ document }) => {
   const formatDate = useCallback(
     (dateString) => {
       const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -12,7 +10,6 @@ const LegalCaseCard = ({document}) => {
     },
     [],
   )
-
 
   return (
     <div className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200">
@@ -42,28 +39,35 @@ const LegalCaseCard = ({document}) => {
         <div className="text-sm text-gray-600 mb-4 leading-relaxed">
           <div
             className="line-clamp-3"
-            dangerouslySetInnerHTML={{__html : document.headline}}
+            dangerouslySetInnerHTML={{ __html: document.headline }}
           />
         </div>
 
         {/* Metadata Section */}
         <div className="space-y-3 pt-3 border-t border-gray-200">
-          {/* <div className="flex items-center text-gray-600 group-hover:text-gray-700 transition-colors">
-            <FileText size={15} className="mr-2.5 text-amber-800" />
-            <span className="text-sm font-medium">{document.docsource}</span>
-          </div> */}
-
           {document.covers && document.covers.length > 0 && (
             <div className="flex md:items-center items-start space-x-2.5">
               <BookOpen size={15} className="mt-0.5 text-amber-800 flex-shrink-0" />
               <div className="flex flex-wrap gap-2">
                 {document.covers.map((cover, index) => (
-                  <span
-                    key={index}
-                    className="text-sm bg-gray-50 text-gray-600 px-2.5 py-1 rounded-md border border-gray-200 hover:border-gray-200 transition-colors"
-                  >
-                    {cover.title}
-                  </span>
+                  <div key={index} className="group/cover flex items-center">
+                    <div className="relative">
+                      <Link
+                        tabIndex={0}
+                        href={`/cover/${cover.tid}`}
+                        target="_blank"
+                        className="flex items-center gap-1.5 text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200 hover:border-gray-300 transition-all duration-200 group/link"
+                      >
+                        <span className="font-medium text-gray-800 group-hover/link:text-gray-900">{cover.title}</span>
+                        <span className="text-xs text-gray-500 font-mono">#{cover.tid}</span>
+                        <ArrowUpRight
+                          size={12}
+                          className="text-amber-600 opacity-0 group-hover/link:opacity-100 transition-opacity duration-200"
+                        />
+                      </Link>
+
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -72,15 +76,18 @@ const LegalCaseCard = ({document}) => {
 
         {/* Action Section */}
         <div className="mt-4 pt-4 border-t border-gray-200">
-          <div className="w-full flex items-center justify-start text-sm font-semibold text-amber-900   py-2 rounded-lg  transition-all duration-200 group/button">
-            <Link
-              href={"#"}
-              tabIndex={0}
-              className="flex items-start hover:underline underline-offset-4 cursor-pointer">
-              <ExternalLink size={16} className="mr-2" />
-              View complete document
-            </Link>
-            {/* <ChevronRight size={16} className="text-amber-400 group-hover/button:translate-x-1 transition-transform duration-200" /> */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center justify-start text-sm font-semibold text-amber-900 py-2 rounded-lg transition-all duration-200 group/button">
+              <Link
+                href={`/case/${document.tid}`}
+                tabIndex={0}
+                className="flex items-start hover:underline underline-offset-4 cursor-pointer">
+                <ExternalLink size={16} className="mr-2" />
+                View complete document
+              </Link>
+            </div>
+
+          
           </div>
         </div>
       </div>

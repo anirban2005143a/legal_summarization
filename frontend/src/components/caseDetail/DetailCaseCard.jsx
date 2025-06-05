@@ -13,6 +13,7 @@ import {
     ChevronDown
 } from 'lucide-react';
 import BackGround from "../Background/BackGround";
+import AskAiButton from "../Ai_response/AskAiButton";
 
 const LongExpandableContent = ({ content }) => {
     const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -54,6 +55,7 @@ const LongExpandableContent = ({ content }) => {
                     )}
                 </button>
             )}
+            <AskAiButton className={"mt-5"} />
         </>
     )
 }
@@ -176,7 +178,7 @@ export const DetailCaseCard = ({ data }) => {
                     </div>
 
                     {/* Footer */}
-                    <div className="bg-[#ab691d27] px-6 py-4 border-t border-gray-300">
+                    <div className="bg-[#86868610] px-6 py-4 border-t border-gray-300">
                         <div className="flex flex-col md:flex-row items-center justify-between text-sm ">
                             <p>{data.docsource}</p>
                             <div className="mt-2 md:mt-0 flex items-center">

@@ -2,7 +2,7 @@
 
 export const getChatInfo = async (chatId) => {
     try {
-        const jsonallchat = localStorage.getItem("allChat")
+        const jsonallchat = sessionStorage.getItem("allChat")
         const allchat = jsonallchat ? JSON.parse(jsonallchat) : []
         return (allchat || [])
     } catch (error) {

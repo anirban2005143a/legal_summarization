@@ -87,10 +87,13 @@ const LeftSection = ({width}) => {
             </div>
 
             <div className="flex sm:flex-row flex-col gap-4 pt-2">
-                <button className="bg-[#7b4f11] text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#7b4f11e7] transition-colors flex items-center justify-center">
+                <Link
+                tabIndex={0}
+                href={"/chat"}
+                className="bg-[#7b4f11] text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#7b4f11e7] transition-colors flex items-center justify-center">
                     <FileText className="mr-2 h-5 w-5" />
-                    Try Document Analysis
-                </button>
+                    Summarize Document
+                </Link>
 
                 <Link href={"/judgments"}
                  className="group border text-sm border-gray-300 bg-[#ffdda12c] text-gray-700 md:px-5 px-3 py-3 rounded-lg md:hover:border-[#7b4f11] md:hover:text-[#7b4d11] transition-colors flex items-center justify-center">

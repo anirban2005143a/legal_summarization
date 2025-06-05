@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { showToast } from './functions/ShowToast';
+import { showToast } from '../../utils/ShowToast';
 import { Mic, MicOff } from 'lucide-react';
 
 const VoiceRecognization = ({ isReady, setInput }) => {

@@ -133,7 +133,7 @@
 import React, { useState } from 'react';
 import { MessageSquare, ThumbsUp, ThumbsDown, Bug, Lightbulb, Send, Loader2 } from 'lucide-react';
 import { ToastContainer } from "react-toastify"
-import { showToast } from '../chatting_window/functions/ShowToast';
+import { showToast } from '../../utils/ShowToast';
 
 export default function FeedbackForm() {
     const [feedbackType, setFeedbackType] = useState('');

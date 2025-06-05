@@ -3,14 +3,14 @@
 export const saveChatResponse = async (question, answer) => {
 
   try {
-    const jsonallchat = localStorage.getItem("allChat")
+    const jsonallchat = sessionStorage.getItem("allChat")
     const allchats = jsonallchat ? JSON.parse(jsonallchat) : []
     
       allchats.push({
         question: question,
         answer: answer
       })
-    localStorage.setItem("allChat", JSON.stringify(allchats))
+    sessionStorage.setItem("allChat", JSON.stringify(allchats))
     console.log(allchats)
 
     return { error: false }

@@ -22,11 +22,11 @@ export const DocumentLoader = ({ className }) => {
 
                 {/* Action buttons skeleton */}
                 <div className="flex items-center gap-4">
-                    <div className="h-9 w-24 animate-pulse rounded-md bg-gray-200" />
-                    <div className="h-9 w-32 animate-pulse rounded-md bg-gray-200" />
+                    {/* <div className="h-9 w-24 animate-pulse rounded-md bg-gray-200" /> */}
+                    <div className="h-9 w-40 animate-pulse rounded-md bg-gray-200" />
                     <div className="flex-1" />
-                    <div className="h-9 w-24 animate-pulse rounded-md bg-gray-200" />
-                    <div className="h-9 w-28 animate-pulse rounded-md bg-gray-200" />
+                    {/* <div className="h-9 w-24 animate-pulse rounded-md bg-gray-200" /> */}
+                    <div className="h-9 w-40 animate-pulse rounded-md bg-gray-200" />
                 </div>
             </div>
             )
