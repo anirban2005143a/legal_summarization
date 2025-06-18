@@ -39,7 +39,7 @@ const ChatWindow = ({ }) => {
   //save chat question and answer to database
   const saveChat = async (question, answer) => {
     const data = await saveChatResponse(question, answer);
-    console.log(data);
+    // console.log(data);
   };
 
   //function to get chat question-answer
@@ -54,10 +54,10 @@ const ChatWindow = ({ }) => {
         undefined,
         "How can i help you?"
       );
-      if (res.error) {
-        showToast(res.message, 1);
-        return;
-      }
+      // if (res.error) {
+      //   showToast(res.message, 1);
+      //   return;
+      // }
 
       const newMessage = {
         question: undefined,
@@ -83,8 +83,6 @@ const ChatWindow = ({ }) => {
 
     setanswer(res);
   };
-
-
 
   useEffect(() => {
     if (answer) {

@@ -1,20 +1,27 @@
-import React, { useCallback } from 'react';
+"use client"
+import React, { useCallback, useEffect, useState } from 'react';
 import { ChevronDown, Loader } from 'lucide-react';
 
-const LoadMoreButton = ({ isLoading = false }) => {
+const LoadMoreButton = ({ isLoading = false , handelLoadMode }) => {
+const [pagenum, setpagenum] = useState(0)
 
-    const handelClick = useCallback(
-        () => {
+useEffect(() => {
+  if(pagenum >0 ){
+    const query = sessionStorage.getItem("query") || "judgment"
+    handelLoadMode(query , pagenum)
+  }
+}, [pagenum])
 
-        },
-        [],
-    )
+console.log(pagenum)
 
     return (
         <div className="flex justify-center my-10 px-4">
             <button
                 aria-label='load more button'
-                onClick={handelClick}
+                onClick={(e)=>{
+                    e.preventDefault()
+                    setpagenum(pagenum+1)
+                }}
                 disabled={isLoading}
                 className={`
           relative overflow-hidden

@@ -3,10 +3,10 @@
 export const getChatInfo = async (chatId) => {
     try {
         const jsonallchat = sessionStorage.getItem("allChat")
-        const allchat = jsonallchat ? JSON.parse(jsonallchat) : []
-        return (allchat || [])
+        const allchat = await JSON.parse(jsonallchat) || []
+        return (allchat)
     } catch (error) {
         console.error("Error:", error);
-        return { error: true, message: error.response?.data?.message || error.message };
+        throw new Error(error.response?.data?.message || error.message || "Unknown error. Please try again") 
     }
 }

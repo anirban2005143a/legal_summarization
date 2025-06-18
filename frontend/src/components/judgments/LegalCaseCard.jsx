@@ -28,9 +28,9 @@ const LegalCaseCard = ({ document }) => {
           </div>
         </div>
 
-        <h2 className="text-lg font-semibold text-gray-900 ">
-          {document.title}
-        </h2>
+        <h2 className="text-lg font-semibold text-gray-900 "
+        dangerouslySetInnerHTML={{__html : document.title}}
+        />
         <span className=' text-xs italic text-gray-700'>{document.author} {document.author ? "|" : ""} {document.docsource} </span>
       </div>
 
@@ -54,8 +54,7 @@ const LegalCaseCard = ({ document }) => {
                     <div className="relative">
                       <Link
                         tabIndex={0}
-                        href={`/cover/${cover.tid}`}
-                        target="_blank"
+                        href={`/case/${cover.tid}`}
                         className="flex items-center gap-1.5 text-sm bg-gray-50 hover:bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200 hover:border-gray-300 transition-all duration-200 group/link"
                       >
                         <span className="font-medium text-gray-800 group-hover/link:text-gray-900">{cover.title}</span>

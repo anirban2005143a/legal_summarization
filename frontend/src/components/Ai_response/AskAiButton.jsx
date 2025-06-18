@@ -14,10 +14,11 @@ const AskAiButton = ({className , input }) => {
         e.preventDefault()
         setisOpen(false)
     }
+    console.log(input)
 
     return (
         <>
-            <AIPopup isOpen={isOpen} onClose={handelCloseModal} />
+            <AIPopup input={input} isOpen={isOpen} onClose={handelCloseModal} />
             <button
                 onClick={(handelOpenModal)}
                 tabIndex={0}

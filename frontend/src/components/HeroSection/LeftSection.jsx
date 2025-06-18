@@ -79,7 +79,7 @@ const LeftSection = ({width}) => {
                         placeholder="Search case law, judgments, or legal documents..."
                     />
                     <div className="h-full inset-y-0">
-                        <button className="h-full px-6 bg-[#7b4f11] text-base text-white font-medium md:hover:bg-[#7b4f11e7] transition-colors">
+                        <button className="h-full px-6 bg-amber-900 text-base text-white font-medium md:hover:bg-[#562303] transition">
                             Search
                         </button>
                     </div>
@@ -90,7 +90,7 @@ const LeftSection = ({width}) => {
                 <Link
                 tabIndex={0}
                 href={"/chat"}
-                className="bg-[#7b4f11] text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#7b4f11e7] transition-colors flex items-center justify-center">
+                className="bg-amber-900 text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#562303] transition flex items-center justify-center">
                     <FileText className="mr-2 h-5 w-5" />
                     Summarize Document
                 </Link>
