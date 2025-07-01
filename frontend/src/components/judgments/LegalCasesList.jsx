@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from "react";
-import LegalCaseCard from "./LegalCaseCard";
+import {LegalCaseCard} from "./LegalCaseCard";
 import { DocumentLoader } from "./DocumentLoader";
 import LoadMoreButton from "./LoadMoreJudgement";
 import { fetchDocByQuery } from "@/utils/fetchDocByQuery";
@@ -8,13 +8,13 @@ import { showToast } from "../../utils/ShowToast";
 import { ToastContainer } from "react-toastify";
 import { Search, X } from "lucide-react";
 
-const LegalCasesList = () => {
+export const LegalCasesList = () => {
   const [isLoading, setisLoading] = useState(true);
   const [data, setdata] = useState(null);
 
   const handelFetchData = useCallback(
     async (query = "judgment", pagenum = 0) => {
-      console.log("djfnewrjnf");
+      // console.log("djfnewrjnf");
       try {
         setisLoading(true);
         const fetchData = await fetchDocByQuery(query, pagenum);
@@ -24,14 +24,16 @@ const LegalCasesList = () => {
 
         localStorage.setItem(
           "judgments",
-          JSON.stringify(fetchData.slice(0, min(fetchData.length, 30)))
+          JSON.stringify(fetchData.slice(0, Math.min(fetchData.length, 30)))
         );
 
         localStorage.setItem(
           "timestamp",
           JSON.stringify({ timestamp: Date.now() })
         );
-        setdata((prevData) => [...prevData, ...fetchData]);
+
+        setdata(fetchData)
+        // setdata((prevData) => [...prevData, ...fetchData]);
       } catch (error) {
         console.log(error);
         showToast(error.message, 1);
@@ -46,7 +48,7 @@ const LegalCasesList = () => {
 
   const checkLocalStore = useCallback(async () => {
     const time = JSON.parse(localStorage.getItem("timestamp"))?.timestamp || 0;
-    console.log(time);
+    // console.log(time);
 
     if (Date.now() - time >= 1000 * 3600 * 24 * 7) {
       console.log("long");
@@ -89,7 +91,7 @@ const LegalCasesList = () => {
     <>
       <ToastContainer />
       <div className=" max-w-[1500px] mx-auto md:px-6 sm:px-4 px-2 pt-[80px] pb-5">
-        <div className="space-y-6 md:w-10/12 mx-auto">
+        <div className="space-y-6 md:w-10/12 md:mx-auto">
           <SearchBar handelSearch={handelFetchData} />
           {isLoading && <DocumentLoader className="pt-[0px] " />}
           {data &&
@@ -98,18 +100,16 @@ const LegalCasesList = () => {
             })}
         </div>
 
-        {!isLoading && (
+        {/* {!isLoading && (
           <LoadMoreButton
             isLoading={isLoading}
             handelLoadMode={handelFetchData}
           />
-        )}
+        )} */}
       </div>
     </>
   );
 };
-
-export default LegalCasesList;
 
 const SearchBar = ({ handelSearch }) => {
   const [searchQuery, setsearchQuery] = useState("");

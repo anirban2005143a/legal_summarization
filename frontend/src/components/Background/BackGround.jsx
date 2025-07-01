@@ -1,5 +1,5 @@
 
-const BackGround = () => {
+export const BackGround = () => {
     return (
         <>
             {/* Enhanced decorative background elements */}
@@ -14,5 +14,3 @@ const BackGround = () => {
         </>
     )
 }
-
-export default BackGround

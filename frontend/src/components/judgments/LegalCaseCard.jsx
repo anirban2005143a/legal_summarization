@@ -2,7 +2,7 @@ import { BookOpen, Calendar, ExternalLink, Tag, ArrowUpRight } from 'lucide-reac
 import Link from 'next/link';
 import { useCallback } from 'react';
 
-const LegalCaseCard = ({ document }) => {
+export const LegalCaseCard = ({ document }) => {
   const formatDate = useCallback(
     (dateString) => {
       const options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -94,4 +94,3 @@ const LegalCaseCard = ({ document }) => {
   );
 };
 
-export default LegalCaseCard;

@@ -12,14 +12,14 @@ import {
   ChevronUp,
   ChevronDown,
 } from "lucide-react";
-import BackGround from "../Background/BackGround";
-import AskAiButton from "../Ai_response/AskAiButton";
+import {BackGround} from "../Background/BackGround";
 import { useParams } from "next/navigation";
-import DetailCaseCardContentLoader from "./DetailCaseContentLoader";
 import { fetchDocById } from "@/utils/fetchDocById";
 import { showToast } from "@/utils/ShowToast";
 import { ToastContainer } from "react-toastify";
 import Link from "next/link";
+import DetailCaseCardContentLoader from "./DetailCaseContentLoader";
+import { AiSummarization } from "../Ai_response/AiSummarization";
 import ScrollButtons from "../ui/ScrollButtons";
 
 const LongExpandableContent = ({ content }) => {
@@ -32,6 +32,7 @@ const LongExpandableContent = ({ content }) => {
     // Create a temporary DOM element
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = htmlString;
+
 
     // Extract and return the plain text
     return tempDiv.textContent || tempDiv.innerText || "";
@@ -77,7 +78,7 @@ const LongExpandableContent = ({ content }) => {
           )}
         </button>
       )}
-      {plainText && <AskAiButton input={plainText} className={"mt-5"} />}
+      {plainText && <AiSummarization input={plainText} className={"mt-5"} />}
     </>
   );
 };
@@ -101,7 +102,7 @@ export const DetailCaseCard = ({}) => {
   }, []);
 
   useEffect(() => {
-    fetchData();
+    !data && fetchData();
   }, []);
 
   if (isLoading) return <DetailCaseCardContentLoader />;
@@ -124,8 +125,8 @@ export const DetailCaseCard = ({}) => {
               <div className="flex flex-col md:flex-row md:justify-between md:items-start">
                 <div className="w-[90%]  flex items-center ">
                   <Scale className="mr-2 h-8 w-8 text-amber-50" />
-                  <div>
-                    <h2 className="text-2xl md:text-2xl font-bold tracking-tight text-amber-50">
+                  <div className="w-[90%]">
+                    <h2 className="text-2xl  md:text-2xl font-bold tracking-tight text-amber-50">
                       {data.title}
                     </h2>
                     <p className="text-amber-50 mt-1 text-sm whitespace-nowrap">
@@ -266,7 +267,7 @@ export const DetailCaseCard = ({}) => {
               )}
 
               {/* Related Queries */}
-              <div className="mt-10 border-t border-gray-200 pt-6">
+              {data.relatedqs && <div className="mt-10 border-t border-gray-200 pt-6">
                 <h3 className="text-lg font-medium  mb-4 flex items-center">
                   <Search className="h-5 w-5 mr-2 " />
                   Related Search Queries
@@ -282,7 +283,7 @@ export const DetailCaseCard = ({}) => {
                     </Link>
                   ))}
                 </div>
-              </div>
+              </div>}
             </div>
 
             {/* Footer */}

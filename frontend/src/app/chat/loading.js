@@ -1,5 +1,5 @@
-import ChatContentLoader from '@/components/chatting_window/ChatContentLoader'
-import NavbarContentLoader from '@/components/navbar/NavbarContentLoader'
+import { ChatContentLoader } from "@/components/chatting_window/ChatContentLoader"
+import { NavbarContentLoader } from "@/components/navbar/NavbarContentLoader"
 
 const Loading = () => {
     return (

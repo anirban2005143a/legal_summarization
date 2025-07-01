@@ -1,5 +1,5 @@
 import { DetailCaseCard } from "@/components/caseDetail/DetailCaseCard";
-import Navbar from "@/components/navbar/Navbar";
+import { Navbar } from "@/components/navbar/Navbar";
 
 const page = () => {
     const data = {
@@ -118,7 +118,7 @@ const page = () => {
     return (
         <>
             <Navbar />
-            <DetailCaseCard data={data} />
+            <DetailCaseCard  />
         </>
     )
 }

@@ -17,7 +17,6 @@ export const saveChatResponse = async (question, answer) => {
     }
   } catch (error) {
     console.error("Error:", error);
-    throw new Error(error.response?.data?.message || error.message || "Unknown error. Please try again")
-
+    // throw new Error(error.response?.data?.message || error.message || "Unknown error. Please try again")
   }
 }

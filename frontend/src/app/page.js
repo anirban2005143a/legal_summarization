@@ -1,6 +1,5 @@
-
-import HeroSection from "@/components/HeroSection/HeroSection";
-import Navbar from "@/components/navbar/Navbar";
+import { HeroSection } from "@/components/HeroSection/HeroSection";
+import { Navbar } from "@/components/navbar/Navbar";
 
 export default async function Home() {
 

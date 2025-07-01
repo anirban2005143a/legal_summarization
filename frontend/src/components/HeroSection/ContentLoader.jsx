@@ -1,8 +1,8 @@
 import React from 'react';
-import { Skeleton } from '../../ui/Sckeleton';
-import BackGround from '../BackGround';
+import { Skeleton } from '../ui/Sckeleton';
+import { BackGround } from '../Background/BackGround';
 
-export function HeroContentLoader() {
+export const HeroContentLoader = ()=> {
   return (
     <>
       <BackGround/>
@@ -123,4 +123,3 @@ export function HeroContentLoader() {
   );
 }
 
-export default HeroContentLoader;

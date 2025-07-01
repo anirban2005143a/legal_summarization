@@ -1,7 +1,7 @@
 import { Bot, User } from 'lucide-react';
 import React from 'react';
 
-const ChatContentLoader = ({ messageCount = 5 , className }) => {
+export const ChatContentLoader = ({ messageCount = 5 , className }) => {
   return (
     <div className={`flex flex-col justify-between md:w-[60%] md:min-w-[500px] w-full max-w-[1500px] mx-auto h-full ${className || ""}`}>
       {/* Messages area */}
@@ -74,4 +74,3 @@ const InputLoader = () => {
   );
 };
 
-export default ChatContentLoader;
