@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import React from 'react';
+import React from "react";
 
-export default function FeedbackContentLoader() {
+export const FeedbackContentLoader = () => {
   return (
     <div className="pt-[85px] md:w-[60%] md:min-w-[600px] max-w-[1000px] mx-auto py-12 md:py-24 px-3 rounded-lg  animate-pulse">
       {/* Header */}
@@ -43,4 +43,4 @@ export default function FeedbackContentLoader() {
       <div className="h-4 w-3/4 bg-gray-200 rounded mx-auto"></div>
     </div>
   );
-}
+};

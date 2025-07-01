@@ -1,8 +1,8 @@
 import React from 'react'
-import FeedbackForm from './FeedbackFrom'
+import {FeedbackForm} from './FeedbackFrom'
 import BackGround from '../Background/BackGround'
 
-const Feedback = () => {
+export const Feedback = () => {
     return (
         <>
             <BackGround />
@@ -20,5 +20,3 @@ const Feedback = () => {
         </>
     )
 }
-
-export default Feedback
