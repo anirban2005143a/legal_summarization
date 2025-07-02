@@ -18,6 +18,7 @@ app = FastAPI()
 
 # CORS setup
 origins = os.getenv("CORS_ORIGINS", "*").split(",")
+print(origins)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -35,7 +36,7 @@ app.add_middleware(
 # model.to(device)
 
 class GenerationParams(BaseModel):
-    max_new_tokens: Optional[int] = 400
+    max_new_tokens: Optional[int] = 128
     num_beams: Optional[int] = 4
     length_penalty: Optional[float] = 0.8
     early_stopping: Optional[bool] = False
@@ -80,5 +81,5 @@ def predict(data: InputText):
         print("error" , e)
         raise HTTPException(
             status_code=500,
-            detail=f"Internal server error: {str(e)}"
+            detail=f"Internal server error: Please try again"
         )

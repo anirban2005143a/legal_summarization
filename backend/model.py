@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from transformers import AutoTokenizer
 import spacy
 import time
+from requests.exceptions import RequestException, Timeout
 
 # Load environment variables
 load_dotenv()
@@ -15,36 +16,51 @@ nlp = spacy.load("en_core_web_sm")
 # Initialize tokenizer once (usually at app startup)
 tokenizer = AutoTokenizer.from_pretrained("AnirbanDas2005/PnHLayman" ,   token=os.getenv("HF_TOKEN") )  # Match your model
 
-def smart_chunk_with_spacy(text, max_chunks=5):
+def smart_chunk_by_tokens_with_spacy(text, max_tokens_per_chunk=480):
+    """
+    Splits text into chunks based on model token limit,
+    preserving sentence boundaries using spaCy and tokenizer.
+    
+    Args:
+        text (str): The full input text.
+        tokenizer: Hugging Face tokenizer (e.g., AutoTokenizer).
+        max_tokens_per_chunk (int): Max token count per chunk (e.g., 480 for T5-base).
+        
+    Returns:
+        List[str]: List of token-safe chunks.
+    """
     doc = nlp(text)
     sentences = [sent.text.strip() for sent in doc.sents]
-    sentence_word_counts = [len(sent.split()) for sent in sentences]
-    
-    total_words = sum(sentence_word_counts)
-    target_words_per_chunk = max(total_words // max_chunks, 1)
 
     chunks = []
     current_chunk = []
-    current_word_count = 0
+    current_token_count = 0
 
-    for i, (sentence, word_count) in enumerate(zip(sentences, sentence_word_counts)):
-        if current_word_count + word_count > target_words_per_chunk and len(chunks) < max_chunks - 1:
-            # Finish current chunk
-            chunks.append(" ".join(current_chunk))
-            print(f"\n🧩 Chunk {len(chunks)} | Words: {current_word_count}")
-            print(" ".join(current_chunk)[:300] + ("..." if current_word_count > 300 else ""))
-            
+    for sentence in sentences:
+        # Token count for the sentence
+        sentence_token_count = len(tokenizer.encode(sentence, add_special_tokens=False))
+
+        # If adding this sentence exceeds max token count, finalize current chunk
+        if current_token_count + sentence_token_count > max_tokens_per_chunk:
+            if current_chunk:
+                chunk_text = " ".join(current_chunk)
+                chunks.append(chunk_text)
+                print(f"\n🧩 Chunk {len(chunks)} | Tokens: {current_token_count}")
+                print(chunk_text[:300] + ("..." if current_token_count > 300 else ""))
+
+            # Start new chunk with current sentence
             current_chunk = [sentence]
-            current_word_count = word_count
+            current_token_count = sentence_token_count
         else:
             current_chunk.append(sentence)
-            current_word_count += word_count
+            current_token_count += sentence_token_count
 
-    # Add final chunk
+    # Add any remaining chunk
     if current_chunk:
-        chunks.append(" ".join(current_chunk))
-        print(f"\n🧩 Chunk {len(chunks)} | Words: {current_word_count}")
-        print(" ".join(current_chunk)[:300] + ("..." if current_word_count > 300 else ""))
+        chunk_text = " ".join(current_chunk)
+        chunks.append(chunk_text)
+        print(f"\n🧩 Chunk {len(chunks)} | Tokens: {current_token_count}")
+        print(chunk_text[:300] + ("..." if current_token_count > 300 else ""))
 
     return chunks
 
@@ -58,7 +74,7 @@ def generate_summary(text, api_url, api_token=None, summary_params=None):
     """
     if summary_params is None:
         summary_params = {
-            "max_new_tokens": 300,
+            "max_new_tokens": 128,
             "num_beams": 4,
             "length_penalty": 0.8,
             "early_stopping": False
@@ -72,10 +88,10 @@ def generate_summary(text, api_url, api_token=None, summary_params=None):
     print("🔐 Headers:", headers)
 
     summaries = []
-    for idx, chunk in enumerate(smart_chunk_with_spacy(text)):
+    for idx, chunk in enumerate(smart_chunk_by_tokens_with_spacy(text , max_tokens_per_chunk=480)):
         print(f"\n📤 Sending chunk {idx+1} to summarizer...")
 
-        retries = 3
+        retries = 4
         delay = 20  # seconds
 
         for attempt in range(1, retries + 1):
@@ -87,7 +103,7 @@ def generate_summary(text, api_url, api_token=None, summary_params=None):
                         "inputs": f"summarize: {chunk}",
                         "parameters": summary_params
                     },
-                    timeout=60
+                    # timeout=60
                 )
 
                 if response.status_code == 503:
@@ -97,9 +113,10 @@ def generate_summary(text, api_url, api_token=None, summary_params=None):
                 response.raise_for_status()
 
                 result = response.json()
+                print(result)
                 summaries.append(result.get("generated_text", ""))
                 break  # ✅ success, go to next chunk
-
+    
             except requests.exceptions.HTTPError as http_err:
                 # For non-503 errors: do not retry
                 print(f"❌ HTTP Error for chunk {idx+1}: {response.status_code} — {response.text}")
@@ -116,5 +133,34 @@ def generate_summary(text, api_url, api_token=None, summary_params=None):
                     raise RuntimeError(
                         f"The model is waking up or unavailable. Please try again in a minute."
                     ) from e
+                    
+                    
+        # ✅ Add the delay here, between chunk requests
+        # time.sleep(0.5)  # Allow backend time to free memory before next chunk
 
     return " ".join(summaries)
+    
+    # try:
+    #     response = requests.post(
+    #         api_url,
+    #         headers=headers,
+    #         json={
+    #             "inputs": f"summarize: {text}",
+    #             "parameters": summary_params
+    #         },
+    #         timeout=60
+    #     )
+    #     response.raise_for_status()  # Raise error for non-200 status codes
+
+    #     result = response.json()
+    #     return result.get("generated_text", "")
+
+    # except Timeout:
+    #     print("Request timed out.")
+    #     return "Error: Request timed out."
+    # except RequestException as e:
+    #     print(f"Request failed: {e}")
+    #     return f"Error: Request failed with {str(e)}"
+    # except Exception as e:
+    #     print(f"Unexpected error: {e}")
+    #     return f"Error: Unexpected issue - {str(e)}"
