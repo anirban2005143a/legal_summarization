@@ -23,9 +23,9 @@ export const AIPopup = ({ isOpen, onClose, input }) => {
         {
           text: input,
           parameters: {
-            max_new_tokens: 128, // Override local default of 128
-            num_beams: 8,
-            length_penalty: 0.8, // Favors longer outputs (values <1.0)
+            max_new_tokens: 40, // 🔹 Reduce from 100 to 30–50 for short summaries
+            num_beams: 4, // 🔸 Beam search (optional, 4–8 is fine)
+            length_penalty: 1.5, // 🔹 Increase >1.0 to favor shorter, more concise outputs
           },
         },
         {
@@ -41,7 +41,8 @@ export const AIPopup = ({ isOpen, onClose, input }) => {
       showToast(
         error.response?.data?.detail ||
           error.message ||
-          "Unknown error. Please try again"
+          "Unknown error. Please try again",
+        1
       );
     } finally {
       setIsLoading(false);

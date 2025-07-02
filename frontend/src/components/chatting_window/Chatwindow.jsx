@@ -17,7 +17,7 @@ const ChatWindow = ({}) => {
   const [question, setquestion] = useState("");
   const [answer, setanswer] = useState("");
 
-  const [isReady, setisReady] = useState(true);
+  const [isReady, setisReady] = useState(false);
 
   const massagesRef = useRef(null);
 
@@ -81,9 +81,10 @@ const ChatWindow = ({}) => {
       console.log(error);
       setisFetching(false);
       showToast(
-        error.response?.data?.details ||
+        error.response?.data?.detail ||
           error.message ||
-          "Unknown Error . Please try again"
+          "Unknown Error . Please try again",
+        1
       );
     }
   };
@@ -170,9 +171,9 @@ const ChatWindow = ({}) => {
                                 e.preventDefault();
                                 copyToClipboard(message.question);
                               }}
-                              className="absolute right-5 top-full w-fit cursor-pointer mt-2 "
+                              className="absolute right-2 top-full w-fit cursor-pointer mt-2 "
                             >
-                              <Copy className=" text-gray-600 w-5 h-5 " />
+                              <Copy className=" text-gray-600 w-3.5 h-3.5 " />
                             </button>
                           </div>
                         </div>
@@ -197,9 +198,9 @@ const ChatWindow = ({}) => {
                               e.preventDefault();
                               copyToClipboard(message.answer);
                             }}
-                            className="absolute left-5 top-full cursor-pointer py-2  w-fit"
+                            className="absolute left-2 top-full cursor-pointer py-2  w-fit"
                           >
-                            <Copy className=" text-gray-600 w-5 h-5 " />
+                            <Copy className=" text-gray-600 w-3.5 h-3.5 " />
                           </button>
                         </div>
                       </div>
@@ -210,7 +211,7 @@ const ChatWindow = ({}) => {
             })}
 
             {/* Loading Message */}
-            {!isChatInfoFetching && isFetching&& (
+            {!isChatInfoFetching && isFetching && (
               <div className="flex justify-start">
                 <div className="flex gap-3 w-[60%] flex-row">
                   <div className="flex-shrink-0 h-8 w-8  rounded-full flex items-center justify-center bg-purple-100">
@@ -231,6 +232,7 @@ const ChatWindow = ({}) => {
           isEmpty={!(!isChatInfoFetching && messages && messages.length > 0)}
           // isEmpty = {false}
           isReady={isReady}
+          setisReady = {setisReady}
           isFetching={isFetching}
           handelSubmitQuery={handelSubmitQuery}
         />

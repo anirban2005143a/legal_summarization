@@ -1,6 +1,6 @@
 import React from 'react'
 import {FeedbackForm} from './FeedbackFrom'
-import BackGround from '../Background/BackGround'
+import { BackGround } from '../Background/BackGround'
 
 export const Feedback = () => {
     return (

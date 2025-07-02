@@ -2,7 +2,7 @@
 
 import { BookOpen, FileText, Scale, CheckCircle, ChevronRight, Search } from "lucide-react"
 import { useEffect, useState } from "react"
-import { HeroContentLoader } from "./ContentLoader"
+import Link from "next/link"
 
 export const HeroSection = () => {
   const [width, setwidth] = useState(null)

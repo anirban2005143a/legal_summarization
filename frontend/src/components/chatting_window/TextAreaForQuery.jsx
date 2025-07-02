@@ -7,6 +7,7 @@ export const TextAreaForQuery = ({
   isEmpty,
   handelSubmitQuery,
   isReady,
+  setisReady,
   isFetching,
 }) => {
   const [input, setInput] = useState("");
@@ -52,7 +53,11 @@ export const TextAreaForQuery = ({
             <textarea
               ref={textareaRef}
               value={input}
-              onInput={(e) => setInput(e.target.value)}
+              onInput={(e) => {
+                e.preventDefault();
+                !isReady && setisReady(e.target.value.trim() !== "");
+                setInput(e.target.value);
+              }}
               onKeyDown={handelAskAI}
               placeholder="Type your message..."
               rows="1"
@@ -68,9 +73,7 @@ export const TextAreaForQuery = ({
               <VoiceRecognization isReady={isReady} setInput={setInput} />
               <button
                 type="submit"
-                className={` p-1 text-gray-600 ${
-                  isReady ? "cursor-pointer" : "cursor-not-allowed"
-                } hover:text-indigo-500 transition-colors disabled:cursor-not-allowed disabled:opacity-70`}
+                className={` p-1 text-gray-600 cursor-pointer hover:text-indigo-500 transition-colors disabled:cursor-not-allowed disabled:opacity-70`}
                 disabled={!isReady || !input.trim()}
               >
                 <Send className="w-5 h-5" />

@@ -50,7 +50,7 @@ export const LegalCasesList = () => {
     const time = JSON.parse(localStorage.getItem("timestamp"))?.timestamp || 0;
     // console.log(time);
 
-    if (Date.now() - time >= 1000 * 3600 * 24 * 7) {
+    if (Date.now() - time >= 1000 * 3600 * 24 ) {
       console.log("long");
       handelFetchData();
       return;
@@ -74,7 +74,8 @@ export const LegalCasesList = () => {
   }, []);
 
   useEffect(() => {
-    checkLocalStore();
+    !sessionStorage.getItem("query") && checkLocalStore();
+    sessionStorage.getItem("query") && handelFetchData(sessionStorage.getItem("query"));
   }, []);
 
   if (data && data.length === 0) {
