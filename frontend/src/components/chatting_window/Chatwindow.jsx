@@ -58,7 +58,7 @@ const ChatWindow = ({}) => {
         {
           text: input,
           parameters: {
-            max_new_tokens: 128, // Override local default of 128
+            max_new_tokens: 40, // Override local default of 128
             num_beams: 8,
             length_penalty: 0.8, // Favors longer outputs (values <1.0)
           },

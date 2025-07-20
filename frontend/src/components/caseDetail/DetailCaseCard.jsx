@@ -89,7 +89,7 @@ const LongExpandableContent = ({ ref, content }) => {
   );
 };
 
-export const DetailCaseCard = ({  }) => {
+export const DetailCaseCard = ({}) => {
   const [data, setdata] = useState(null);
   const [isLoading, setisLoading] = useState(true);
   const { caseid } = useParams();
@@ -110,54 +110,57 @@ export const DetailCaseCard = ({  }) => {
     }
   }, []);
 
-  // download the doc
-  const handleDownload = useCallback(() => {
-    try {
-      const doc = new jsPDF();
+const handleDownload = useCallback(() => {
+  try {
+    const doc = new jsPDF();
 
-      const content = contentRef.current?.innerText?.trim() || "";
-      const title = data.title?.trim() || "Untitled";
-      if (!content) return;
+    const content = contentRef.current?.innerText?.trim() || "";
+    const title = data.title?.trim() || "Untitled";
+    if (!content) return;
 
-      // Title
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(20);
-      doc.text(title, 10, 20);
+    // Title
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    const titleLines = doc.splitTextToSize(title, 190);
+    let titleY = 20;
+    titleLines.forEach((line) => {
+      doc.text(line, 10, titleY);
+      titleY += 10; // spacing between title lines
+    });
 
-      // Content
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(12);
+    // Content
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
 
-      const pageHeight = doc.internal.pageSize.height;
-      const marginTop = 30;
-      const lineHeight = 7;
-      const maxY = pageHeight - 20;
+    const pageHeight = doc.internal.pageSize.height;
+    const lineHeight = 7;
+    const maxY = pageHeight - 20;
 
-      let y = marginTop;
-      const lines = doc.splitTextToSize(content, 190);
+    let y = titleY + 5; // Add small spacing after title block
+    const lines = doc.splitTextToSize(content, 190);
 
-      lines.forEach((line) => {
-        if (y > maxY) {
-          doc.addPage();
-          y = 20; // reset y for new page
-        }
-        doc.text(line, 10, y);
-        y += lineHeight;
-      });
+    lines.forEach((line) => {
+      if (y > maxY) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(line, 10, y);
+      y += lineHeight;
+    });
 
-      doc.save(`${title}.pdf`);
-    } catch (error) {
-      console.log(error);
-      showToast(error.message || "Download failed", 1);
-    }
-  }, [data]);
+    doc.save(`${title}.pdf`);
+  } catch (error) {
+    console.log(error);
+    showToast(error.message || "Download failed", 1);
+  }
+}, [data]);
+
 
   useEffect(() => {
     !data && fetchData();
   }, []);
 
   if (isLoading) return <DetailCaseCardContentLoader />;
-
 
   return (
     <>

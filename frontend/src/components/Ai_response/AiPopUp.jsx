@@ -23,9 +23,9 @@ export const AIPopup = ({ isOpen, onClose, input }) => {
         {
           text: input,
           parameters: {
-            max_new_tokens: 40, // 🔹 Reduce from 100 to 30–50 for short summaries
-            num_beams: 4, // 🔸 Beam search (optional, 4–8 is fine)
-            length_penalty: 1.5, // 🔹 Increase >1.0 to favor shorter, more concise outputs
+            max_new_tokens: 128, 
+            num_beams: 3, 
+            // length_penalty: 1.5,
           },
         },
         {
@@ -50,7 +50,7 @@ export const AIPopup = ({ isOpen, onClose, input }) => {
   }, []);
 
   useEffect(() => {
-    if (isOpen && !output) {
+    if (isOpen && !output && !isLoading) {
       handelGetSummary();
     }
   }, [isOpen]);
