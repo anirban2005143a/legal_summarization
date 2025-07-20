@@ -169,7 +169,6 @@ const LoadMoreButton = ({
   pagenum,
   setpagenum,
 }) => {
-
   return (
     <div className="flex justify-center my-10 px-4">
       <button
@@ -177,7 +176,7 @@ const LoadMoreButton = ({
         onClick={(e) => {
           e.preventDefault();
           const query = sessionStorage.getItem("query") || "judgment";
-          handelLoadMode(query, pagenum+1);
+          handelLoadMode(query, pagenum + 1);
           setpagenum(pagenum + 1);
         }}
         disabled={isLoading}

@@ -12,6 +12,8 @@ import {
   ChevronUp,
   ChevronDown,
   DownloadCloud,
+  Sparkles,
+  Bot,
 } from "lucide-react";
 import { BackGround } from "../Background/BackGround";
 import { useParams, useRouter } from "next/navigation";
@@ -20,14 +22,13 @@ import { showToast } from "@/utils/ShowToast";
 import { ToastContainer } from "react-toastify";
 import Link from "next/link";
 import DetailCaseCardContentLoader from "./DetailCaseContentLoader";
-import { AiSummarization } from "../Ai_response/AiSummarization";
+import axios from "axios";
 import ScrollButtons from "../ui/ScrollButtons";
 import jsPDF from "jspdf";
 
-const LongExpandableContent = ({ ref, content }) => {
+const LongExpandableContent = ({ ref, content, plainText, setplainText }) => {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const [needsExpansion, setNeedsExpansion] = useState(false);
-  const [plainText, setplainText] = useState("");
   const contentRef = useRef(null);
 
   function htmlToPlainText(htmlString) {
@@ -84,14 +85,15 @@ const LongExpandableContent = ({ ref, content }) => {
           )}
         </button>
       )}
-      {plainText && <AiSummarization input={plainText} className={"mt-5"} />}
     </div>
   );
 };
 
-export const DetailCaseCard = ({}) => {
-  const [data, setdata] = useState(null);
-  const [isLoading, setisLoading] = useState(true);
+export const DetailCaseCard = ({ data }) => {
+  // const [data, setdata] = useState(data || null);
+  const [plainText, setplainText] = useState("");
+  const [isGetSummary, setisGetSummary] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const { caseid } = useParams();
   console.log(caseid);
   const containerRef = useRef(null);
@@ -110,51 +112,50 @@ export const DetailCaseCard = ({}) => {
     }
   }, []);
 
-const handleDownload = useCallback(() => {
-  try {
-    const doc = new jsPDF();
+  const handleDownload = useCallback(() => {
+    try {
+      const doc = new jsPDF();
 
-    const content = contentRef.current?.innerText?.trim() || "";
-    const title = data.title?.trim() || "Untitled";
-    if (!content) return;
+      const content = contentRef.current?.innerText?.trim() || "";
+      const title = data.title?.trim() || "Untitled";
+      if (!content) return;
 
-    // Title
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
-    const titleLines = doc.splitTextToSize(title, 190);
-    let titleY = 20;
-    titleLines.forEach((line) => {
-      doc.text(line, 10, titleY);
-      titleY += 10; // spacing between title lines
-    });
+      // Title
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      const titleLines = doc.splitTextToSize(title, 190);
+      let titleY = 20;
+      titleLines.forEach((line) => {
+        doc.text(line, 10, titleY);
+        titleY += 10; // spacing between title lines
+      });
 
-    // Content
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
+      // Content
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
 
-    const pageHeight = doc.internal.pageSize.height;
-    const lineHeight = 7;
-    const maxY = pageHeight - 20;
+      const pageHeight = doc.internal.pageSize.height;
+      const lineHeight = 7;
+      const maxY = pageHeight - 20;
 
-    let y = titleY + 5; // Add small spacing after title block
-    const lines = doc.splitTextToSize(content, 190);
+      let y = titleY + 5; // Add small spacing after title block
+      const lines = doc.splitTextToSize(content, 190);
 
-    lines.forEach((line) => {
-      if (y > maxY) {
-        doc.addPage();
-        y = 20;
-      }
-      doc.text(line, 10, y);
-      y += lineHeight;
-    });
+      lines.forEach((line) => {
+        if (y > maxY) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.text(line, 10, y);
+        y += lineHeight;
+      });
 
-    doc.save(`${title}.pdf`);
-  } catch (error) {
-    console.log(error);
-    showToast(error.message || "Download failed", 1);
-  }
-}, [data]);
-
+      doc.save(`${title}.pdf`);
+    } catch (error) {
+      console.log(error);
+      showToast(error.message || "Download failed", 1);
+    }
+  }, [data]);
 
   useEffect(() => {
     !data && fetchData();
@@ -207,18 +208,42 @@ const handleDownload = useCallback(() => {
               className=" relative pt-8
             "
             >
-              {/* Download button */}
-              <button
-                onClick={handleDownload}
-                className={`disabled:cursor-not-allowed absolute top-2 right-2 flex items-center gap-2 text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 z-50 rounded-lg transition-all duration-200  `}
-              >
-                <DownloadCloud className=" inline-block w-4 h-4 " />
-                Download Judgment
-              </button>
-
+              <div className=" absolute top-4 right-2 w-fit flex items-center justify-center gap-3">
+                {/* ask ai button */}
+                {plainText && (
+                  <AskAiButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setisGetSummary(true);
+                      window.location.href = "#summary";
+                    }}
+                  />
+                )}
+                {/* Download button */}
+                <button
+                  onClick={handleDownload}
+                  className={`disabled:cursor-not-allowed  flex items-center gap-2 text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 z-50 rounded-lg transition-all duration-200  `}
+                >
+                  <DownloadCloud className=" inline-block w-4 h-4 " />
+                  Download Judgment
+                </button>
+              </div>
               {/* Document Content */}
-              <div className="px-6 py-5">
-                <LongExpandableContent ref={contentRef} content={data.doc} />
+              <div className="px-6 py-6">
+                <LongExpandableContent
+                  ref={contentRef}
+                  content={data.doc}
+                  plainText={plainText}
+                  setplainText={setplainText}
+                />
+
+                {/* ai summary appear here  */}
+                <section id="summary">
+                  <SummaryContent
+                    input={plainText}
+                    isGetSummary={isGetSummary}
+                  />
+                </section>
 
                 {/* Metadata Section */}
                 <div className="mt-10 border-t border-gray-200 pt-6">
@@ -244,56 +269,62 @@ const handleDownload = useCallback(() => {
                       </div>
                     </div>
 
-                    <div className="border border-amber-100 bg-amber-100/10 p-3 rounded">
-                      <div className="flex items-center">
-                        <div className="bg-amber-100/50 p-2 rounded-full mr-3">
-                          <Bookmark className="h-4 w-4 text-amber-700" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-amber-700">
-                            Citations
-                          </p>
-                          <p className="text-sm ">{data.numcites}</p>
+                    {data.numcites && (
+                      <div className="border border-amber-100 bg-amber-100/10 p-3 rounded">
+                        <div className="flex items-center">
+                          <div className="bg-amber-100/50 p-2 rounded-full mr-3">
+                            <Bookmark className="h-4 w-4 text-amber-700" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-medium text-amber-700">
+                              Citations
+                            </p>
+                            <p className="text-sm ">{data.numcites}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="border border-amber-100 bg-amber-100/10 p-3 rounded">
-                      <div className="flex items-center">
-                        <div className="bg-amber-100/50 p-2 rounded-full mr-3">
-                          <Layers className="h-4 w-4 text-amber-700" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-amber-700">
-                            References
-                          </p>
-                          <p className="text-sm ">
-                            {data.numcitedby?.toLocaleString()}
-                          </p>
+                    {data.numcitedby && (
+                      <div className="border border-amber-100 bg-amber-100/10 p-3 rounded">
+                        <div className="flex items-center">
+                          <div className="bg-amber-100/50 p-2 rounded-full mr-3">
+                            <Layers className="h-4 w-4 text-amber-700" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-medium text-amber-700">
+                              References
+                            </p>
+                            <p className="text-sm ">
+                              {data.numcitedby?.toLocaleString()}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="border border-amber-100 bg-amber-100/10 p-3 rounded">
-                      <div className="flex items-center">
-                        <div className="bg-amber-100/50 p-2 rounded-full mr-3">
-                          <Layers className="h-4 w-4 text-amber-700" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-medium text-amber-700">
-                            Coverage
-                          </p>
-                          <p className="text-sm ">
-                            {data.covers?.map((cover, index) => (
-                              <span key={index}>
-                                {cover.title}
-                                {index < data.covers.length - 1 ? ", " : ""}
-                              </span>
-                            ))}
-                          </p>
+                    {data.covers && (
+                      <div className="border border-amber-100 bg-amber-100/10 p-3 rounded">
+                        <div className="flex items-center">
+                          <div className="bg-amber-100/50 p-2 rounded-full mr-3">
+                            <Layers className="h-4 w-4 text-amber-700" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-medium text-amber-700">
+                              Coverage
+                            </p>
+                            <p className="text-sm ">
+                              {data.covers?.map((cover, index) => (
+                                <span key={index}>
+                                  {cover.title}
+                                  {index < data.covers.length - 1 ? ", " : ""}
+                                </span>
+                              ))}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
 
@@ -372,6 +403,126 @@ const handleDownload = useCallback(() => {
           </div>
         </div>
       )}
+    </>
+  );
+};
+
+const SummaryContent = ({ input, isGetSummary = false }) => {
+  const [output, setOutput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handelGetSummary = useCallback(async (e) => {
+    setIsLoading(true);
+    // setTimeout(() => {
+    //     setOutput(`One Kumar Krishna Prasad Singh granted a perma nent lease of the right to the underground coal in 5,800 bighas of land belonging to him to Shibsaran Singh and Sitaram Singh (hereinafter referred to as the Singhs) by a registered patta stipulating for a salami of Rs. 8,000 and royalty at the rate of 2a. per ton of coal raised subject to a minimum of Rs 750 a year and for certain other cesses and Sub section (1) of the , enumerates five categories of documents of which regis tration is made compulsory which include leases of immoveable property from year to year or for any term exceeding one year, or reserving a yearly rent. Before the amendment, the clause was held to cover even compromise decrees comprising immovable property which was not the subject matter of the suit. The High Court held that if the compromise decree failed within clause (d) of sub section (1) it would not be protected under clause (vi) In Hemanta Kumar vs. Deoshi, J., the High Court held that a lease is a document which creates a present and immediate interest in the land. The compromise decree provided that unless the sum of Rs. 8,000 was paid within the stipulated time the Singhs were not to execute the decree or to take possession of the disputed property. Until the payment was made it was impossible to determine whether there would be any under lease or not. The High Court dismissed the appeal w Singh granted a perma nent lease of the right to the underground coal in 5,800 bighas of land belonging to him to Shibsaran Singh and Sitaram Singh (hereinafter referred to as the Singhs) by a registered patta stipulating for a salami of Rs. 8,000 and royalty at the rate of 2a. per ton of coal raised subject to a minimum of Rs 750 a year and for certain other cesses and Sub section (1) of the , enumerates five categories of documents of which regis tration is made compulsory which include leases of immoveable property from year to year or for any term exceeding one year, or reserving a yearly rent. Before the amendment, the clause was held to cover even compromise decrees comprising immovable property which was not the subject matter of the suit. The High Court held that if the compromise decree failed within clause (d) of sub section (1) it would not be protected under clause (vi) In Hemanta Kumar vs. Deoshi, J., the High Court held that a lease is a document which creates a present and immediate interest in the land. The compromise decree provided that unless the sum of Rs. 8,000 was paid within the stipulated time the Singhs were not to execute the decree or to take possession of the disputed property. Until the payment was made it was impossible to determine whether there would be any under lease or not. The High Court dismissed the appeal wi Singh granted a perma nent lease of the right to the underground coal in 5,800 bighas of land belonging to him to Shibsaran Singh and Sitaram Singh (hereinafter referred to as the Singhs) by a registered patta stipulating for a salami of Rs. 8,000 and royalty at the rate of 2a. per ton of coal raised subject to a minimum of Rs 750 a year and for certain other cesses and Sub section (1) of the , enumerates five categories of documents of which regis tration is made compulsory which include leases of immoveable property from year to year or for any term exceeding one year, or reserving a yearly rent. Before the amendment, the clause was held to cover even compromise decrees comprising immovable property which was not the subject matter of the suit. The High Court held that if the compromise decree failed within clause (d) of sub section (1) it would not be protected under clause (vi) In Hemanta Kumar vs. Deoshi, J., the High Court held that a lease is a document which creates a present and immediate interest in the land. The compromise decree provided that unless the sum of Rs. 8,000 was paid within the stipulated time the Singhs were not to execute the decree or to take possession of the disputed property. Until the payment was made it was impossible to determine whether there would be any under lease or not. The High Court dismissed the appeal wth costs. The`)
+    //     setIsLoading(false)
+    // }, 2000);
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_FAST_URL}/predict`,
+        {
+          text: input,
+          parameters: {
+            max_new_tokens: 128,
+            num_beams: 3,
+            // length_penalty: 1.5,
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(res);
+      setOutput(res.data.summary);
+    } catch (error) {
+      console.log(error);
+      showToast(
+        error.response?.data?.detail ||
+          error.message ||
+          "Unknown error. Please try again",
+        1
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, [input]);
+
+  useEffect(() => {
+    if (isGetSummary && !output && !isLoading) {
+      handelGetSummary();
+    }
+  }, [isGetSummary]);
+
+  return (
+    <div className=" md:py-4">
+      <div className="flex items-center justify-between border-b border-gray-100 mb-3">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-amber-600" />
+          <h2 className="text-xl font-semibold text-gray-800">
+            Ai Summarization
+          </h2>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-auto flex flex-col">
+        <AIResponseDisplay output={output} isLoading={isLoading} />
+      </div>
+    </div>
+  );
+};
+
+const AIResponseDisplay = ({ output, isLoading }) => {
+  return (
+    <div className="flex-1 bg-gray-50 rounded-lg p-4 overflow-auto border border-gray-100">
+      <div className="flex items-center gap-2 mb-3">
+        <Bot className="w-4 h-4 text-amber-600" />
+        <h3 className="text-sm  text-gray-600 font-medium">
+          AI Response
+        </h3>
+      </div>
+
+      {isLoading ? (
+        <div className="animate-pulse">
+          <div className="flex flex-col gap-2">
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+          </div>
+        </div>
+      ) : output ? (
+        <div className=" max-w-none">
+          {output.split("\n").map((paragraph, index) => (
+            <p
+              key={index}
+              className="text-gray-800 text-sm mb-2 whitespace-pre-wrap"
+            >
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500 italic text-sm">
+          AI response will appear here...
+        </p>
+      )}
+    </div>
+  );
+};
+
+const AskAiButton = ({ className, onClick = () => {} }) => {
+  return (
+    <>
+      <button
+        onClick={onClick}
+        tabIndex={0}
+        className={`flex items-center justify-start sm:justify-end text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 rounded-lg transition-all duration-200  ${className}`}
+      >
+        <Sparkles size={16} className="mr-2 text-amber-700" />
+        Ask AI to summarize
+      </button>
     </>
   );
 };
