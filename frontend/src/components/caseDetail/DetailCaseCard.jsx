@@ -89,11 +89,11 @@ const LongExpandableContent = ({ ref, content, plainText, setplainText }) => {
   );
 };
 
-export const DetailCaseCard = ({ data }) => {
-  // const [data, setdata] = useState(null);
+export const DetailCaseCard = ({  }) => {
+  const [data, setdata] = useState(null);
   const [plainText, setplainText] = useState("");
   const [isGetSummary, setisGetSummary] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setisLoading] = useState(true);
   const { caseid } = useParams();
   const containerRef = useRef(null);
   const contentRef = useRef(null);

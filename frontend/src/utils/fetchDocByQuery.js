@@ -1,6 +1,7 @@
 
 
 export const fetchDocByQuery = async (query = "judgment" , pagenum=0 ) => {
+    console.log(query)
     try {
         const res = await fetch(`api/search/?formInput=${query}&pagenum=${pagenum}`)
         const data = await res.json()

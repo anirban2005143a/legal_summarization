@@ -13,28 +13,28 @@ export const LegalCasesList = () => {
   const [pagenum, setpagenum] = useState(0);
 
   const handelFetchData = useCallback(
-    async (query = "judgment", pagenum = 0) => {
-      console.log(pagenum);
-      // return
+    async (query = "judgment", pageNumber = 0) => {
+      if (!query) {
+        showToast("Search query not found", 1);
+        setisLoading(false);
+        return;
+      }
+      if (pageNumber < 0) {
+        showToast("Page number can not be negative", 1);
+        setisLoading(false);
+        return;
+      }
+
+      console.log(query);
+
       try {
-        setisLoading(true);
-        const fetchData = await fetchDocByQuery(query, pagenum);
+        const fetchData = await fetchDocByQuery(query, pageNumber);
         console.log(fetchData);
 
-        sessionStorage.setItem("query", query);
+        query != "judgment" && sessionStorage.setItem("query", query);
 
-        localStorage.setItem(
-          "judgments",
-          JSON.stringify(fetchData.slice(0, Math.min(fetchData.length, 30)))
-        );
-
-        localStorage.setItem(
-          "timestamp",
-          JSON.stringify({ timestamp: Date.now() })
-        );
-
-        setdata((prev) => [...prev, ...fetchData]);
-        // setdata((prevData) => [...prevData, ...fetchData]);
+        if (pageNumber !== 0) setdata((prev) => [...prev, ...fetchData]);
+        else setdata(fetchData);
       } catch (error) {
         console.log(error);
         showToast(error.message, 1);
@@ -45,11 +45,11 @@ export const LegalCasesList = () => {
     []
   );
 
-  console.log(data);
+  console.log(pagenum);
 
   const checkLocalStore = useCallback(async () => {
     const time = JSON.parse(localStorage.getItem("timestamp"))?.timestamp || 0;
-    // console.log(time);
+    console.log("fetch data form local store : ", time);
 
     if (Date.now() - time >= 1000 * 3600 * 24) {
       console.log("long");
@@ -80,7 +80,22 @@ export const LegalCasesList = () => {
       handelFetchData(sessionStorage.getItem("query"));
   }, []);
 
-  if (data && data.length === 0) {
+  //store first 10 entries of data to localStorage to prevent api call overhead
+  useEffect(() => {
+    if (!data) return;
+
+    localStorage.setItem(
+      "judgments",
+      JSON.stringify(data.slice(0, Math.min(data.length, 30)))
+    );
+
+    localStorage.setItem(
+      "timestamp",
+      JSON.stringify({ timestamp: Date.now() })
+    );
+  }, [data]);
+
+  if (!isLoading && data && data.length === 0) {
     return (
       <div className="text-center py-8 rounded-lg border border-gray-200 pt-[180px]">
         <p className="text-gray-500 text-lg">
@@ -95,7 +110,10 @@ export const LegalCasesList = () => {
       <ToastContainer />
       <div className=" max-w-[1500px] mx-auto md:px-6 sm:px-4 px-2 pt-[80px] pb-5">
         <div className="space-y-6 md:w-10/12 md:mx-auto">
-          <SearchBar handelSearch={handelFetchData} />
+          <SearchBar
+            handelSearch={handelFetchData}
+            setisLoading={setisLoading}
+          />
           {isLoading && <DocumentLoader className="pt-[0px] " />}
           {data &&
             data.map((document, index) => {
@@ -105,7 +123,6 @@ export const LegalCasesList = () => {
 
         {!isLoading && (
           <LoadMoreButton
-            isLoading={isLoading}
             handelLoadMode={handelFetchData}
             pagenum={pagenum}
             setpagenum={setpagenum}
@@ -116,7 +133,7 @@ export const LegalCasesList = () => {
   );
 };
 
-const SearchBar = ({ handelSearch }) => {
+const SearchBar = ({ handelSearch, setisLoading }) => {
   const [searchQuery, setsearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -143,6 +160,7 @@ const SearchBar = ({ handelSearch }) => {
             onBlur={() => setIsFocused(false)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
+                setisLoading(true);
                 handelSearch(searchQuery);
               }
             }}
@@ -163,23 +181,21 @@ const SearchBar = ({ handelSearch }) => {
   );
 };
 
-const LoadMoreButton = ({
-  isLoading = false,
-  handelLoadMode,
-  pagenum,
-  setpagenum,
-}) => {
+const LoadMoreButton = ({ handelLoadMode, pagenum, setpagenum }) => {
+  const [isLoading, setisLoading] = useState(false);
   return (
     <div className="flex justify-center my-10 px-4">
       <button
         aria-label="load more button"
-        onClick={(e) => {
+        disabled={isLoading}
+        onClick={async (e) => {
           e.preventDefault();
           const query = sessionStorage.getItem("query") || "judgment";
-          handelLoadMode(query, pagenum + 1);
+          setisLoading(true);
+          await handelLoadMode(query, pagenum + 1);
           setpagenum(pagenum + 1);
+          setisLoading(false);
         }}
-        disabled={isLoading}
         className={`
           relative overflow-hidden
           flex items-center justify-center 
