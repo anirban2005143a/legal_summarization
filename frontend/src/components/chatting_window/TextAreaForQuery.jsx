@@ -69,8 +69,8 @@ export const TextAreaForQuery = ({
                 maxHeight: "150px",
               }}
             />
-            <div className=" control-buttons w-[110px] flex justify-center gap-2 h-full">
-              <VoiceRecognization isReady={isReady} setInput={setInput} />
+            <div className=" control-buttons w-fit px-3 flex justify-center gap-2 h-full">
+              {/* <VoiceRecognization isReady={isReady} setInput={setInput} /> */}
               <button
                 type="submit"
                 className={` p-1 text-gray-600 cursor-pointer hover:text-indigo-500 transition-colors disabled:cursor-not-allowed disabled:opacity-70`}

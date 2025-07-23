@@ -14,6 +14,7 @@ import {
   DownloadCloud,
   Sparkles,
   Bot,
+  Download,
 } from "lucide-react";
 import { BackGround } from "../Background/BackGround";
 import { useParams, useRouter } from "next/navigation";
@@ -170,13 +171,13 @@ export const DetailCaseCard = ({  }) => {
       {data && (
         <div
           ref={containerRef}
-          className="min-h-screen py-8 px-4 sm:px-4 lg:px-6 mt-[50px] "
+          className="min-h-screen py-8 px-3 sm:px-4 lg:px-6 mt-[50px] "
         >
           <div className=" grid md:grid-cols-10 grid-cols-1 gap-4 relative mx-auto  ">
             {/* left section  */}
             <div className=" h-fit relative md:col-span-7 col-span-1 bg-white shadow-sm rounded-lg overflow-hidden border border-amber-100">
               {/* Document Header */}
-              <div className="bg-amber-800 text-amber-50 px-6 py-5">
+              <div className="bg-amber-800 text-amber-50 md:px-6 px-4 py-5">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start">
                   <div className="w-[90%]  flex items-center ">
                     <Scale className="mr-2 h-8 w-8 text-amber-50" />
@@ -206,9 +207,9 @@ export const DetailCaseCard = ({  }) => {
               </div>
 
               {/* Document Content */}
-              <div className="px-6 py-18 relative">
+              <div className="md:px-6 px-3 md:py-18 py-20 relative">
                 {/* buttons  */}
-                <div className=" absolute top-4 right-2 w-fit flex items-center justify-center gap-3">
+                <div className=" absolute top-4 md:right-2 left-0 w-full px-3 flex items-center justify-end gap-3">
                   {/* ask ai button */}
                   {plainText && (
                     <AskAiButton
@@ -224,8 +225,8 @@ export const DetailCaseCard = ({  }) => {
                     onClick={handleDownload}
                     className={`disabled:cursor-not-allowed  flex items-center gap-2 text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 z-50 rounded-lg transition-all duration-200  `}
                   >
-                    <DownloadCloud className=" inline-block w-4 h-4 " />
-                    Download Judgment
+                    <Download className=" inline-block w-4 h-4 " />
+                     <span className=" md:inline-block hidden">Download Judgment</span>
                   </button>
                 </div>
 
@@ -237,7 +238,7 @@ export const DetailCaseCard = ({  }) => {
                 />
 
                 {/* ai summary appear here  */}
-                <section id="summary">
+                <section id="summary" className=" pt-6">
                   <SummaryContent
                     input={plainText}
                     isGetSummary={isGetSummary}
@@ -426,7 +427,7 @@ const SummaryContent = ({ input, isGetSummary = false }) => {
           {
             text: input,
             parameters: {
-              max_new_tokens: 128,
+              max_new_tokens: 50,
               num_beams: 3,
               // length_penalty: 1.5,
             },
@@ -524,7 +525,7 @@ const AskAiButton = ({ className, onClick = () => {} }) => {
         className={`flex items-center justify-start sm:justify-end text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 rounded-lg transition-all duration-200  ${className}`}
       >
         <Sparkles size={16} className="mr-2 text-amber-700" />
-        Ask AI to summarize
+        Summarize with AI
       </button>
     </>
   );
