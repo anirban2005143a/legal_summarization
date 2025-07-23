@@ -46,7 +46,12 @@ def smart_chunk_by_tokens_with_spacy(text, max_tokens_per_chunk=480):
                 chunk_text = " ".join(current_chunk)
                 chunks.append(chunk_text)
                 print(f"\n🧩 Chunk {len(chunks)} | Tokens: {current_token_count}")
-                print(chunk_text[:300] + ("..." if current_token_count > 300 else ""))
+                if len(chunk_text) > 400:
+                    preview = chunk_text[:300] + " ... " + chunk_text[-100:]
+                else:
+                    preview = chunk_text
+                print(preview)
+
 
             # Start new chunk with current sentence
             current_chunk = [sentence]
@@ -56,11 +61,24 @@ def smart_chunk_by_tokens_with_spacy(text, max_tokens_per_chunk=480):
             current_token_count += sentence_token_count
 
     # Add any remaining chunk
+    # if current_chunk:
+    #     chunk_text = " ".join(current_chunk)
+    #     chunks.append(chunk_text)
+    #     print(f"\n🧩 Chunk {len(chunks)} | Tokens: {current_token_count}")
+    #     print(chunk_text[:300] + ("..." if current_token_count > 300 else ""))
     if current_chunk:
         chunk_text = " ".join(current_chunk)
         chunks.append(chunk_text)
         print(f"\n🧩 Chunk {len(chunks)} | Tokens: {current_token_count}")
-        print(chunk_text[:300] + ("..." if current_token_count > 300 else ""))
+
+        # 🔽 Same preview format for final chunk
+        if len(chunk_text) > 400:
+            preview = chunk_text[:300] + " ... " + chunk_text[-100:]
+        else:
+            preview = chunk_text
+        print(preview)
+
+
 
     return chunks
 

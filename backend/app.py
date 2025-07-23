@@ -46,6 +46,13 @@ class GenerationParams(BaseModel):
 class InputText(BaseModel):
     text: str
     parameters: Optional[GenerationParams] = None  # Nested params
+    
+
+def trim_to_last_fullstop(text):
+    last_dot_index = text.rfind('.')
+    if last_dot_index != -1:
+        return text[:last_dot_index + 1]
+    return text  # Return original if no full stop found
 
 @app.get("/")
 def home():
@@ -75,7 +82,8 @@ def predict(data: InputText):
             summary_params=summary_params
         )
         
-        return {"summary": summary}
+        trimmed_summary = trim_to_last_fullstop(summary)
+        return {"summary": trimmed_summary}
 
     except Exception as e:
         print("error" , e)
