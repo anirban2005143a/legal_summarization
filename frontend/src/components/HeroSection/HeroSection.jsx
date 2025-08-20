@@ -14,6 +14,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export const HeroSection = () => {
   const [width, setwidth] = useState(null);
@@ -36,8 +37,6 @@ export const HeroSection = () => {
       {/* {!width && <HeroContentLoader />} */}
       {width && (
         <div className="relative overflow-hidden  pt-[90px]  xl:pt-[120px] ">
-          <BackGround />
-
           {/* Main content */}
           <div className=" mx-auto sm:px-6 px-3  relative z-10">
             <div
@@ -236,9 +235,7 @@ This Court has consistently held that Article 21 encompasses within its ambit th
                   }`}
                 >
                   <p className="whitespace-pre-wrap">{message.text}</p>
-                  <p
-                    className={`text-xs mt-1 font-semibold text-[#52310e]`}
-                  >
+                  <p className={`text-xs mt-1 font-semibold text-[#52310e]`}>
                     {message.timestamp}
                   </p>
                 </motion.div>
@@ -296,6 +293,9 @@ This Court has consistently held that Article 21 encompasses within its ambit th
 };
 
 const LeftSection = ({ width }) => {
+  const [query, setquery] = useState("");
+  const router = useRouter();
+
   return (
     <div className={`relative  ${width > 900 ? " w-[55%] px-5 " : ""} `}>
       {/* <h1 className="user-select-none text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
@@ -306,7 +306,7 @@ const LeftSection = ({ width }) => {
         Summarization & Analysis
       </h1> */}
 
-      <h1 className="user-select-none text-4xl md:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight">
+      <h1 className="user-select-none text-4xl md:text-[40px] xl:text-[50px] font-bold text-gray-900 leading-tight">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9e600a] to-[#d4812e]">
           AI-Powered Indian Legal
         </span>
@@ -388,12 +388,28 @@ const LeftSection = ({ width }) => {
             <Search className="h-5 w-5 text-gray-400" />
           </div>
           <input
+            value={query}
+            onChange={(e) => {
+              setquery(e.target.value);
+            }}
             type="text"
             className="block w-full h-full pr-4 py-4 text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
             placeholder="Search case law, judgments, or legal documents..."
           />
           <div className="h-full inset-y-0">
-            <button className="h-full px-6 bg-amber-900 text-base text-white font-medium md:hover:bg-[#562303] transition">
+            <button
+              aria-label="search button"
+              onClick={(e) => {
+                e.preventDefault();
+                if (query) {
+                  sessionStorage.setItem("query", query);
+                  router.push("/judgments");
+                }
+              }}
+              className={`h-full px-6 bg-amber-900 text-base text-white font-medium md:hover:bg-[#562303] transition ${
+                query ? "cursor-pointer" : "cursor-not-allowed"
+              }`}
+            >
               Search
             </button>
           </div>
@@ -440,16 +456,16 @@ const LeftSection = ({ width }) => {
   );
 };
 
-const BackGround = () => {
+export const HomePageBackGround = () => {
   return (
     <>
       {/* Enhanced decorative background elements */}
-      <div className="absolute top-0 left-0 w-[100dvw] h-full overflow-hidden">
-        <div className="absolute -top-[10%] -right-[10%] w-[50%] h-[70%] bg-[#74603e38] rounded-full blur-[75px]"></div>
-        <div className="absolute -bottom-[10%] right-[20%] w-[30%] h-[40%] bg-[#d4812e2a] rounded-full blur-[75px]"></div>
+      <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-1">
+        <div className="fixed -top-[10%] -right-[10%] w-[50%] h-[70%] bg-[#74603e38] rounded-full blur-[75px]"></div>
+        <div className="fixed -bottom-[10%] right-[20%] w-[30%] h-[40%] bg-[#d4812e2a] rounded-full blur-[75px]"></div>
 
         {/* Decorative patterns */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px]"></div>
+        <div className="fixed top-0 left-0 w-full h-full opacity-[0.03] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px]"></div>
       </div>
     </>
   );

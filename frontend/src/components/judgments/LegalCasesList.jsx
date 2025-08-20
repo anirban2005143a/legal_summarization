@@ -111,6 +111,7 @@ export const LegalCasesList = () => {
       <div className=" max-w-[1500px] mx-auto md:px-6 sm:px-4 px-2 pt-[80px] pb-5">
         <div className="space-y-6 md:w-10/12 md:mx-auto">
           <SearchBar
+            isLoading={isLoading}
             handelSearch={handelFetchData}
             setisLoading={setisLoading}
           />
@@ -133,7 +134,7 @@ export const LegalCasesList = () => {
   );
 };
 
-const SearchBar = ({ handelSearch, setisLoading }) => {
+const SearchBar = ({ handelSearch, setisLoading, isLoading }) => {
   const [searchQuery, setsearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -141,13 +142,23 @@ const SearchBar = ({ handelSearch, setisLoading }) => {
     setsearchQuery("");
   };
 
+  useEffect(() => {
+    setsearchQuery(sessionStorage.getItem("query") || "");
+  }, []);
+
+  console.log(isLoading);
+
   return (
     <div className=" border-b ">
-      <div className="container mx-auto px-4 py-3">
+      <div
+        className={`container mx-auto px-4 py-3 ${
+          isLoading ? "cursor-not-allowed" : ""
+        }`}
+      >
         <div
           className={`relative max-w-3xl mx-auto ${
             isFocused ? "ring-1 ring-amber-600" : ""
-          } rounded-lg transition-all`}
+          } ${isLoading ? "cursor-not-allowed" : ""} rounded-lg transition-all`}
         >
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-gray-500" />
@@ -165,7 +176,9 @@ const SearchBar = ({ handelSearch, setisLoading }) => {
               }
             }}
             placeholder="Search judgments, acts, or legal documents..."
-            className="block w-full pl-10 pr-12 py-3 bg-white border border-amber-800/50 rounded-lg text-gray-600 placeholder-gray-500/70 focus:outline-none  transition-colors"
+            className={`block w-full pl-10 pr-12 py-3 bg-white border border-amber-800/50 rounded-lg text-gray-600 placeholder-gray-500/70 focus:outline-none  transition-colors ${
+              isLoading ? "cursor-not-allowed" : ""
+            }`}
           />
           {searchQuery && (
             <button

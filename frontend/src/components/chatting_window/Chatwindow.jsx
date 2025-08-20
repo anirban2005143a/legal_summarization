@@ -9,6 +9,7 @@ import { showToast } from "@/utils/ShowToast";
 import axios from "axios";
 import { ChatContentLoader } from "./ChatContentLoader";
 import { TextAreaForQuery } from "./TextAreaForQuery";
+import { formatISODateToDDMMYYYY } from "@/utils/formateDate";
 
 const ChatWindow = ({}) => {
   const [messages, setMessages] = useState([]);
@@ -164,6 +165,9 @@ const ChatWindow = ({}) => {
                           <div className=" group relative">
                             <div className="px-4 py-2 w-full bg-indigo-600 text-white rounded-br-2xl rounded-l-2xl shadow-sm overflow-x-auto">
                               <p className="text-sm">{message.question}</p>
+                              <p className=" text-[10px] font-normal text-gray-200 mt-1">
+                                {formatISODateToDDMMYYYY(Date.now())}
+                              </p>
                             </div>
                             <button
                               aria-label="copy question"
@@ -191,6 +195,9 @@ const ChatWindow = ({}) => {
                         <div className=" group relative">
                           <div className="px-4 text-sm py-2 w-full bg-gray-100/20 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
                             <p>{message.answer}</p>
+                            <p className=" text-[10px] font-normal text-gray-700 mt-1">
+                              {formatISODateToDDMMYYYY(Date.now())}
+                            </p>
                           </div>
                           <button
                             aria-label="copy answer"
@@ -232,7 +239,7 @@ const ChatWindow = ({}) => {
           isEmpty={!(!isChatInfoFetching && messages && messages.length > 0)}
           // isEmpty = {false}
           isReady={isReady}
-          setisReady = {setisReady}
+          setisReady={setisReady}
           isFetching={isFetching}
           handelSubmitQuery={handelSubmitQuery}
         />

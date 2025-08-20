@@ -51,6 +51,7 @@ const LongExpandableContent = ({ ref, content, plainText, setplainText }) => {
 
   return (
     <div className=" relative">
+      {/* main text content  */}
       <div
         ref={(el) => {
           contentRef.current = el;
@@ -90,11 +91,11 @@ const LongExpandableContent = ({ ref, content, plainText, setplainText }) => {
   );
 };
 
-export const DetailCaseCard = ({  }) => {
-  const [data, setdata] = useState(null);
+export const DetailCaseCard = ({ data }) => {
+  // const [data, setdata] = useState(null);
   const [plainText, setplainText] = useState("");
   const [isGetSummary, setisGetSummary] = useState(false);
-  const [isLoading, setisLoading] = useState(true);
+  const [isLoading, setisLoading] = useState(false);
   const { caseid } = useParams();
   const containerRef = useRef(null);
   const contentRef = useRef(null);
@@ -226,7 +227,9 @@ export const DetailCaseCard = ({  }) => {
                     className={`disabled:cursor-not-allowed  flex items-center gap-2 text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 z-50 rounded-lg transition-all duration-200  `}
                   >
                     <Download className=" inline-block w-4 h-4 " />
-                     <span className=" md:inline-block hidden">Download Judgment</span>
+                    <span className=" md:inline-block hidden">
+                      Download Judgment
+                    </span>
                   </button>
                 </div>
 
@@ -413,6 +416,14 @@ export const DetailCaseCard = ({  }) => {
 const SummaryContent = ({ input, isGetSummary = false }) => {
   const [output, setOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isTypeDropdownOpen, setisTypeDropdownOpen] = useState(false);
+  const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
+  const [selectedType, setselectedType] = useState("Summary");
+  const [selectedLang, setselectedLang] = useState("English");
+  const typecontainerRef = useRef();
+  const typedropdownRef = useRef();
+  const langcontainerRef = useRef();
+  const langdropdownRef = useRef();
 
   const handelGetSummary = useCallback(
     async (e) => {
@@ -461,14 +472,117 @@ const SummaryContent = ({ input, isGetSummary = false }) => {
     }
   }, [isGetSummary]);
 
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (
+        typecontainerRef.current &&
+        !typecontainerRef.current.contains(e.target) &&
+        typedropdownRef.current &&
+        !typedropdownRef.current.contains(e.target)
+      ) {
+        setisTypeDropdownOpen(false);
+      }
+      if (
+        langcontainerRef.current &&
+        !langcontainerRef.current.contains(e.target) &&
+        langdropdownRef.current &&
+        !langdropdownRef.current.contains(e.target)
+      ) {
+        setisLangDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [typecontainerRef, typedropdownRef, langcontainerRef, langdropdownRef]);
+
   return (
     <div className=" md:py-4">
-      <div className="flex items-center justify-between border-b border-gray-100 mb-3">
+      <div className="flex items-center border-b pb-3 border-gray-200 mb-3 gap-3">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-600" />
           <h2 className="text-xl font-semibold text-[#555555]">
-            Ai Summarization
+            AI Summarization
           </h2>
+        </div>
+
+        {/* select type from dropdown  */}
+        <div className="relative inline-block w-fit">
+          <button
+            ref={typecontainerRef}
+            onClick={() => setisTypeDropdownOpen((prev) => !prev)}
+            className="w-full cursor-pointer px-3 py-2 flex items-center justify-between gap-2 rounded-md font-semibold text-gray-700 text-sm bg-amber-200/20 border border-amber-900/50 hover:bg-amber-200/30 transition-colors"
+          >
+            {selectedType}
+            <ChevronDown
+              className={`w-5 h-5 transition-transform duration-300 ${
+                isTypeDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {/*type Dropdown */}
+          <div
+            ref={typedropdownRef}
+            className={`absolute z-10 top-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
+              isTypeDropdownOpen
+                ? "opacity-100 scale-100 pointer-events-auto"
+                : "opacity-0 scale-y-95 pointer-events-none"
+            }`}
+          >
+            <ul className="py-2">
+              {["Summary", "Simplify"].map((item) => (
+                <li
+                  key={item}
+                  onClick={() => {
+                    setselectedType(item);
+                    setisTypeDropdownOpen(false);
+                  }}
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* select lang from dropdown  */}
+        <div className="relative inline-block w-fit">
+          <button
+            ref={langcontainerRef}
+            onClick={() => setisLangDropdownOpen((prev) => !prev)}
+            className="w-full cursor-pointer px-3 py-2 flex items-center justify-between gap-2 rounded-md font-semibold text-gray-700 text-sm bg-amber-200/20 border border-amber-900/50 hover:bg-amber-200/30 transition-colors"
+          >
+            {selectedLang}
+            <ChevronDown
+              className={`w-5 h-5 transition-transform duration-300 ${
+                isLangDropdownOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {/*language Dropdown */}
+          <div
+            ref={langdropdownRef}
+            className={`absolute z-10 top-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
+              isLangDropdownOpen
+                ? "opacity-100 scale-100 pointer-events-auto"
+                : "opacity-0 scale-y-95 pointer-events-none"
+            }`}
+          >
+            <ul className="py-2">
+              {["Engish", "Hindi", "Tamil"].map((item) => (
+                <li
+                  key={item}
+                  onClick={() => {
+                    setselectedLang(item);
+                    setisLangDropdownOpen(false);
+                  }}
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 

@@ -1,7 +1,6 @@
 "use state";
-import { Mic, MicOff, Send } from "lucide-react";
+import { Send, ChevronDown } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import VoiceRecognization from "./VoiceRecognization";
 
 export const TextAreaForQuery = ({
   isEmpty,
@@ -11,7 +10,14 @@ export const TextAreaForQuery = ({
   isFetching,
 }) => {
   const [input, setInput] = useState("");
-
+  const [isTypeDropdownOpen, setisTypeDropdownOpen] = useState(false);
+  const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
+  const [selectedType, setselectedType] = useState("Summary");
+  const [selectedLang, setselectedLang] = useState("English");
+  const typecontainerRef = useRef();
+  const typedropdownRef = useRef();
+  const langcontainerRef = useRef();
+  const langdropdownRef = useRef();
   const textareaRef = useRef(null);
 
   // Auto-resize textarea based on content
@@ -38,6 +44,29 @@ export const TextAreaForQuery = ({
     }
   };
 
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (
+        typecontainerRef.current &&
+        !typecontainerRef.current.contains(e.target) &&
+        typedropdownRef.current &&
+        !typedropdownRef.current.contains(e.target)
+      ) {
+        setisTypeDropdownOpen(false);
+      }
+      if (
+        langcontainerRef.current &&
+        !langcontainerRef.current.contains(e.target) &&
+        langdropdownRef.current &&
+        !langdropdownRef.current.contains(e.target)
+      ) {
+        setisLangDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [typecontainerRef, typedropdownRef, langcontainerRef, langdropdownRef]);
+
   return (
     <>
       {/* Input Form */}
@@ -50,25 +79,109 @@ export const TextAreaForQuery = ({
           className="max-w-4xl mx-auto"
         >
           <div className="relative flex items-center rounded-2xl border border-amber-800 bg-gray-200/30 ">
-            <textarea
-              ref={textareaRef}
-              value={input}
-              onInput={(e) => {
-                e.preventDefault();
-                !isReady && setisReady(e.target.value.trim() !== "");
-                setInput(e.target.value);
-              }}
-              onKeyDown={handelAskAI}
-              placeholder="Type your message..."
-              rows="1"
-              className={`w-full ${
-                isEmpty ? "px-6 py-5 " : "py-3 px-3"
-              }  focus:outline-none text-black transition-colors placeholder-gray-500 resize-none`}
-              style={{
-                minHeight: "44px",
-                maxHeight: "150px",
-              }}
-            />
+            <div className="w-full">
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onInput={(e) => {
+                  e.preventDefault();
+                  !isReady && setisReady(e.target.value.trim() !== "");
+                  setInput(e.target.value);
+                }}
+                onKeyDown={handelAskAI}
+                placeholder="Type your message..."
+                rows="1"
+                className={`w-full ${
+                  isEmpty ? "px-6 py-5 " : "py-3 px-3"
+                }  focus:outline-none text-gray-800 text-sm transition-colors placeholder-gray-500 resize-none`}
+                style={{
+                  minHeight: "44px",
+                  maxHeight: "150px",
+                }}
+              />
+
+              <div className=" flex items-center justify-start gap-1 pl-1">
+                {/* select type from dropdown  */}
+                <div className="relative w-fit mx-1 mb-1">
+                  <button
+                    ref={typecontainerRef}
+                    onClick={() => setisTypeDropdownOpen((prev) => !prev)}
+                    className="w-full cursor-pointer px-1.5 py-1 flex items-center justify-between gap-1 rounded-full font-medium text-xs text-gray-900  bg-amber-200/20 border border-amber-900/40 hover:bg-amber-200/10 transition-colors"
+                  >
+                    {selectedType}
+                    <ChevronDown
+                      className={`w-5 h-5 transition-transform duration-300 ${
+                        isTypeDropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {/*type Dropdown */}
+                  <div
+                    ref={typedropdownRef}
+                    className={`absolute z-10 bottom-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
+                      isTypeDropdownOpen
+                        ? "opacity-100 scale-100 pointer-events-auto"
+                        : "opacity-0 scale-y-95 pointer-events-none"
+                    }`}
+                  >
+                    <ul className="">
+                      {["Summary", "Simplify"].map((item) => (
+                        <li
+                          key={item}
+                          onClick={() => {
+                            setselectedType(item);
+                            setisTypeDropdownOpen(false);
+                          }}
+                          className="px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-200 cursor-pointer"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* select lang from dropdown  */}
+                <div className="relative w-fit mb-1">
+                  <button
+                    ref={langcontainerRef}
+                    onClick={() => setisLangDropdownOpen((prev) => !prev)}
+                    className="w-full cursor-pointer px-1.5 py-1 flex items-center justify-between gap-1 rounded-full font-medium text-gray-900 text-xs bg-amber-200/20 border border-amber-900/40 hover:bg-amber-200/10 transition-colors"
+                  >
+                    {selectedLang}
+                    <ChevronDown
+                      className={`w-5 h-5 transition-transform duration-300 ${
+                        isLangDropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {/*language Dropdown */}
+                  <div
+                    ref={langdropdownRef}
+                    className={`absolute z-10 bottom-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
+                      isLangDropdownOpen
+                        ? "opacity-100 scale-100 pointer-events-auto"
+                        : "opacity-0 scale-y-95 pointer-events-none"
+                    }`}
+                  >
+                    <ul className="">
+                      {["Engish", "Hindi", "Tamil"].map((item) => (
+                        <li
+                          key={item}
+                          onClick={() => {
+                            setselectedLang(item);
+                            setisLangDropdownOpen(false);
+                          }}
+                          className="px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-200 cursor-pointer"
+                        >
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className=" control-buttons w-fit px-3 flex justify-center gap-2 h-full">
               {/* <VoiceRecognization isReady={isReady} setInput={setInput} /> */}
               <button
