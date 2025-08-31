@@ -2,9 +2,25 @@
 
 import { Scale, Languages, Bot, FileText, BookOpen, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const Features = () => {
   const router = useRouter();
+  const [width, setwidth] = useState(null);
+
+  useEffect(() => {
+    setwidth(window.innerWidth);
+    const changeWidth = () => {
+      setwidth(window.innerWidth);
+    };
+    window.addEventListener("resize", changeWidth);
+    return () => {
+      window.removeEventListener("resize", changeWidth);
+    };
+  }, []);
+
+  if (!width) return null;
+
   return (
     <section className=" text-[#2B2B2B] py-16">
       <div className="max-w-7xl mx-auto px-6">
@@ -47,7 +63,7 @@ export const Features = () => {
           ].map((feature, idx) => (
             <div
               key={idx}
-              className="flex flex-col items-center p-6 rounded-2xl shadow-md hover:shadow-lg transition"
+              className="flex flex-col bg-white/30 items-center p-6 rounded-2xl shadow-md hover:shadow-lg transition"
             >
               {feature.icon}
               <h3 className="mt-4 text-xl font-semibold">{feature.title}</h3>
@@ -110,14 +126,14 @@ export const Features = () => {
               e.preventDefault();
               router.push("/chat");
             }}
-            className="mt-6 px-6  py-3 cursor-pointer bg-amber-800 text-white rounded-xl font-medium hover:bg-[#774701] transition"
+            className="mt-6 px-6  py-3 cursor-pointer bg-amber-900 text-white rounded-xl font-medium hover:bg-[#774701] transition"
           >
             Try the Chatbot →
           </button>
         </div>
 
         {/* CTA Section */}
-        <div className="mt-24 bg-[#FFF3E0] rounded-2xl p-12 text-center shadow-md">
+        <div className="mt-24 bg-[#ffffffa8] border-2 border-amber-800/20 rounded-2xl p-12 text-center shadow-md">
           <h2 className="text-3xl font-bold text-amber-800">
             Start Summarizing Today
           </h2>
