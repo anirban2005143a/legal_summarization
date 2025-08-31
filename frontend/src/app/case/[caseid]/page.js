@@ -118,7 +118,7 @@ const page = () => {
     return (
         <>
             <Navbar />
-            <DetailCaseCard data={data} />
+            <DetailCaseCard  />
         </>
     )
 }
