@@ -10,10 +10,10 @@ from pydantic import BaseModel
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from dotenv import load_dotenv
 from typing import Optional  # Add this import
-import torch
+# import torch
 import os
 from model import generate_summary  # Ensure this is present
-torch.set_num_threads(os.cpu_count())
+# torch.set_num_threads(os.cpu_count())
 
 # Load environment variables
 load_dotenv()
