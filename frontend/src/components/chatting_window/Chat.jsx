@@ -14,7 +14,7 @@ export const Chat = () => {
           <Navbar />
           <ToastContainer />
           {/* chat window  */}
-          <div className="workSpace pt-[55px] h-full ">
+          <div className="workSpace  h-full ">
             <ChatWindow />
           </div>
         </div>

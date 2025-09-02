@@ -3,12 +3,15 @@ import { showToast } from "./ShowToast";
 export const extractTextFromPdf = async (
   file,
   setInput,
-  setisTextExtracting
+  setisTextExtracting,
+  setisReady
 ) => {
   if (!file) return;
   try {
     setisTextExtracting(true);
+    setisReady(false);
 
+    console.log("calling");
     // await new Promise((res, rej) => {
     //   setTimeout(() => {
     //     res(200);
@@ -33,5 +36,6 @@ export const extractTextFromPdf = async (
     showToast(error.message || "Fail to extract text", 1);
   } finally {
     setisTextExtracting(false);
+    setisReady(true);
   }
 };

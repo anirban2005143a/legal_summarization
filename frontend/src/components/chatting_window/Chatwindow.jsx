@@ -23,7 +23,7 @@ const ChatWindow = ({}) => {
   const massagesRef = useRef(null);
 
   // add asked question to message array
-  const handelSubmitQuery = async(input, setInput) => {
+  const handelSubmitQuery = async (input, setInput) => {
     if (!input.trim()) return;
     setisReady(false);
     const newMessage = {
@@ -36,6 +36,7 @@ const ChatWindow = ({}) => {
     setMessages((prev) => [...prev, newMessage]);
     setquestion(input);
     setInput("");
+    setselectedFiles(null);
   };
 
   //save chat question and answer to database
@@ -144,106 +145,114 @@ const ChatWindow = ({}) => {
 
   return (
     <>
-      <div className="flex flex-col mx-auto h-full md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] justify-center">
-        {/* Messages Container */}
-        {!isChatInfoFetching && messages && messages.length > 0 && (
-          <div
-            ref={massagesRef}
-            className="flex-1 overflow-y-auto py-4 px-2 space-y-10 overflow-x-hidden "
-          >
-            {messages.map((message) => {
-              return (
-                <div key={uuidv4()} className="flex flex-col space-y-10">
-                  {/* User Message */}
-                  {message.question && (
-                    <>
-                      <div className="flex justify-end ">
-                        <div className="flex gap-3 max-w-[80%] flex-row-reverse ">
-                          <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-indigo-100">
-                            <User className="w-6 h-6 text-white bg-indigo-600 rounded-full p-1" />
+      <div className="flex flex-col mx-auto h-full   justify-center items-center">
+        <div className="flex-1 overflow-y-auto">
+          {/* Messages Container */}
+          {!isChatInfoFetching && messages && messages.length > 0 && (
+            <div
+              ref={massagesRef}
+              className=" md:w-[80%] md:min-w-[800px] w-full max-w-[1500px] mx-auto py-4 px-2 space-y-10 overflow-hidden "
+            >
+              {messages.map((message, ind) => {
+                return (
+                  <div
+                    key={uuidv4()}
+                    className={`flex flex-col space-y-10 ${
+                      ind == 0 ? "pt-[55px]" : ""
+                    }`}
+                  >
+                    {/* User Message */}
+                    {message.question && (
+                      <>
+                        <div className="flex justify-end ">
+                          <div className="flex gap-3 max-w-[80%] flex-row-reverse ">
+                            <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-indigo-100">
+                              <User className="w-6 h-6 text-white bg-indigo-600 rounded-full p-1" />
+                            </div>
+                            <div className=" group relative">
+                              <div className="px-4 py-2 w-full bg-indigo-600 max-h-[300px] overflow-y-auto text-white rounded-br-2xl rounded-l-2xl shadow-sm overflow-x-auto">
+                                <p className="text-sm">{message.question}</p>
+                                <p className=" text-[10px] font-normal text-gray-200 mt-1">
+                                  {formatISODateToDDMMYYYY(Date.now())}
+                                </p>
+                              </div>
+                              <button
+                                aria-label="copy question"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  copyToClipboard(message.question);
+                                }}
+                                className="absolute right-2 top-full w-fit cursor-pointer mt-2 "
+                              >
+                                <Copy className=" text-gray-600 w-3.5 h-3.5 " />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {/* Bot Message */}
+                    {message.answer && (
+                      <div className="flex justify-start">
+                        <div className="flex gap-3 max-w-[80%] flex-row">
+                          <div className="flex-shrink-0 h-8 w-8  rounded-full flex items-center justify-center bg-purple-100">
+                            <Bot className="w-6 h-6 text-white p-1 bg-purple-600 rounded-full" />
                           </div>
                           <div className=" group relative">
-                            <div className="px-4 py-2 w-full bg-indigo-600 text-white rounded-br-2xl rounded-l-2xl shadow-sm overflow-x-auto">
-                              <p className="text-sm">{message.question}</p>
-                              <p className=" text-[10px] font-normal text-gray-200 mt-1">
+                            <div className="px-4 text-sm py-2 w-full bg-gray-100/20 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
+                              <p>{message.answer}</p>
+                              <p className=" text-[10px] font-normal text-gray-700 mt-1">
                                 {formatISODateToDDMMYYYY(Date.now())}
                               </p>
                             </div>
                             <button
-                              aria-label="copy question"
+                              aria-label="copy answer"
                               onClick={(e) => {
                                 e.preventDefault();
-                                copyToClipboard(message.question);
+                                copyToClipboard(message.answer);
                               }}
-                              className="absolute right-2 top-full w-fit cursor-pointer mt-2 "
+                              className="absolute left-2 top-full cursor-pointer py-2  w-fit"
                             >
                               <Copy className=" text-gray-600 w-3.5 h-3.5 " />
                             </button>
                           </div>
                         </div>
                       </div>
-                    </>
-                  )}
+                    )}
+                  </div>
+                );
+              })}
 
-                  {/* Bot Message */}
-                  {message.answer && (
-                    <div className="flex justify-start">
-                      <div className="flex gap-3 max-w-[80%] flex-row">
-                        <div className="flex-shrink-0 h-8 w-8  rounded-full flex items-center justify-center bg-purple-100">
-                          <Bot className="w-6 h-6 text-white p-1 bg-purple-600 rounded-full" />
-                        </div>
-                        <div className=" group relative">
-                          <div className="px-4 text-sm py-2 w-full bg-gray-100/20 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
-                            <p>{message.answer}</p>
-                            <p className=" text-[10px] font-normal text-gray-700 mt-1">
-                              {formatISODateToDDMMYYYY(Date.now())}
-                            </p>
-                          </div>
-                          <button
-                            aria-label="copy answer"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              copyToClipboard(message.answer);
-                            }}
-                            className="absolute left-2 top-full cursor-pointer py-2  w-fit"
-                          >
-                            <Copy className=" text-gray-600 w-3.5 h-3.5 " />
-                          </button>
-                        </div>
-                      </div>
+              {/* Loading Message */}
+              {!isChatInfoFetching && isFetching && (
+                <div className="flex justify-start">
+                  <div className="flex gap-3 w-[60%] flex-row">
+                    <div className="flex-shrink-0 h-8 w-8  rounded-full flex items-center justify-center bg-purple-100">
+                      <Bot className="w-6 h-6 text-white p-1 bg-purple-600 rounded-full" />
                     </div>
-                  )}
-                </div>
-              );
-            })}
-
-            {/* Loading Message */}
-            {!isChatInfoFetching && isFetching && (
-              <div className="flex justify-start">
-                <div className="flex gap-3 w-[60%] flex-row">
-                  <div className="flex-shrink-0 h-8 w-8  rounded-full flex items-center justify-center bg-purple-100">
-                    <Bot className="w-6 h-6 text-white p-1 bg-purple-600 rounded-full" />
-                  </div>
-                  {/* Message content */}
-                  <div className="bg-gray-200 px-2 py-3 w-full animate-pulse rounded-bl-2xl rounded-r-2xl">
-                    <div className="h-4 bg-gray-400/60 rounded-full w-3/4 mb-2"></div>
-                    <div className="h-4 bg-gray-400/60 rounded-full w-1/2"></div>
+                    {/* Message content */}
+                    <div className="bg-gray-200 px-2 py-3 w-full animate-pulse rounded-bl-2xl rounded-r-2xl">
+                      <div className="h-4 bg-gray-400/60 rounded-full w-3/4 mb-2"></div>
+                      <div className="h-4 bg-gray-400/60 rounded-full w-1/2"></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        <TextAreaForQuery
-          isEmpty={!(!isChatInfoFetching && messages && messages.length > 0)}
-          isReady={isReady}
-          setisReady={setisReady}
-          isFetching={isFetching}
-          handelSubmitQuery={handelSubmitQuery}
-          selectedFiles={selectedFiles}
-          setselectedFiles={setselectedFiles}
-        />
+              )}
+            </div>
+          )}
+        </div>
+        <div className="md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] ">
+          <TextAreaForQuery
+            isEmpty={!(!isChatInfoFetching && messages && messages.length > 0)}
+            isReady={isReady}
+            setisReady={setisReady}
+            isFetching={isFetching}
+            handelSubmitQuery={handelSubmitQuery}
+            selectedFiles={selectedFiles}
+            setselectedFiles={setselectedFiles}
+          />
+        </div>
       </div>
     </>
   );

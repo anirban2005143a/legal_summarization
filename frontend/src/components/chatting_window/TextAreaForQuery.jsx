@@ -77,7 +77,7 @@ export const TextAreaForQuery = ({
       setInput("");
       return;
     }
-    extractTextFromPdf(selectedFiles[0], setInput, setisTextExtracting);
+    extractTextFromPdf(selectedFiles[0], setInput, setisTextExtracting , setisReady);
   }, [selectedFiles]);
 
 
