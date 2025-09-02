@@ -1,6 +1,8 @@
-"use state";
-import { Send, ChevronDown } from "lucide-react";
+"use client";
+import { Send, ChevronDown, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import { ShowUploadedFiles } from "../ui/ShowUploadedFiles";
+import { extractTextFromPdf } from "@/utils/extractTextFromPdf";
 
 export const TextAreaForQuery = ({
   isEmpty,
@@ -8,12 +10,15 @@ export const TextAreaForQuery = ({
   isReady,
   setisReady,
   isFetching,
+  selectedFiles,
+  setselectedFiles,
 }) => {
   const [input, setInput] = useState("");
   const [isTypeDropdownOpen, setisTypeDropdownOpen] = useState(false);
   const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
   const [selectedType, setselectedType] = useState("Summary");
   const [selectedLang, setselectedLang] = useState("English");
+  const [isTextExtracting, setisTextExtracting] = useState(false);
   const typecontainerRef = useRef();
   const typedropdownRef = useRef();
   const langcontainerRef = useRef();
@@ -67,6 +72,15 @@ export const TextAreaForQuery = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [typecontainerRef, typedropdownRef, langcontainerRef, langdropdownRef]);
 
+  useEffect(() => {
+    if (!selectedFiles || selectedFiles.length == 0) {
+      setInput("");
+      return;
+    }
+    extractTextFromPdf(selectedFiles[0], setInput, setisTextExtracting);
+  }, [selectedFiles]);
+
+
   return (
     <>
       {/* Input Form */}
@@ -80,25 +94,35 @@ export const TextAreaForQuery = ({
         >
           <div className="relative flex items-center rounded-2xl border border-amber-800 bg-gray-200/30 ">
             <div className="w-full">
-              <textarea
-                ref={textareaRef}
-                value={input}
-                onInput={(e) => {
-                  e.preventDefault();
-                  !isReady && setisReady(e.target.value.trim() !== "");
-                  setInput(e.target.value);
-                }}
-                onKeyDown={handelAskAI}
-                placeholder="Type your message..."
-                rows="1"
-                className={`w-full ${
-                  isEmpty ? "px-6 py-5 " : "py-3 px-3"
-                }  focus:outline-none text-gray-800 text-sm transition-colors placeholder-gray-500 resize-none`}
-                style={{
-                  minHeight: "44px",
-                  maxHeight: "150px",
-                }}
-              />
+              {!selectedFiles || selectedFiles.length == 0 ? (
+                <textarea
+                  ref={textareaRef}
+                  value={input}
+                  onInput={(e) => {
+                    e.preventDefault();
+                    !isReady && setisReady(e.target.value.trim() !== "");
+                    setInput(e.target.value);
+                  }}
+                  onKeyDown={handelAskAI}
+                  placeholder="Type your message..."
+                  rows="1"
+                  className={`w-full ${
+                    isEmpty ? "px-6 py-5 " : "py-3 px-3"
+                  }  focus:outline-none text-gray-800 text-sm transition-colors placeholder-gray-500 resize-none`}
+                  style={{
+                    minHeight: "44px",
+                    maxHeight: "150px",
+                  }}
+                />
+              ) : (
+                <ShowUploadedFiles
+                  files={selectedFiles}
+                  setfiles={setselectedFiles}
+                  extractedText={input}
+                  setExtractedText={setInput}
+                  isLoading={isTextExtracting}
+                />
+              )}
 
               <div className=" flex items-center justify-start gap-1 pl-1">
                 {/* select type from dropdown  */}
@@ -179,6 +203,34 @@ export const TextAreaForQuery = ({
                       ))}
                     </ul>
                   </div>
+                </div>
+
+                {/* select pdf file  */}
+                <div className="relative w-fit mb-1">
+                  <label
+                    htmlFor="file-input"
+                    className="w-full cursor-pointer px-1.5 py-1 flex items-center justify-between gap-1 rounded-full font-medium text-gray-900 text-xs bg-amber-200/20 border border-amber-900/40 hover:bg-amber-200/10 transition-colors"
+                  >
+                    <Plus
+                      className={`w-5 h-5 transition-transform duration-300 ${
+                        isLangDropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                    Select file
+                  </label>
+                  {/*file input */}
+                  <input
+                    type="file"
+                    accept=".pdf,.txt"
+                    multiple={false}
+                    // value={selectedFiles}
+                    onChange={(e) => {
+                      setselectedFiles(Array.from(e.target.files));
+                      e.target.value = null;
+                    }}
+                    id="file-input"
+                    className=" hidden"
+                  />
                 </div>
               </div>
             </div>

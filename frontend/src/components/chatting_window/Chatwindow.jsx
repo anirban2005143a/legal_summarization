@@ -17,13 +17,13 @@ const ChatWindow = ({}) => {
   const [isFetching, setisFetching] = useState(false);
   const [question, setquestion] = useState("");
   const [answer, setanswer] = useState("");
-
+  const [selectedFiles, setselectedFiles] = useState(null);
   const [isReady, setisReady] = useState(false);
 
   const massagesRef = useRef(null);
 
   // add asked question to message array
-  const handelSubmitQuery = (input, setInput) => {
+  const handelSubmitQuery = async(input, setInput) => {
     if (!input.trim()) return;
     setisReady(false);
     const newMessage = {
@@ -237,11 +237,12 @@ const ChatWindow = ({}) => {
 
         <TextAreaForQuery
           isEmpty={!(!isChatInfoFetching && messages && messages.length > 0)}
-          // isEmpty = {false}
           isReady={isReady}
           setisReady={setisReady}
           isFetching={isFetching}
           handelSubmitQuery={handelSubmitQuery}
+          selectedFiles={selectedFiles}
+          setselectedFiles={setselectedFiles}
         />
       </div>
     </>

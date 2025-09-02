@@ -2,6 +2,10 @@
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import File, UploadFile
+from fastapi.responses import JSONResponse
+import io
+import PyPDF2
 from pydantic import BaseModel
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from dotenv import load_dotenv
@@ -37,7 +41,7 @@ app.add_middleware(
 
 class GenerationParams(BaseModel):
     max_new_tokens: Optional[int] = 128
-    num_beams: Optional[int] = 4
+    num_beams: Optional[int] = 3
     length_penalty: Optional[float] = 0.8
     early_stopping: Optional[bool] = False
     temperature: Optional[float] = None  # Optional params
@@ -91,3 +95,17 @@ def predict(data: InputText):
             status_code=500,
             detail=f"Internal server error: Please try again"
         )
+
+
+@app.post("/extract-text")
+async def extract_text(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        reader = PyPDF2.PdfReader(io.BytesIO(contents))
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text() or ""
+        
+        return JSONResponse({"text": text})
+    except Exception as e:
+        return JSONResponse({"error": "Extraction failed", "details": str(e)}, status_code=500)

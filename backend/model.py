@@ -93,7 +93,7 @@ def generate_summary(text, api_url, api_token=None, summary_params=None):
     if summary_params is None:
         summary_params = {
             "max_new_tokens": 128,
-            "num_beams": 4,
+            "num_beams": 3,
             "length_penalty": 0.8,
             "early_stopping": False
         }
