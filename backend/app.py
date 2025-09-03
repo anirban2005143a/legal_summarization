@@ -101,11 +101,29 @@ def predict(data: InputText):
 async def extract_text(file: UploadFile = File(...)):
     try:
         contents = await file.read()
-        reader = PyPDF2.PdfReader(io.BytesIO(contents))
-        text = ""
-        for page in reader.pages:
-            text += page.extract_text() or ""
-        
+        filename = file.filename.lower()
+
+        # Handle PDF files
+        if filename.endswith(".pdf") or file.content_type == "application/pdf":
+            reader = PyPDF2.PdfReader(io.BytesIO(contents))
+            text = ""
+            for page in reader.pages:
+                text += page.extract_text() or ""
+
+        # Handle TXT files
+        elif filename.endswith(".txt") or file.content_type == "text/plain":
+            text = contents.decode("utf-8", errors="ignore")  # Decode bytes to string
+
+        else:
+            return JSONResponse(
+                {"error": "Unsupported file type. Only PDF and TXT are supported."},
+                status_code=400
+            )
+
         return JSONResponse({"text": text})
+        
     except Exception as e:
-        return JSONResponse({"error": "Extraction failed", "details": str(e)}, status_code=500)
+        return JSONResponse(
+            {"error": "Extraction failed", "details": str(e)},
+            status_code=500
+        )
