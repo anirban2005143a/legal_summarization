@@ -24,12 +24,12 @@ export const TextAreaForQuery = ({
   const langcontainerRef = useRef();
   const langdropdownRef = useRef();
   const textareaRef = useRef(null);
+  const maxHeight = 150; // px
 
   // Auto-resize textarea based on content
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
-      const maxHeight = 150; // Maximum height before scrolling
       const newHeight = Math.min(textareaRef.current.scrollHeight, maxHeight);
       textareaRef.current.style.height = `${newHeight}px`;
 
@@ -77,9 +77,13 @@ export const TextAreaForQuery = ({
       setInput("");
       return;
     }
-    extractTextFromPdf(selectedFiles[0], setInput, setisTextExtracting , setisReady);
+    extractTextFromPdf(
+      selectedFiles[0],
+      setInput,
+      setisTextExtracting,
+      setisReady
+    );
   }, [selectedFiles]);
-
 
   return (
     <>
@@ -121,6 +125,7 @@ export const TextAreaForQuery = ({
                   extractedText={input}
                   setExtractedText={setInput}
                   isLoading={isTextExtracting}
+                  textareaRef={textareaRef}
                 />
               )}
 

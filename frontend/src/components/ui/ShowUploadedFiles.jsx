@@ -7,6 +7,7 @@ export const ShowUploadedFiles = ({
   extractedText,
   setExtractedText,
   isLoading,
+  textareaRef,
 }) => {
   if (!files || files.length === 0) return null;
 
@@ -24,7 +25,7 @@ export const ShowUploadedFiles = ({
           return (
             <div
               key={index}
-              className="flex items-center justify-between rounded-2xl px-4 py-2 bg-amber-200/20 border border-amber-900/40 "
+              className="flex items-center justify-between rounded-t-2xl rounded-b-md px-4 py-2 bg-amber-200/20 border border-amber-900/40 "
             >
               <div
                 className={`flex items-center gap-4 py-2 ${
@@ -70,11 +71,11 @@ export const ShowUploadedFiles = ({
       {/* Extracted Text Input */}
       {!isLoading && (
         <textarea
+          ref={textareaRef}
           value={extractedText}
           onChange={(e) => setExtractedText(e.target.value)}
           placeholder="Extracted text"
-          className="w-full p-2 text-gray-700 text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400"
-          rows={5}
+          className="w-full p-2 text-gray-700 text-sm rounded-md focus:outline-none focus:ring-1 focus:ring-amber-800/70"
           disabled={isLoading}
         />
       )}

@@ -1,7 +1,16 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Send, Bot, User, Loader2, MicOff, Mic, Copy } from "lucide-react";
+import {
+  Send,
+  Bot,
+  User,
+  Loader2,
+  MicOff,
+  Mic,
+  Copy,
+  Download,
+} from "lucide-react";
 import { saveChatResponse } from "./functions/saveChat";
 import { getChatInfo } from "./functions/getChatInfo";
 import { v4 as uuidv4 } from "uuid";
@@ -10,6 +19,7 @@ import axios from "axios";
 import { ChatContentLoader } from "./ChatContentLoader";
 import { TextAreaForQuery } from "./TextAreaForQuery";
 import { formatISODateToDDMMYYYY } from "@/utils/formateDate";
+import { handleDownload } from "@/utils/downlaodPdfFromText";
 
 const ChatWindow = ({}) => {
   const [messages, setMessages] = useState([]);
@@ -130,7 +140,11 @@ const ChatWindow = ({}) => {
   //scroll to bottom as messages changes (means a question or answer is added to messages array)
   useEffect(() => {
     if (massagesRef.current || isFetching) {
-      massagesRef.current.scrollTop = massagesRef.current.scrollHeight;
+      // massagesRef.current.scrollTop = massagesRef.current.scrollHeight;
+      massagesRef.current.scrollTo({
+        top: massagesRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [messages, isFetching]);
 
@@ -146,18 +160,15 @@ const ChatWindow = ({}) => {
   return (
     <>
       <div className="flex flex-col mx-auto h-full   justify-center items-center">
-        <div className="flex-1 overflow-y-auto">
-          {/* Messages Container */}
-          {!isChatInfoFetching && messages && messages.length > 0 && (
-            <div
-              ref={massagesRef}
-              className=" md:w-[80%] md:min-w-[800px] w-full max-w-[1500px] mx-auto py-4 px-2 space-y-10 overflow-hidden "
-            >
+        {/* Messages Container */}
+        {!isChatInfoFetching && messages && messages.length > 0 && (
+          <div className="flex-1 overflow-y-auto" ref={massagesRef}>
+            <div className=" md:w-[80%] md:min-w-[800px] w-full max-w-[1500px] mx-auto py-4 px-2 space-y-10 overflow-hidden ">
               {messages.map((message, ind) => {
                 return (
                   <div
                     key={uuidv4()}
-                    className={`flex flex-col space-y-10 ${
+                    className={`flex flex-col space-y-10 py-5 ${
                       ind == 0 ? "pt-[55px]" : ""
                     }`}
                   >
@@ -206,16 +217,31 @@ const ChatWindow = ({}) => {
                                 {formatISODateToDDMMYYYY(Date.now())}
                               </p>
                             </div>
-                            <button
-                              aria-label="copy answer"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                copyToClipboard(message.answer);
-                              }}
-                              className="absolute left-2 top-full cursor-pointer py-2  w-fit"
-                            >
-                              <Copy className=" text-gray-600 w-3.5 h-3.5 " />
-                            </button>
+                            <div className="absolute left-2 top-full flex items-center gap-4 w-fit">
+                              <button
+                                aria-label="copy answer"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  copyToClipboard(message.answer);
+                                }}
+                                className=" cursor-pointer py-2"
+                              >
+                                <Copy className=" hover:text-gray-800 text-gray-600 w-3.5 h-3.5 " />
+                              </button>
+                              <button
+                                aria-label="download answer"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleDownload({
+                                    data: { title: "Judgment Summary" },
+                                    textContent: message.answer,
+                                  });
+                                }}
+                                className=" cursor-pointer py-2"
+                              >
+                                <Download className=" hover:text-gray-800 text-gray-600 w-3.5 h-3.5 " />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -240,8 +266,9 @@ const ChatWindow = ({}) => {
                 </div>
               )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
         <div className="md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] ">
           <TextAreaForQuery
             isEmpty={!(!isChatInfoFetching && messages && messages.length > 0)}

@@ -25,7 +25,7 @@ import Link from "next/link";
 import DetailCaseCardContentLoader from "./DetailCaseContentLoader";
 import axios from "axios";
 import ScrollButtons from "../ui/ScrollButtons";
-import jsPDF from "jspdf";
+import { handleDownload } from "@/utils/downlaodPdfFromText";
 
 const LongExpandableContent = ({ ref, content, plainText, setplainText }) => {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -113,51 +113,6 @@ export const DetailCaseCard = ({}) => {
     }
   }, []);
 
-  const handleDownload = useCallback(() => {
-    try {
-      const doc = new jsPDF();
-
-      const content = contentRef.current?.innerText?.trim() || "";
-      const title = data.title?.trim() || "Untitled";
-      if (!content) return;
-
-      // Title
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(20);
-      const titleLines = doc.splitTextToSize(title, 190);
-      let titleY = 20;
-      titleLines.forEach((line) => {
-        doc.text(line, 10, titleY);
-        titleY += 10; // spacing between title lines
-      });
-
-      // Content
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(12);
-
-      const pageHeight = doc.internal.pageSize.height;
-      const lineHeight = 7;
-      const maxY = pageHeight - 20;
-
-      let y = titleY + 5; // Add small spacing after title block
-      const lines = doc.splitTextToSize(content, 190);
-
-      lines.forEach((line) => {
-        if (y > maxY) {
-          doc.addPage();
-          y = 20;
-        }
-        doc.text(line, 10, y);
-        y += lineHeight;
-      });
-
-      doc.save(`${title}.pdf`);
-    } catch (error) {
-      console.log(error);
-      showToast(error.message || "Download failed", 1);
-    }
-  }, [data]);
-
   useEffect(() => {
     !data && fetchData();
   }, []);
@@ -223,7 +178,14 @@ export const DetailCaseCard = ({}) => {
                   )}
                   {/* Download button */}
                   <button
-                    onClick={handleDownload}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleDownload({
+                        data: data,
+                        textContent: null,
+                        textContentRef: containerRef,
+                      });
+                    }}
                     className={`disabled:cursor-not-allowed  flex items-center gap-2 text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 z-50 rounded-lg transition-all duration-200  `}
                   >
                     <Download className=" inline-block w-4 h-4 " />
