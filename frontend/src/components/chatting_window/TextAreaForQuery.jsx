@@ -85,6 +85,7 @@ export const TextAreaForQuery = ({
     );
   }, [selectedFiles]);
 
+
   return (
     <>
       {/* Input Form */}
@@ -121,7 +122,7 @@ export const TextAreaForQuery = ({
               ) : (
                 <ShowUploadedFiles
                   files={selectedFiles}
-                  setfiles={setselectedFiles}
+                  setFiles={setselectedFiles}
                   extractedText={input}
                   setExtractedText={setInput}
                   isLoading={isTextExtracting}

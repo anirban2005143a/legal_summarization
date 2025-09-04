@@ -153,8 +153,6 @@ const ChatWindow = ({}) => {
     getChatQueAns();
   }, []);
 
-  console.log(messages);
-
   if (isChatInfoFetching) return <ChatContentLoader />;
 
   return (

@@ -50,12 +50,15 @@ export const ShowUploadedFiles = ({
 
               <button
                 disabled={isLoading}
+                type="button"
                 aria-label="Remove file"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   const updatedFiles = files.filter((_, i) => i !== index);
+                  console.log(setFiles);
                   setFiles(updatedFiles);
                 }}
-                className="p-1 rounded-full hover:bg-gray-300 transition"
+                className="p-1 cursor-pointer rounded-full hover:bg-gray-300 transition"
               >
                 <X className="w-4 h-4 text-gray-700" />
               </button>

@@ -30,7 +30,7 @@ export const extractTextFromPdf = async (
     );
 
     const data = await res.json();
-    setInput(data.text);
+    setInput(data.text?.trim());
   } catch (error) {
     console.log(error);
     showToast(error.message || "Fail to extract text", 1);
