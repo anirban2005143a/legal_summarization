@@ -10,10 +10,8 @@ from pydantic import BaseModel
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from dotenv import load_dotenv
 from typing import Optional  # Add this import
-# import torch
 import os
-from model import generate_summary  # Ensure this is present
-# torch.set_num_threads(os.cpu_count())
+from callDifferentModelApi import call_t5_model, call_phi4_model
 
 # Load environment variables
 load_dotenv()
@@ -31,14 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# # Load model and tokenizer
-# tokenizer = AutoTokenizer.from_pretrained("./model/PnHLayman")
-# model = AutoModelForSeq2SeqLM.from_pretrained("./model/PnHLayman")
-
-# # Set device
-# device = "cuda" if torch.cuda.is_available() else "cpu"
-# model.to(device)
-
 class GenerationParams(BaseModel):
     max_new_tokens: Optional[int] = 128
     num_beams: Optional[int] = 3
@@ -49,14 +39,19 @@ class GenerationParams(BaseModel):
 
 class InputText(BaseModel):
     text: str
-    parameters: Optional[GenerationParams] = None  # Nested params
+    model_name: str  
+    parameters: Optional[GenerationParams] = None
     
 
-def trim_to_last_fullstop(text):
-    last_dot_index = text.rfind('.')
+def trim_to_last_fullstop(text: str) -> str:
+    if not text or not isinstance(text, str):
+        return ""   # or just return text if you prefer None-safe
+
+    last_dot_index = text.rfind(".")
     if last_dot_index != -1:
         return text[:last_dot_index + 1]
-    return text  # Return original if no full stop found
+    return text
+
 
 @app.get("/")
 def home():
@@ -69,31 +64,50 @@ def predict(data: InputText):
         api_token = os.getenv("HF_TOKEN")
         if not api_token:
             raise ValueError("API token not found in environment variables")
+
+        # Load API URL from env using model_name
+        model_key = data.model_name.upper().replace("-", "_")  # e.g. T5_BASE → T5_BASE_URL
+        api_url = None
+        if "t5" in model_key.lower():
+            api_url = os.getenv("T5_URL")  # set this in .env
+        elif "phi4" in model_key.lower():
+            api_url = os.getenv("PHI4_URL")  # set this in .env
         
-        api_url = "https://y7xodfsssvsb59sa.us-east-1.aws.endpoints.huggingface.cloud"
-        
-         # Use provided parameters or defaults
+        if not api_url:
+            raise ValueError(f"No API URL found for model: {data.model_name}")
+
+        # Use provided parameters or defaults
         params = data.parameters or GenerationParams()
         summary_params = params.dict(exclude_none=True)  # Remove None values
-        
-        print(summary_params)
-        
-        # Generate summary
-        summary = generate_summary(
-            text=data.text,
-            api_url=api_url,
-            api_token=api_token,
-            summary_params=summary_params
-        )
-        
+
+        print("Summary Params:", summary_params)
+
+        # Call appropriate function based on model name
+        if "t5" in data.model_name.lower():
+            summary = call_t5_model(
+                text=data.text,
+                api_url=api_url,
+                api_token=api_token,
+                params=summary_params
+            )
+        elif "phi4" in data.model_name.lower():
+            summary = call_phi4_model(
+                text=data.text,
+                api_url=api_url,
+                api_token=api_token,
+                params=summary_params
+            )
+        else:
+            raise ValueError(f"Unsupported model: {data.model_name}")
+
         trimmed_summary = trim_to_last_fullstop(summary)
         return {"summary": trimmed_summary}
 
     except Exception as e:
-        print("error" , e)
+        print("error:", e)
         raise HTTPException(
             status_code=500,
-            detail=f"Internal server error: Please try again"
+            detail=f"Internal server error: {str(e)}"
         )
 
 
