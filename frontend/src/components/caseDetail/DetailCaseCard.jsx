@@ -499,7 +499,7 @@ const SummaryContent = ({ input, isGetSummary = false }) => {
                     setselectedModel(item);
                     setisModelDropDownOpen(false);
                   }}
-                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
+                  className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
                 >
                   {item}
                 </li>
