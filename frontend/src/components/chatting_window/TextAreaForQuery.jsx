@@ -12,15 +12,16 @@ export const TextAreaForQuery = ({
   isFetching,
   selectedFiles,
   setselectedFiles,
+  selectedModel,
+  setselectedModel
 }) => {
   const [input, setInput] = useState("");
-  const [isTypeDropdownOpen, setisTypeDropdownOpen] = useState(false);
+  const [isModelDropdownOpen, setisModelDropdownOpen] = useState(false);
   const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
-  const [selectedType, setselectedType] = useState("Summary");
   const [selectedLang, setselectedLang] = useState("English");
   const [isTextExtracting, setisTextExtracting] = useState(false);
-  const typecontainerRef = useRef();
-  const typedropdownRef = useRef();
+  const modelcontainerRef = useRef();
+  const modeldropdownRef = useRef();
   const langcontainerRef = useRef();
   const langdropdownRef = useRef();
   const textareaRef = useRef(null);
@@ -52,12 +53,12 @@ export const TextAreaForQuery = ({
   useEffect(() => {
     function handleClickOutside(e) {
       if (
-        typecontainerRef.current &&
-        !typecontainerRef.current.contains(e.target) &&
-        typedropdownRef.current &&
-        !typedropdownRef.current.contains(e.target)
+        modelcontainerRef.current &&
+        !modelcontainerRef.current.contains(e.target) &&
+        modeldropdownRef.current &&
+        !modeldropdownRef.current.contains(e.target)
       ) {
-        setisTypeDropdownOpen(false);
+        setisModelDropdownOpen(false);
       }
       if (
         langcontainerRef.current &&
@@ -70,7 +71,7 @@ export const TextAreaForQuery = ({
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [typecontainerRef, typedropdownRef, langcontainerRef, langdropdownRef]);
+  }, [modelcontainerRef, modeldropdownRef, langcontainerRef, langdropdownRef]);
 
   useEffect(() => {
     if (!selectedFiles || selectedFiles.length == 0) {
@@ -134,35 +135,35 @@ export const TextAreaForQuery = ({
                 {/* select type from dropdown  */}
                 <div className="relative w-fit mx-1 mb-1">
                   <button
-                    ref={typecontainerRef}
-                    onClick={() => setisTypeDropdownOpen((prev) => !prev)}
+                    ref={modelcontainerRef}
+                    onClick={() => setisModelDropdownOpen((prev) => !prev)}
                     className="w-full cursor-pointer px-1.5 py-1 flex items-center justify-between gap-1 rounded-full font-medium text-xs text-gray-900  bg-amber-200/20 border border-amber-900/40 hover:bg-amber-200/10 transition-colors"
                   >
-                    {selectedType}
+                    {selectedModel}
                     <ChevronDown
                       className={`w-5 h-5 transition-transform duration-300 ${
-                        isTypeDropdownOpen ? "rotate-180" : ""
+                        isModelDropdownOpen ? "rotate-180" : ""
                       }`}
                     />
                   </button>
                   {/*type Dropdown */}
                   <div
-                    ref={typedropdownRef}
+                    ref={modeldropdownRef}
                     className={`absolute z-10 bottom-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
-                      isTypeDropdownOpen
+                      isModelDropdownOpen
                         ? "opacity-100 scale-100 pointer-events-auto"
                         : "opacity-0 scale-y-95 pointer-events-none"
                     }`}
                   >
                     <ul className="">
-                      {["Summary", "Simplify"].map((item) => (
+                      {["T5", "Phi4-mini"].map((item) => (
                         <li
                           key={item}
                           onClick={() => {
-                            setselectedType(item);
-                            setisTypeDropdownOpen(false);
+                            setselectedModel(item);
+                            setisModelDropdownOpen(false);
                           }}
-                          className="px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-200 cursor-pointer"
+                          className="px-4 py-1.5 whitespace-nowrap text-sm text-gray-800 hover:bg-gray-200 cursor-pointer"
                         >
                           {item}
                         </li>

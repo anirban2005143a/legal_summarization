@@ -24,6 +24,7 @@ import { handleDownload } from "@/utils/downlaodPdfFromText";
 const ChatWindow = ({}) => {
   const [messages, setMessages] = useState([]);
   const [isChatInfoFetching, setisChatInfoFetching] = useState(true);
+  const [selectedModel, setselectedModel] = useState("T5");
   const [isFetching, setisFetching] = useState(false);
   const [question, setquestion] = useState("");
   const [answer, setanswer] = useState("");
@@ -74,6 +75,7 @@ const ChatWindow = ({}) => {
             num_beams: 8,
             length_penalty: 0.8, // Favors longer outputs (values <1.0)
           },
+          model_name: selectedModel || "t5",
         },
         {
           headers: {
@@ -276,6 +278,8 @@ const ChatWindow = ({}) => {
             handelSubmitQuery={handelSubmitQuery}
             selectedFiles={selectedFiles}
             setselectedFiles={setselectedFiles}
+            selectedModel={selectedModel}
+            setselectedModel={setselectedModel}
           />
         </div>
       </div>

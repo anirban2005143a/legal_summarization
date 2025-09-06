@@ -14,6 +14,7 @@ export const LegalCasesList = () => {
 
   const handelFetchData = useCallback(
     async (query = "judgment", pageNumber = 0) => {
+      console.log("calling")
       if (!query) {
         showToast("Search query not found", 1);
         setisLoading(false);
@@ -45,11 +46,11 @@ export const LegalCasesList = () => {
     []
   );
 
-  console.log(pagenum);
+  // console.log(pagenum);
 
   const checkLocalStore = useCallback(async () => {
     const time = JSON.parse(localStorage.getItem("timestamp"))?.timestamp || 0;
-    console.log("fetch data form local store : ", time);
+    // console.log("fetch data form local store : ", time);
 
     if (Date.now() - time >= 1000 * 3600 * 24) {
       console.log("long");
@@ -146,7 +147,7 @@ const SearchBar = ({ handelSearch, setisLoading, isLoading }) => {
     setsearchQuery(sessionStorage.getItem("query") || "");
   }, []);
 
-  console.log(isLoading);
+  // console.log(isLoading);
 
   return (
     <div className=" border-b ">

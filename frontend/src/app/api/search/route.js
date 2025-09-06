@@ -29,7 +29,7 @@ export async function GET(request) {
         return NextResponse.json(data)
 
     } catch (error) {
-        console.log("error while fetching:", error)
+        // console.log("error while fetching:", error)
         throw new Error(error.message)
     }
 

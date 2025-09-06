@@ -8,7 +8,7 @@ export const fetchDocById = async (docid = null) => {
         // console.log(data)
         return data
     } catch (error) {
-        console.log(error)
+        // console.log("error" , error)
         throw new Error(error)
     }
 }
