@@ -1,18 +1,18 @@
 import { Bot, User } from 'lucide-react';
 import React from 'react';
 
-export const ChatContentLoader = ({ messageCount = 5 , className }) => {
+export const ChatContentLoader = ({ messageCount = 2 , className }) => {
   return (
     <div className={`flex flex-col justify-between md:w-[60%] md:min-w-[500px] w-full max-w-[1500px] mx-auto h-full ${className || ""}`}>
       {/* Messages area */}
-      <div className="overflow-y-auto p-4 space-y-6">
+      <div className="overflow-y-hidden p-4 space-y-6">
         {Array.from({ length: messageCount }).map((_, index) => (
           <React.Fragment key={index}>
-            {/* Bot message loader */}
-            {index % 2 === 0 && <BotMessageLoader />}
-
             {/* User message loader */}
-            {index % 2 === 1 && <UserMessageLoader />}
+            {index % 2 === 0 && <UserMessageLoader />}
+
+            {/* Bot message loader */}
+            {index % 2 === 1 && <BotMessageLoader />}
           </React.Fragment>
         ))}
       </div>

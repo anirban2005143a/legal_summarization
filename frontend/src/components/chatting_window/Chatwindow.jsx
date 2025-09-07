@@ -36,6 +36,7 @@ const ChatWindow = ({}) => {
   // add asked question to message array
   const handelSubmitQuery = async (input, setInput) => {
     if (!input.trim()) return;
+    console.log("submitting")
     setisReady(false);
     const newMessage = {
       question: input,
@@ -156,7 +157,7 @@ const ChatWindow = ({}) => {
   }, []);
 
   if (isChatInfoFetching) return <ChatContentLoader />;
-
+// console.log(isReady)
   return (
     <>
       <div className="flex flex-col mx-auto h-full   justify-center items-center">
@@ -272,7 +273,7 @@ const ChatWindow = ({}) => {
         <div className="md:w-[60%] md:min-w-[600px] w-full max-w-[1500px] ">
           <TextAreaForQuery
             isEmpty={!(!isChatInfoFetching && messages && messages.length > 0)}
-            isReady={isReady}
+            isReady={!isFetching}
             setisReady={setisReady}
             isFetching={isFetching}
             handelSubmitQuery={handelSubmitQuery}

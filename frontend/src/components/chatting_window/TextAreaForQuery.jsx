@@ -13,7 +13,7 @@ export const TextAreaForQuery = ({
   selectedFiles,
   setselectedFiles,
   selectedModel,
-  setselectedModel
+  setselectedModel,
 }) => {
   const [input, setInput] = useState("");
   const [isModelDropdownOpen, setisModelDropdownOpen] = useState(false);
@@ -86,7 +86,6 @@ export const TextAreaForQuery = ({
     );
   }, [selectedFiles]);
 
-
   return (
     <>
       {/* Input Form */}
@@ -132,11 +131,15 @@ export const TextAreaForQuery = ({
               )}
 
               <div className=" flex items-center justify-start gap-1 pl-1">
-                {/* select type from dropdown  */}
+                {/* select model from dropdown  */}
                 <div className="relative w-fit mx-1 mb-1">
                   <button
                     ref={modelcontainerRef}
-                    onClick={() => setisModelDropdownOpen((prev) => !prev)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setisModelDropdownOpen((prev) => !prev);
+                    }}
                     className="w-full cursor-pointer px-1.5 py-1 flex items-center justify-between gap-1 rounded-full font-medium text-xs text-gray-900  bg-amber-200/20 border border-amber-900/40 hover:bg-amber-200/10 transition-colors"
                   >
                     {selectedModel}
@@ -148,8 +151,12 @@ export const TextAreaForQuery = ({
                   </button>
                   {/*type Dropdown */}
                   <div
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
                     ref={modeldropdownRef}
-                    className={`absolute z-10 bottom-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
+                    className={`absolute z-10 bottom-full left-0 w-fit mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
                       isModelDropdownOpen
                         ? "opacity-100 scale-100 pointer-events-auto"
                         : "opacity-0 scale-y-95 pointer-events-none"
@@ -159,11 +166,13 @@ export const TextAreaForQuery = ({
                       {["T5", "Phi4-mini"].map((item) => (
                         <li
                           key={item}
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
+                            console.log("changing");
                             setselectedModel(item);
                             setisModelDropdownOpen(false);
                           }}
-                          className="px-4 py-1.5 whitespace-nowrap text-sm text-gray-800 hover:bg-gray-200 cursor-pointer"
+                          className="px-4 py-1.5  whitespace-nowrap text-sm text-gray-800 hover:bg-gray-200 cursor-pointer"
                         >
                           {item}
                         </li>
