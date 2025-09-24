@@ -22,7 +22,7 @@ export async function GET(request) {
     const docid = url.searchParams.get("docid");
     const data = await fetchDocById(docid);
     console.log("data", data);
-    return NextResponse.json({ message: "anirban" });
+    return NextResponse.json(data);
   } catch (error) {
     console.log("error while fetching:", error);
     // showToast(error.message , 1)

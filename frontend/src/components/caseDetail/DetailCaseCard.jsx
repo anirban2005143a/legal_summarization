@@ -207,6 +207,7 @@ export const DetailCaseCard = ({}) => {
                   <SummaryContent
                     input={plainText}
                     isGetSummary={isGetSummary}
+                    setisGetSummary={setisGetSummary}
                   />
                 </section>
               </div>
@@ -375,7 +376,7 @@ export const DetailCaseCard = ({}) => {
   );
 };
 
-const SummaryContent = ({ input, isGetSummary = false }) => {
+const SummaryContent = ({ input, isGetSummary = false, setisGetSummary }) => {
   const [output, setOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isModelDropDownOpen, setisModelDropDownOpen] = useState(false);
@@ -400,11 +401,11 @@ const SummaryContent = ({ input, isGetSummary = false }) => {
           {
             text: input,
             parameters: {
-              max_new_tokens: 50,
-              num_beams: 3,
-              // length_penalty: 1.5,
+              max_new_tokens: 128,
+              num_beams: 8,
+              length_penalty: 0.8,
             },
-            model_name: modeName || "t5",
+            model_name: selectedModel || "t5",
           },
           {
             headers: {
@@ -424,16 +425,21 @@ const SummaryContent = ({ input, isGetSummary = false }) => {
         );
       } finally {
         setIsLoading(false);
+        setisGetSummary(false);
       }
     },
-    [input]
+    [input, selectedModel]
   );
 
   useEffect(() => {
-    if (isGetSummary && !output && !isLoading) {
+    // if (isGetSummary && !output && !isLoading) {
+    //   handelGetSummary();
+    // }
+    if (isGetSummary && !isLoading) {
       handelGetSummary();
     }
-  }, [isGetSummary]);
+    console.log(isGetSummary, isLoading);
+  }, [isGetSummary, isLoading]);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -485,11 +491,11 @@ const SummaryContent = ({ input, isGetSummary = false }) => {
           {/*model Dropdown */}
           <div
             ref={modeldropdownRef}
-            className={`absolute z-10 top-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
+            className={`absolute z-10 top-full left-0 w-fit mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
               isModelDropDownOpen
                 ? "opacity-100 scale-100 pointer-events-auto"
                 : "opacity-0 scale-y-95 pointer-events-none"
-            }`}
+            } ${isLoading ? "cursor-not-allowed" : ""}`}
           >
             <ul className="py-2">
               {["T5", "phi4-mini"].map((item) => (

@@ -24,8 +24,8 @@ export const AIPopup = ({ isOpen, onClose, input }) => {
           text: input,
           parameters: {
             max_new_tokens: 128, 
-            num_beams: 3, 
-            // length_penalty: 1.5,
+            num_beams: 8, 
+            length_penalty: 0.8,
           },
         },
         {
