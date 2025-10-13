@@ -43,3 +43,5 @@ next-env.d.ts
 year_wise_sorted.json
 # legal_judgments.json
 judgment_summary_pairs.json
+
+.env

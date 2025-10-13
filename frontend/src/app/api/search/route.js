@@ -10,6 +10,8 @@ const fetchDocByQuery = async (formInput = "judgment" , pagenum=0) => {
                 "Authorization": `Token ${process.env.API_KEY}`
             }
         })
+
+        console.log(data)
         const data = await res.json()
         console.log(data)
         return data["docs"]
