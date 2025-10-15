@@ -71,11 +71,11 @@ const ChatWindow = ({}) => {
         `${process.env.NEXT_PUBLIC_FAST_URL}/predict`,
         {
           text: input,
-          parameters: {
-            max_new_tokens: 128, 
-            num_beams: 8,
-            length_penalty: 0.8, 
-          },
+          // parameters: {
+          //   max_new_tokens: 128, 
+          //   num_beams: 8,
+          //   length_penalty: 0.8, 
+          // },
           model_name: selectedModel || "t5",
         },
         {
