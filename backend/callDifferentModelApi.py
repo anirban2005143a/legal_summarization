@@ -94,7 +94,7 @@ def call_t5_model(api_url, api_token, text, params=None):
 
     for attempt in range(1, retries + 1):
         try:
-            response = requests.post(api_url, headers=headers, json=payload, timeout=60)
+            response = requests.post(api_url, headers=headers, json=payload, timeout=180)
 
             if response.status_code == 503:
                 raise Exception("503 Service Unavailable (model cold start)")
@@ -141,7 +141,7 @@ def call_phi4_model(api_url, api_token, text, params=None):
 
     for attempt in range(1, retries + 1):
         try:
-            response = requests.post(api_url, headers=headers, json=payload, timeout=60)
+            response = requests.post(api_url, headers=headers, json=payload, timeout=180)
 
             if response.status_code == 503:
                 raise Exception("503 Service Unavailable (model cold start)")

@@ -88,14 +88,14 @@ def predict(data: InputText):
                 text=data.text,
                 api_url=api_url,
                 api_token=api_token,
-                params=summary_params
+                # params=summary_params
             )
         elif "phi4" in data.model_name.lower():
             summary = call_phi4_model(
                 text=data.text,
                 api_url=api_url,
                 api_token=api_token,
-                params=summary_params
+                # params=summary_params
             )
         else:
             raise ValueError(f"Unsupported model: {data.model_name}")
