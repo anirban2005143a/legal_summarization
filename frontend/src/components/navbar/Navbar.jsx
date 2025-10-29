@@ -47,7 +47,7 @@ export const Navbar = () => {
       transition={{ duration: 0.2, ease: "linear" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8  ">
-        <nav className="flex justify-between h-13 items-center ">
+        <nav className="flex justify-between h-15 items-center">
           {/* Logo */}
           <LogoComponent />
 

@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export const HeroSection = () => {
   const [width, setwidth] = useState(null);
@@ -60,235 +61,270 @@ export const HeroSection = () => {
 };
 
 const RightComponent = ({ width }) => {
-  const [messages, setMessages] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [showPrompt, setShowPrompt] = useState(true);
+  //   const [messages, setMessages] = useState([]);
+  //   const [isTyping, setIsTyping] = useState(false);
+  //   const [isPlaying, setIsPlaying] = useState(false);
+  //   const [showPrompt, setShowPrompt] = useState(true);
 
-  // Ref for chat scroll container
-  const chatContainerRef = useRef(null);
+  //   // Ref for chat scroll container
+  //   const chatContainerRef = useRef(null);
 
-  const scrollToBottom = () => {
-    const el = chatContainerRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  };
+  //   const scrollToBottom = () => {
+  //     const el = chatContainerRef.current;
+  //     if (el) el.scrollTop = el.scrollHeight;
+  //   };
 
-  useEffect(() => {
-    if (messages.length > 0) scrollToBottom();
-  }, [messages]);
+  //   useEffect(() => {
+  //     if (messages.length > 0) scrollToBottom();
+  //   }, [messages]);
 
-  const sampleJudgment = `Sharma vs. State of Maharashtra - Right to Privacy - Constitutional Bench
+  //   const sampleJudgment = `Sharma vs. State of Maharashtra - Right to Privacy - Constitutional Bench
 
-The Constitution of India guarantees to all its citizens the right to equality before law and equal protection of laws...
+  // The Constitution of India guarantees to all its citizens the right to equality before law and equal protection of laws...
 
-*"The right to privacy is protected as an intrinsic part of the right to life and personal liberty under Article 21 and as a part of the freedoms guaranteed by Part III of the Constitution."*
+  // *"The right to privacy is protected as an intrinsic part of the right to life and personal liberty under Article 21 and as a part of the freedoms guaranteed by Part III of the Constitution."*
 
-— Chief Justice, Paragraph 24
+  // — Chief Justice, Paragraph 24
 
-This Court has consistently held that Article 21 encompasses within its ambit the right to live with human dignity...`;
+  // This Court has consistently held that Article 21 encompasses within its ambit the right to live with human dignity...`;
 
-  const sampleSummary = `Summary of Sharma vs. State of Maharashtra:
+  //   const sampleSummary = `Summary of Sharma vs. State of Maharashtra:
 
-1. The Supreme Court ruled that the right to privacy is a fundamental right under Article 21 of the Indian Constitution.
-2. Privacy is protected as part of the right to life and personal liberty.
-3. The judgment establishes that any state restriction on privacy must demonstrate a compelling interest.
-4. The Court emphasized that Article 21 includes the right to live with human dignity.`;
+  // 1. The Supreme Court ruled that the right to privacy is a fundamental right under Article 21 of the Indian Constitution.
+  // 2. Privacy is protected as part of the right to life and personal liberty.
+  // 3. The judgment establishes that any state restriction on privacy must demonstrate a compelling interest.
+  // 4. The Court emphasized that Article 21 includes the right to live with human dignity.`;
 
-  const startDemo = () => {
-    if (isPlaying) return;
-    setShowPrompt(false);
-    setIsPlaying(true);
-    setMessages([]);
+  //   const startDemo = () => {
+  //     if (isPlaying) return;
+  //     setShowPrompt(false);
+  //     setIsPlaying(true);
+  //     setMessages([]);
 
-    setTimeout(() => {
-      setMessages([
-        {
-          id: 1,
-          text: sampleJudgment,
-          sender: "user",
-          timestamp: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ]);
-      setIsTyping(true);
-    }, 500);
+  //     setTimeout(() => {
+  //       setMessages([
+  //         {
+  //           id: 1,
+  //           text: sampleJudgment,
+  //           sender: "user",
+  //           timestamp: new Date().toLocaleTimeString([], {
+  //             hour: "2-digit",
+  //             minute: "2-digit",
+  //           }),
+  //         },
+  //       ]);
+  //       setIsTyping(true);
+  //     }, 500);
 
-    setTimeout(() => {
-      setIsTyping(false);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: 2,
-          text: sampleSummary,
-          sender: "ai",
-          timestamp: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ]);
-    }, 2500);
+  //     setTimeout(() => {
+  //       setIsTyping(false);
+  //       setMessages((prev) => [
+  //         ...prev,
+  //         {
+  //           id: 2,
+  //           text: sampleSummary,
+  //           sender: "ai",
+  //           timestamp: new Date().toLocaleTimeString([], {
+  //             hour: "2-digit",
+  //             minute: "2-digit",
+  //           }),
+  //         },
+  //       ]);
+  //     }, 2500);
 
-    setTimeout(() => {
-      setIsPlaying(false);
-    }, 4000);
-  };
+  //     setTimeout(() => {
+  //       setIsPlaying(false);
+  //     }, 4000);
+  //   };
 
-  useEffect(() => {
-    let isCancelled = false;
+  //   useEffect(() => {
+  //     let isCancelled = false;
 
-    const loopDemo = () => {
-      if (isCancelled) return;
-      startDemo();
-      setTimeout(loopDemo, 7000);
-    };
+  //     const loopDemo = () => {
+  //       if (isCancelled) return;
+  //       startDemo();
+  //       setTimeout(loopDemo, 7000);
+  //     };
 
-    loopDemo();
+  //     loopDemo();
 
-    return () => {
-      isCancelled = true;
-      setIsPlaying(false);
-    };
-  }, []);
+  //     return () => {
+  //       isCancelled = true;
+  //       setIsPlaying(false);
+  //     };
+  //   }, []);
+
+  // return (
+  //   <div
+  //     className={`
+  //       ${
+  //         width > 900 ? " w-[40%] min-w-[340px] max-w-[500px] " : ""
+  //       } xl:w-[40%] xl:max-w-[580px]
+  //       flex flex-col h-[550px] bg-gray-50 rounded-lg shadow-lg overflow-hidden`}
+  //   >
+  //     {/* Chat header */}
+  //     <div className="bg-amber-800 text-white p-3 sm:p-4 flex items-center">
+  //       <div className="flex items-center">
+  //         <Bot className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
+  //         <h2 className="text-sm sm:text-lg font-semibold">
+  //           Summarize with our Legal AI Assistant
+  //         </h2>
+  //       </div>
+  //     </div>
+
+  //     {/* Chat messages area (scrollable) */}
+  //     <div ref={chatContainerRef} className="flex-1 p-2 sm:p-4 overflow-y-auto">
+  //       <AnimatePresence>
+  //         {showPrompt && (
+  //           <motion.div
+  //             initial={{ opacity: 0 }}
+  //             animate={{ opacity: 1 }}
+  //             exit={{ opacity: 0 }}
+  //             className="flex flex-col items-center justify-center h-full text-gray-500 text-center p-4"
+  //           >
+  //             <button
+  //               onClick={startDemo}
+  //               className="mb-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
+  //             >
+  //               <Bot className="h-4 w-4 mr-2" />
+  //               Summarize judgment with AI model
+  //             </button>
+  //             <p className="text-xs sm:text-sm text-gray-400">
+  //               Summarize judgment with AI model
+  //             </p>
+  //           </motion.div>
+  //         )}
+
+  //         {messages.map((message) => (
+  //           <motion.div
+  //             key={message.id}
+  //             initial={{ opacity: 0, y: 20 }}
+  //             animate={{ opacity: 1, y: 0 }}
+  //             transition={{ duration: 0.3 }}
+  //             className={`mb-3 flex ${
+  //               message.sender === "user" ? "justify-end" : "justify-start"
+  //             }`}
+  //           >
+  //             <div
+  //               className={`flex max-w-[90%] sm:max-w-[80%] ${
+  //                 message.sender === "user" ? "flex-row-reverse" : "flex-row"
+  //               }`}
+  //             >
+  //               {/* Avatar Icon */}
+  //               <div
+  //                 className={`flex items-center justify-center h-7 w-7 sm:h-8 sm:w-8 rounded-full ${
+  //                   message.sender === "user"
+  //                     ? "bg-indigo-100 text-indigo-600 ml-2"
+  //                     : "bg-[#eee6dc] text-[#5a3a1c] mr-2"
+  //                 }`}
+  //               >
+  //                 {message.sender === "user" ? (
+  //                   <User className="h-3 w-3 sm:h-4 sm:w-4" />
+  //                 ) : (
+  //                   <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
+  //                 )}
+  //               </div>
+
+  //               {/* Message Bubble */}
+  //               <motion.div
+  //                 initial={{ scale: 0.97 }}
+  //                 animate={{ scale: 1 }}
+  //                 className={`p-3 w-[90%] rounded-lg text-sm leading-relaxed ${
+  //                   message.sender === "user"
+  //                     ? "bg-[#fffaf3] border border-amber-200 text-gray-700 rounded-tr-none"
+  //                     : "bg-white border border-[#e6dccf] text-gray-700 rounded-tl-none shadow"
+  //                 }`}
+  //               >
+  //                 <p className="whitespace-pre-wrap">{message.text}</p>
+  //                 <p className={`text-xs mt-1 font-semibold text-[#52310e]`}>
+  //                   {message.timestamp}
+  //                 </p>
+  //               </motion.div>
+  //             </div>
+  //           </motion.div>
+  //         ))}
+
+  //         {isTyping && (
+  //           <motion.div
+  //             initial={{ opacity: 0, y: 20 }}
+  //             animate={{ opacity: 1, y: 0 }}
+  //             exit={{ opacity: 0 }}
+  //             className="flex mb-3 justify-start"
+  //           >
+  //             <div className="flex items-center justify-center h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-purple-100 text-purple-600 mr-2">
+  //               <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
+  //             </div>
+  //             <div className="bg-white p-2 sm:p-3 rounded-lg rounded-tl-none shadow-sm">
+  //               <div className="flex space-x-1">
+  //                 <div
+  //                   className="h-1.5 w-1.5 sm:h-2 sm:w-2 bg-gray-400 rounded-full animate-bounce"
+  //                   style={{ animationDelay: "0ms" }}
+  //                 />
+  //                 <div
+  //                   className="h-1.5 w-1.5 sm:h-2 sm:w-2 bg-gray-400 rounded-full animate-bounce"
+  //                   style={{ animationDelay: "150ms" }}
+  //                 />
+  //                 <div
+  //                   className="h-1.5 w-1.5 sm:h-2 sm:w-2 bg-gray-400 rounded-full animate-bounce"
+  //                   style={{ animationDelay: "300ms" }}
+  //                 />
+  //               </div>
+  //             </div>
+  //           </motion.div>
+  //         )}
+  //       </AnimatePresence>
+  //     </div>
+
+  //     {/* Input placeholder area */}
+  //     <div className="border-t border-gray-200 p-2 sm:p-3 bg-gray-100 cursor-not-allowed">
+  //       <div className="flex items-end">
+  //         <div className="flex-1 border border-amber-800 rounded-lg px-3 py-1 sm:px-4 sm:py-2 bg-white text-gray-400 text-xs sm:text-sm">
+  //           Paste a legal judgment to summarize...
+  //         </div>
+  //         <button
+  //           className="ml-2 bg-[#ae815d19] text-gray-500 border-1 border-amber-700 p-1 sm:p-2 rounded-lg cursor-not-allowed"
+  //           disabled
+  //         >
+  //           <Send className="h-4 w-4 sm:h-5 sm:w-5" />
+  //         </button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
   return (
-    <div
-      className={`
+    <>
+      <div
+        className={`
         ${
           width > 900 ? " w-[40%] min-w-[340px] max-w-[500px] " : ""
         } xl:w-[40%] xl:max-w-[580px]
-        flex flex-col h-[550px] bg-gray-50 rounded-lg shadow-lg overflow-hidden`}
-    >
-      {/* Chat header */}
-      <div className="bg-amber-800 text-white p-3 sm:p-4 flex items-center">
-        <div className="flex items-center">
-          <Bot className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
-          <h2 className="text-sm sm:text-lg font-semibold">
-            Summarize with our Legal AI Assistant
-          </h2>
+        flex flex-col h-[550px]  `}
+      >
+        <div className="flex flex-col items-center justify-center text-center p-8 bg-gradient-to-br from-[#faf5f0] to-[#f5eee9] rounded-lg shadow-lg overflow-hidden max-w-md mx-auto">
+          <Image
+            width={250}
+            height={100}
+            loading="lazy"
+            src="/iit-mandi-hci.jpg"
+            alt="IIT Mandi iHub and HCI Foundation"
+            className="w-[300px] h-auto mb-6"
+          />
+
+          <h3 className="text-xl font-semibold text-gray-800 mb-3">
+            Funded by IIT Mandi iHub and HCI Foundation
+          </h3>
+
+          <p className="text-gray-600 leading-relaxed text-extralight text-sm">
+            This initiative is supported by{" "}
+            <strong>IIT Mandi iHub and HCI Foundation</strong>, empowering
+            research and innovation in <b>AI-driven legal technology</b>. Our
+            mission is to make complex legal judgments more accessible and
+            comprehensible through advanced language models.
+          </p>
         </div>
       </div>
-
-      {/* Chat messages area (scrollable) */}
-      <div ref={chatContainerRef} className="flex-1 p-2 sm:p-4 overflow-y-auto">
-        <AnimatePresence>
-          {showPrompt && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center h-full text-gray-500 text-center p-4"
-            >
-              <button
-                onClick={startDemo}
-                className="mb-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
-              >
-                <Bot className="h-4 w-4 mr-2" />
-                Summarize judgment with AI model
-              </button>
-              <p className="text-xs sm:text-sm text-gray-400">
-                Summarize judgment with AI model
-              </p>
-            </motion.div>
-          )}
-
-          {messages.map((message) => (
-            <motion.div
-              key={message.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className={`mb-3 flex ${
-                message.sender === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div
-                className={`flex max-w-[90%] sm:max-w-[80%] ${
-                  message.sender === "user" ? "flex-row-reverse" : "flex-row"
-                }`}
-              >
-                {/* Avatar Icon */}
-                <div
-                  className={`flex items-center justify-center h-7 w-7 sm:h-8 sm:w-8 rounded-full ${
-                    message.sender === "user"
-                      ? "bg-indigo-100 text-indigo-600 ml-2"
-                      : "bg-[#eee6dc] text-[#5a3a1c] mr-2"
-                  }`}
-                >
-                  {message.sender === "user" ? (
-                    <User className="h-3 w-3 sm:h-4 sm:w-4" />
-                  ) : (
-                    <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
-                  )}
-                </div>
-
-                {/* Message Bubble */}
-                <motion.div
-                  initial={{ scale: 0.97 }}
-                  animate={{ scale: 1 }}
-                  className={`p-3 w-[90%] rounded-lg text-sm leading-relaxed ${
-                    message.sender === "user"
-                      ? "bg-[#fffaf3] border border-amber-200 text-gray-700 rounded-tr-none"
-                      : "bg-white border border-[#e6dccf] text-gray-700 rounded-tl-none shadow"
-                  }`}
-                >
-                  <p className="whitespace-pre-wrap">{message.text}</p>
-                  <p className={`text-xs mt-1 font-semibold text-[#52310e]`}>
-                    {message.timestamp}
-                  </p>
-                </motion.div>
-              </div>
-            </motion.div>
-          ))}
-
-          {isTyping && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="flex mb-3 justify-start"
-            >
-              <div className="flex items-center justify-center h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-purple-100 text-purple-600 mr-2">
-                <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
-              </div>
-              <div className="bg-white p-2 sm:p-3 rounded-lg rounded-tl-none shadow-sm">
-                <div className="flex space-x-1">
-                  <div
-                    className="h-1.5 w-1.5 sm:h-2 sm:w-2 bg-gray-400 rounded-full animate-bounce"
-                    style={{ animationDelay: "0ms" }}
-                  />
-                  <div
-                    className="h-1.5 w-1.5 sm:h-2 sm:w-2 bg-gray-400 rounded-full animate-bounce"
-                    style={{ animationDelay: "150ms" }}
-                  />
-                  <div
-                    className="h-1.5 w-1.5 sm:h-2 sm:w-2 bg-gray-400 rounded-full animate-bounce"
-                    style={{ animationDelay: "300ms" }}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Input placeholder area */}
-      <div className="border-t border-gray-200 p-2 sm:p-3 bg-gray-100 cursor-not-allowed">
-        <div className="flex items-end">
-          <div className="flex-1 border border-amber-800 rounded-lg px-3 py-1 sm:px-4 sm:py-2 bg-white text-gray-400 text-xs sm:text-sm">
-            Paste a legal judgment to summarize...
-          </div>
-          <button
-            className="ml-2 bg-[#ae815d19] text-gray-500 border-1 border-amber-700 p-1 sm:p-2 rounded-lg cursor-not-allowed"
-            disabled
-          >
-            <Send className="h-4 w-4 sm:h-5 sm:w-5" />
-          </button>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
@@ -306,25 +342,34 @@ const LeftSection = ({ width }) => {
         Summarization & Analysis
       </h1> */}
 
-      <h1 className="user-select-none text-4xl md:text-[40px] xl:text-[50px] font-bold text-gray-900 leading-tight">
+      <h1 className="user-select-none text-4xl md:text-[38px] xl:text-[45px] font-bold text-gray-900 leading-tight">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9e600a] to-[#d4812e]">
-          AI-Powered Indian Legal
+          Large Language Models for
         </span>
         <br />
-        Judgment Summarization
+        {/* Judgment Summarization */}
+        Legal Assistance
       </h1>
 
-      <div className="user-select-none my-2 inline-flex items-center rounded-full bg-[#f8f2e998] px-4 py-2 text-sm font-medium text-[#7b4f11] shadow-sm border border-[#7b561129] animate-fade-in">
+      <Link
+        href={"https://www.ihubiitmandi.in/"}
+        target="_blank"
+        className="user-select-none cursor-pointer my-2 inline-flex items-center rounded-full bg-[#f8f2e998] px-4 py-2 text-sm font-medium text-[#7b4f11] shadow-sm border border-[#7b561129] animate-fade-in"
+      >
         <Scale className="mr-2 h-4 w-4" />
-        <span>India's Premier Legal Judgment Summarization</span>
+        {/* <span>India's Premier Legal Judgment Summarization</span> */}
+        <span>
+          Funded by <strong>IIT Mandi iHub and HCI Foundation</strong>
+        </span>
         <ChevronRight className="ml-2 h-4 w-4" />
-      </div>
+      </Link>
 
       <p className="user-select-none text-gray-600 text-sm md:w-[90%] pt-2">
-        Access, explore, and understand court judgments from across India with
-        our advanced AI-powered summarization platform. Search, download, and
-        instantly summarize judgments — built for legal professionals, law
-        students, and practitioners who need speed, clarity, and accuracy.
+        Experience the power of our <strong>Legal AI Assistant</strong>, a large
+        language model designed to analyze and summarize complex legal judgments
+        with <b>speed</b>, <b>clarity</b>, and <b>precision</b>. Built for legal
+        professionals, researchers, and students, it delivers concise insights
+        in seconds.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 user-select-none">
@@ -423,7 +468,7 @@ const LeftSection = ({ width }) => {
           className="bg-amber-900 text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#562303] transition flex items-center justify-center"
         >
           <FileText className="mr-2 h-5 w-5" />
-          Summarize Document
+          Summarize Judgments
         </Link>
 
         <Link
@@ -431,7 +476,7 @@ const LeftSection = ({ width }) => {
           className="group border text-sm border-gray-300 bg-[#ffdda12c] text-gray-700 md:px-5 px-3 py-3 rounded-lg md:hover:border-[#7b4f11] md:hover:text-[#7b4d11] transition-colors flex items-center justify-center"
         >
           <BookOpen className="mr-2 h-5 w-5 md:group-hover:text-[#7b4d11]" />
-          Browse Library
+          Browse Judgments
         </Link>
       </div>
 
