@@ -344,11 +344,12 @@ const LeftSection = ({ width }) => {
 
       <h1 className="user-select-none text-4xl md:text-[38px] xl:text-[45px] font-bold text-gray-900 leading-tight">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9e600a] to-[#d4812e]">
-          Large Language Models for
+          LegalSummarizer - Indian Legal 
         </span>
         <br />
         {/* Judgment Summarization */}
-        Legal Assistance
+        {/* Legal Assistance */}
+        Judgement Summarization
       </h1>
 
       <Link
