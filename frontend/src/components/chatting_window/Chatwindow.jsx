@@ -20,6 +20,7 @@ import { ChatContentLoader } from "./ChatContentLoader";
 import { TextAreaForQuery } from "./TextAreaForQuery";
 import { formatISODateToDDMMYYYY } from "@/utils/formateDate";
 import { handleDownload } from "@/utils/downlaodPdfFromText";
+import { copyToClipboard } from "@/utils/copyToClipboard";
 
 const ChatWindow = ({}) => {
   const [messages, setMessages] = useState([]);
@@ -101,16 +102,6 @@ const ChatWindow = ({}) => {
           "Unknown Error . Please try again",
         1
       );
-    }
-  };
-
-  // copy the question or answer to clip board
-  const copyToClipboard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      showToast("Copied to clipboard!");
-    } catch (err) {
-      console.error("Failed to copy: ", err);
     }
   };
 

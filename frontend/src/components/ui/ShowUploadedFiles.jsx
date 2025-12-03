@@ -78,7 +78,7 @@ export const ShowUploadedFiles = ({
           value={extractedText}
           onChange={(e) => setExtractedText(e.target.value)}
           placeholder="Extracted text"
-          className="w-full p-2 text-gray-700 text-sm rounded-md focus:outline-none focus:ring-1 focus:ring-amber-800/70"
+          className="w-full p-2 text-gray-700 text-sm rounded-md focus:outline-none focus:ring-1 focus:ring-amber-800/0"
           disabled={isLoading}
         />
       )}

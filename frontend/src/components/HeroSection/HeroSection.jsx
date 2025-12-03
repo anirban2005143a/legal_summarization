@@ -344,7 +344,7 @@ const LeftSection = ({ width }) => {
 
       <h1 className="user-select-none text-4xl md:text-[38px] xl:text-[45px] font-bold text-gray-900 leading-tight">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9e600a] to-[#d4812e]">
-          LegalSummarizer - Indian Legal 
+          LegalSummarizer - Indian Legal
         </span>
         <br />
         {/* Judgment Summarization */}
@@ -420,7 +420,7 @@ const LeftSection = ({ width }) => {
       </div>
 
       {/* Search bar */}
-      <div className=" my-3">
+      {/* <div className=" my-3">
         <div className="mb-1 flex items-center justify-start gap-1 sm:text-xs text-[11px] text-gray-500 sm:pl-4 pl-1">
           <span className="">Quick searches |</span>
           <span className="rounded md:hover:text-[#7b4b11]">Article 14 |</span>
@@ -460,12 +460,12 @@ const LeftSection = ({ width }) => {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="flex sm:flex-row flex-col gap-4 pt-2">
         <Link
           tabIndex={0}
-          href={"/chat"}
+          href={"#home-page-summary"}
           className="bg-amber-900 text-sm text-white md:px-5 px-3 py-3 rounded-lg md:hover:bg-[#562303] transition flex items-center justify-center"
         >
           <FileText className="mr-2 h-5 w-5" />
@@ -481,7 +481,7 @@ const LeftSection = ({ width }) => {
         </Link>
       </div>
 
-      <div className=" relative flex items-center gap-4 pt-4  text-gray-500 user-select-none">
+      {/* <div className=" relative flex items-center gap-4 pt-4  text-gray-500 user-select-none">
         <div className="flex items-center">
           <div className="flex -space-x-2">
             {[1, 2, 3, 4, 5].map((item) => (
@@ -497,7 +497,7 @@ const LeftSection = ({ width }) => {
             Trusted by 5000+ legal professionals
           </span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
