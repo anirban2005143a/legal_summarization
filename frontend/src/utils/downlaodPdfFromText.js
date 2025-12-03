@@ -4,9 +4,11 @@ import { showToast } from "./ShowToast";
 export const handleDownload = ({ data, textContent, textContentRef }) => {
   try {
     const doc = new jsPDF();
-
     const content =
-      textContent || textContentRef.current?.innerText?.trim() || "";
+    textContent ||
+    textContentRef.current?.innerText?.trim() ||
+    "";
+
     const title = data.title?.trim() || "Untitled";
     if (!content) return;
 

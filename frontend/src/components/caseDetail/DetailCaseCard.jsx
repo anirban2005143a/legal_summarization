@@ -27,10 +27,9 @@ import axios from "axios";
 import ScrollButtons from "../ui/ScrollButtons";
 import { handleDownload } from "@/utils/downlaodPdfFromText";
 
-const LongExpandableContent = ({ ref, content, plainText, setplainText }) => {
+const LongExpandableContent = ({ contentRef, content, plainText, setplainText }) => {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const [needsExpansion, setNeedsExpansion] = useState(false);
-  const contentRef = useRef(null);
 
   function htmlToPlainText(htmlString) {
     // Create a temporary DOM element
@@ -55,9 +54,9 @@ const LongExpandableContent = ({ ref, content, plainText, setplainText }) => {
       <div
         ref={(el) => {
           contentRef.current = el;
-          if (ref) {
-            ref.current = el;
-          }
+          // if (ref) {
+          //   ref.current = el;
+          // }
         }}
         className={`prose prose-amber max-w-none text-gray-800 overflow-hidden transition-all duration-300 ${
           !isContentExpanded && needsExpansion
@@ -126,7 +125,6 @@ export const DetailCaseCard = ({}) => {
       <BackGround />
       {data && (
         <div
-          ref={containerRef}
           className="min-h-screen py-8 px-3 sm:px-4 lg:px-6 mt-[50px] "
         >
           <div className=" grid md:grid-cols-10 grid-cols-1 gap-4 relative mx-auto  ">
@@ -183,7 +181,7 @@ export const DetailCaseCard = ({}) => {
                       handleDownload({
                         data: data,
                         textContent: null,
-                        textContentRef: containerRef,
+                        textContentRef: contentRef,
                       });
                     }}
                     className={`disabled:cursor-not-allowed  flex items-center gap-2 text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 z-50 rounded-lg transition-all duration-200  `}
@@ -196,7 +194,7 @@ export const DetailCaseCard = ({}) => {
                 </div>
 
                 <LongExpandableContent
-                  ref={contentRef}
+                  contentRef={contentRef}
                   content={data.doc}
                   plainText={plainText}
                   setplainText={setplainText}

@@ -122,7 +122,7 @@ const AIResponseDisplay = ({ output, isLoading }) => {
       </div>
 
       {/* copy and download summary  */}
-      <div className={`${output ? "" : "hidden"} absolute left-5 bottom-0 flex items-center gap-4 w-fit`}>
+      <div className={`${output && !isLoading ? "" : "hidden"} absolute left-5 bottom-0 flex items-center gap-4 w-fit`}>
         <button
           aria-label="copy answer"
           onClick={(e) => {
