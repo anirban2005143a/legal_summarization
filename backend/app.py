@@ -100,8 +100,9 @@ def predict(data: InputText):
         else:
             raise ValueError(f"Unsupported model: {data.model_name}")
 
-        trimmed_summary = trim_to_last_fullstop(summary)
-        return {"summary": trimmed_summary}
+        # trimmed_summary = trim_to_last_fullstop(summary['data'])
+        # return {"summary": trimmed_summary}
+        return summary
 
     except Exception as e:
         print("error:", e)
