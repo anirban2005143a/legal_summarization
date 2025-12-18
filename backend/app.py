@@ -57,6 +57,12 @@ def trim_to_last_fullstop(text: str) -> str:
 def home():
     return {"message": "FastAPI server running"}
 
+# HEAD endpoint
+@app.head("/")
+def home_head():
+    # Just return headers, no body
+    return Response(headers={"X-Server-Status": "Running"})
+
 @app.post("/predict")
 def predict(data: InputText):
     try:
