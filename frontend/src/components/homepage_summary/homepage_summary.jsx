@@ -1,11 +1,19 @@
 "use client";
-import { Sparkles, Bot, TreeDeciduous, Copy, Download } from "lucide-react";
-import { useCallback, useState } from "react";
+import {
+  Sparkles,
+  Bot,
+  TreeDeciduous,
+  Copy,
+  Download,
+  ChevronDown,
+} from "lucide-react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { HomePageSummaryTextArea } from "./homepage_summary_textarea";
 import { showToast } from "@/utils/ShowToast";
 import axios from "axios";
 import { handleDownload } from "@/utils/downlaodPdfFromText";
 import { copyToClipboard } from "@/utils/copyToClipboard";
+import { FileText, Upload, X, FileIcon, Settings, Globe } from "lucide-react";
 
 export const HomePageSummary = ({}) => {
   const [output, setOutput] = useState("");
@@ -31,7 +39,7 @@ export const HomePageSummary = ({}) => {
             num_beams: 8,
             length_penalty: 0.8,
           },
-          model_name: selectedModel || "t5",
+          model_name: selectedModel || "T5",
         },
         {
           headers: {
@@ -40,6 +48,9 @@ export const HomePageSummary = ({}) => {
         }
       );
       console.log(res);
+      // words = res.data.summary.split(" ")
+
+      // setOutput(words);
       setOutput(res.data.summary);
     } catch (error) {
       console.log(error);
@@ -58,7 +69,7 @@ export const HomePageSummary = ({}) => {
   return (
     <>
       <section id="home-page-summary">
-        <HomePageSummaryTextArea
+        {/* <HomePageSummaryTextArea
           isEmpty={input ? false : true}
           handelSubmitQuery={handelGetSummary}
           isReady={isReady}
@@ -69,7 +80,15 @@ export const HomePageSummary = ({}) => {
           setselectedLang={setselectedLang}
           input={input}
           setInput={setinput}
+        /> */}
+
+        <FileUploadArea
+          selectedModel={selectedModel}
+          setselectedModel={setselectedModel}
+          selectedLang={selectedLang}
+          setselectedLang={setselectedLang}
         />
+
         <AskAiButton
           isDisabled={input ? false : true}
           onClick={() => {
@@ -104,14 +123,11 @@ const AIResponseDisplay = ({ output, isLoading }) => {
             </div>
           ) : output ? (
             <div className=" max-w-none">
-              {output.split("\n").map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="text-gray-800 text-sm mb-2 whitespace-pre-wrap"
-                >
-                  {paragraph}
-                </p>
-              ))}
+              <p className="text-gray-800 text-sm mb-2 whitespace-pre-wrap">
+                {output}
+
+                {/* <TypewriterEffect words={output}/> */}
+              </p>
             </div>
           ) : (
             <p className="text-gray-500 italic text-sm">
@@ -122,7 +138,11 @@ const AIResponseDisplay = ({ output, isLoading }) => {
       </div>
 
       {/* copy and download summary  */}
-      <div className={`${output && !isLoading ? "" : "hidden"} absolute left-5 bottom-0 flex items-center gap-4 w-fit`}>
+      <div
+        className={`${
+          output && !isLoading ? "" : "hidden"
+        } absolute left-5 bottom-0 flex items-center gap-4 w-fit`}
+      >
         <button
           aria-label="copy answer"
           onClick={(e) => {
@@ -167,5 +187,312 @@ const AskAiButton = ({ className, isDisabled, onClick = () => {} }) => {
         Summarize with AI
       </button>
     </>
+  );
+};
+
+const FileUploadArea = ({
+  selectedModel,
+  setselectedModel,
+  selectedLang,
+  setselectedLang,
+}) => {
+  const [file, setFile] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef(null);
+  const [isModelDropdownOpen, setisModelDropdownOpen] = useState(false);
+  const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
+
+  const modelcontainerRef = useRef();
+  const modeldropdownRef = useRef();
+  const langcontainerRef = useRef();
+  const langdropdownRef = useRef();
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setFile(null);
+  };
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (
+        modelcontainerRef.current &&
+        !modelcontainerRef.current.contains(e.target) &&
+        modeldropdownRef.current &&
+        !modeldropdownRef.current.contains(e.target)
+      ) {
+        setisModelDropdownOpen(false);
+      }
+      if (
+        langcontainerRef.current &&
+        !langcontainerRef.current.contains(e.target) &&
+        langdropdownRef.current &&
+        !langdropdownRef.current.contains(e.target)
+      ) {
+        setisLangDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [modelcontainerRef, modeldropdownRef, langcontainerRef, langdropdownRef]);
+
+  return (
+    <div className="w-full max-w-3xl mx-auto p-4">
+      {/* Hidden file input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+      />
+
+      {/* File upload area */}
+      <div
+        className={`border-2 ${
+          isDragging ? "border-amber-900/50 bg-orange-50" : "border-gray-400/70"
+        } border-dashed rounded-lg p-8 text-center  transition-all duration-200 hover:border-amber-900/50 hover:bg-amber-500/0`}
+        // onClick={handleAreaClick}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        {file ? (
+          <div className="space-y-4">
+            <div className="flex items-center justify-center">
+              <div className="p-3 bg-amber-700/5 rounded-full">
+                <FileText className="w-8 h-8 text-amber-800" />
+              </div>
+            </div>
+
+            {/* File info section */}
+            <div className="text-center">
+              <p className="text-md font-medium text-gray-800 truncate">
+                {file.name}
+              </p>
+              <p className="text-sm text-gray-500 mt-1">
+                {(file.size / 1024).toFixed(2)} KB
+              </p>
+            </div>
+
+            {/* Dropdowns section */}
+            <div className="gap-y-3 gap-x-3 grid sm:grid-cols-2 grid-cols-1">
+              {/* Model selection */}
+              <div className="relative ">
+                <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1">
+                  <Settings className="w-4 h-4" />
+                  Select Model
+                </label>
+
+                <button
+                  ref={modelcontainerRef}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setisModelDropdownOpen((prev) => !prev);
+                  }}
+                  className="w-full cursor-pointer px-4 py-1.5 flex items-center justify-between gap-1 rounded-sm font-medium text-base text-gray-600  bg-amber-100/10 border border-amber-800/40  transition-colors"
+                >
+                  {selectedModel}
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform duration-300 ${
+                      isModelDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {/*select model Dropdown */}
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  ref={modeldropdownRef}
+                  className={`absolute z-10 top-[95%] left-0 w-full mt-1 bg-gray-50 border border-gray-300 rounded-sm shadow-md transform transition-all duration-300 origin-top ${
+                    isModelDropdownOpen
+                      ? "opacity-100 scale-100 pointer-events-auto"
+                      : "opacity-0 scale-y-95 pointer-events-none"
+                  }`}
+                >
+                  <ul className="">
+                    {["T5", "Phi4-mini"].map((item) => (
+                      <li
+                        key={item}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          console.log("changing");
+                          setselectedModel(item);
+                          setisModelDropdownOpen(false);
+                        }}
+                        className="px-4 py-2 border-b-1 border-gray-200 whitespace-nowrap font-medium text-sm text-gray-700 hover:bg-gray-200/50 cursor-pointer"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Language selection */}
+              <div className="relative ">
+                <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1">
+                  <Globe className="w-4 h-4" />
+                  Language
+                </label>
+
+                <button
+                  ref={langcontainerRef}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setisLangDropdownOpen((prev) => !prev);
+                  }}
+                  className="w-full cursor-pointer px-4 py-1.5 flex items-center justify-between gap-1 rounded-sm font-medium text-base text-gray-600  bg-amber-100/10 border border-amber-800/40  transition-colors"
+                >
+                  {selectedLang}
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform duration-300 ${
+                      isLangDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {/*select model Dropdown */}
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  ref={langdropdownRef}
+                  className={`absolute z-10 top-[95%] max-h-[150px] overflow-auto left-0 w-full mt-1 bg-gray-50 border border-gray-200/10 rounded-sm shadow-md transform transition-all duration-300 origin-top ${
+                    isLangDropdownOpen
+                      ? "opacity-100 scale-100 pointer-events-auto"
+                      : "opacity-0 scale-y-95 pointer-events-none"
+                  }`}
+                >
+                  <ul className="">
+                    {["English", "Spanish", "French", "German", "Japanese"].map(
+                      (item) => (
+                        <li
+                          key={item}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            console.log("changing");
+                            setselectedLang(item);
+                            setisLangDropdownOpen(false);
+                          }}
+                          className="px-4 py-2 border-b-1 border-gray-200 whitespace-nowrap font-medium text-sm text-gray-700 hover:bg-gray-200/50 cursor-pointer"
+                        >
+                          {item}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Remove button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemoveFile();
+              }}
+              className="mt-8 cursor-pointer flex items-center justify-center gap-2 w-fit mx-auto px-4 py-2 text-sm font-medium text-white bg-amber-800 hover:bg-amber-900 rounded-md transition-colors border border-amber-200"
+            >
+              <X className="w-4 h-4" />
+              Remove File
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="flex justify-center mb-4">
+              <div className="p-4 bg-amber-700/7 rounded-full">
+                <svg
+                  className="w-10 h-10 text-amber-800"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <p className="text-lg font-medium text-gray-600 mb-2">
+              Choose a file or drag & drop here
+            </p>
+            <p className="text-sm text-gray-500 mb-4">
+              Supported formats: JPG, PNG, PDF, DOC (Max 10MB)
+            </p>
+            <button
+              type="button"
+              className="px-6 py-2 cursor-pointer bg-amber-800 text-white font-medium rounded-md hover:bg-amber-900 transition-colors focus:outline-none focus:ring-2 "
+              onClick={(e) => {
+                e.stopPropagation();
+                fileInputRef.current.click();
+              }}
+            >
+              Browse Files
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Selected file info (if any) */}
+      {/* {file && (
+        <div className="mt-4 p-3 bg-orange-50 rounded-md border border-orange-100">
+          <div className="flex items-center">
+            <svg 
+              className="w-5 h-5 text-orange-500 mr-2" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth="2" 
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <span className="text-sm text-gray-700">
+              File selected: <span className="font-medium">{file.name}</span>
+            </span>
+          </div>
+        </div>
+      )} */}
+    </div>
   );
 };
