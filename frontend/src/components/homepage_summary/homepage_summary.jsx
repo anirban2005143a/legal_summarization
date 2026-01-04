@@ -6,6 +6,7 @@ import {
   Copy,
   Download,
   ChevronDown,
+  Loader2,
 } from "lucide-react";
 import { useCallback, useState, useRef, useEffect } from "react";
 import { HomePageSummaryTextArea } from "./homepage_summary_textarea";
@@ -14,6 +15,7 @@ import axios from "axios";
 import { handleDownload } from "@/utils/downlaodPdfFromText";
 import { copyToClipboard } from "@/utils/copyToClipboard";
 import { FileText, Upload, X, FileIcon, Settings, Globe } from "lucide-react";
+import { extractTextFromPdf } from "@/utils/extractTextFromPdf";
 
 export const HomePageSummary = ({}) => {
   const [output, setOutput] = useState("");
@@ -21,7 +23,6 @@ export const HomePageSummary = ({}) => {
   const [selectedModel, setselectedModel] = useState("T5");
   const [selectedLang, setselectedLang] = useState("English");
   const [input, setinput] = useState("");
-  const [isReady, setisReady] = useState(TreeDeciduous);
 
   const handelGetSummary = useCallback(async () => {
     setIsLoading(true);
@@ -68,7 +69,7 @@ export const HomePageSummary = ({}) => {
 
   return (
     <>
-      <section id="home-page-summary">
+      <section id="home-page-summary" className="mx-3">
         {/* <HomePageSummaryTextArea
           isEmpty={input ? false : true}
           handelSubmitQuery={handelGetSummary}
@@ -87,16 +88,20 @@ export const HomePageSummary = ({}) => {
           setselectedModel={setselectedModel}
           selectedLang={selectedLang}
           setselectedLang={setselectedLang}
+          setinput={setinput}
         />
 
-        <AskAiButton
-          isDisabled={input ? false : true}
-          onClick={() => {
-            if (isLoading) return;
-            handelGetSummary();
-          }}
-        />
-        <AIResponseDisplay isLoading={isLoading} output={output} />
+        {input && (
+          <AskAiButton
+            isLoading={isLoading}
+            isDisabled={input ? false : true}
+            onClick={() => {
+              if (isLoading) return;
+              handelGetSummary();
+            }}
+          />
+        )}
+        {output && <AIResponseDisplay isLoading={isLoading} output={output} />}
       </section>
     </>
   );
@@ -104,7 +109,7 @@ export const HomePageSummary = ({}) => {
 
 const AIResponseDisplay = ({ output, isLoading }) => {
   return (
-    <div className="relative md:pb-4 mt-3 max-w-4xl mx-auto border border-gray-100 bg-gray-50  rounded-lg">
+    <div className="relative pb-6 mt-3 max-w-4xl mx-auto border border-gray-100 bg-gray-50  rounded-lg">
       <div className="flex-1 overflow-auto flex flex-col">
         <div className="flex-1  p-4 overflow-auto ">
           <div className="flex items-center gap-2 mb-3">
@@ -141,7 +146,7 @@ const AIResponseDisplay = ({ output, isLoading }) => {
       <div
         className={`${
           output && !isLoading ? "" : "hidden"
-        } absolute left-5 bottom-0 flex items-center gap-4 w-fit`}
+        } absolute left-5 bottom-1 flex items-center gap-4 w-fit`}
       >
         <button
           aria-label="copy answer"
@@ -171,21 +176,37 @@ const AIResponseDisplay = ({ output, isLoading }) => {
   );
 };
 
-const AskAiButton = ({ className, isDisabled, onClick = () => {} }) => {
+const AskAiButton = ({
+  className,
+  isLoading,
+  isDisabled,
+  onClick = () => {},
+}) => {
   return (
     <>
-      <button
-        disabled={isDisabled}
-        onClick={onClick}
-        // onClick={()=>{
-        //   console.log("dfjnd")
-        // }}
-        tabIndex={0}
-        className={`disabled:opacity-78 disabled:cursor-default flex max-w-4xl mx-auto items-center justify-start sm:justify-end text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 rounded-lg transition-all duration-200  ${className}`}
-      >
-        <Sparkles size={16} className="mr-2 text-amber-700" />
-        Summarize with AI
-      </button>
+      {!isLoading && (
+        <button
+          disabled={isDisabled}
+          onClick={onClick}
+          // onClick={()=>{
+          //   console.log("dfjnd")
+          // }}
+          tabIndex={0}
+          className={`disabled:opacity-78 disabled:cursor-default flex max-w-4xl mx-auto items-center justify-start sm:justify-end text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold cursor-pointer text-gray-700 hover:text-gray-900 py-2 px-4 rounded-lg transition-all duration-200  ${className}`}
+        >
+          <Sparkles size={16} className="mr-2 text-amber-700" />
+          Summarize with AI
+        </button>
+      )}
+
+      {isLoading && (
+        <div
+          className={`opacity-78 cursor-default w-fit flex gap-3 max-w-4xl mx-auto items-center justify-start sm:justify-end text-sm bg-amber-500/10 border-1 border-amber-500 font-semibold text-gray-700  py-2 px-4 rounded-lg transition-all duration-200  ${className}`}
+        >
+          <Loader2 size={20} className="text-gray-700 animate-spin "/>
+          Summarizing judgment
+        </div>
+      )}
     </>
   );
 };
@@ -195,12 +216,14 @@ const FileUploadArea = ({
   setselectedModel,
   selectedLang,
   setselectedLang,
+  setinput,
 }) => {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   const [isModelDropdownOpen, setisModelDropdownOpen] = useState(false);
   const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
+  const [isTextExtracting, setisTextExtracting] = useState(true);
 
   const modelcontainerRef = useRef();
   const modeldropdownRef = useRef();
@@ -261,6 +284,16 @@ const FileUploadArea = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [modelcontainerRef, modeldropdownRef, langcontainerRef, langdropdownRef]);
 
+  // extract text from file
+  useEffect(() => {
+    const onError = () => {
+      setFile(null);
+      setinput("");
+    };
+
+    extractTextFromPdf(file, setinput, setisTextExtracting, undefined, onError);
+  }, [file]);
+
   return (
     <div className="w-full max-w-3xl mx-auto p-4">
       {/* Hidden file input */}
@@ -299,135 +332,153 @@ const FileUploadArea = ({
               </p>
             </div>
 
-            {/* Dropdowns section */}
-            <div className="gap-y-3 gap-x-3 grid sm:grid-cols-2 grid-cols-1">
-              {/* Model selection */}
-              <div className="relative ">
-                <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1">
-                  <Settings className="w-4 h-4" />
-                  Select Model
-                </label>
-
-                <button
-                  ref={modelcontainerRef}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setisModelDropdownOpen((prev) => !prev);
-                  }}
-                  className="w-full cursor-pointer px-4 py-1.5 flex items-center justify-between gap-1 rounded-sm font-medium text-base text-gray-600  bg-amber-100/10 border border-amber-800/40  transition-colors"
-                >
-                  {selectedModel}
-                  <ChevronDown
-                    className={`w-5 h-5 transition-transform duration-300 ${
-                      isModelDropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {/*select model Dropdown */}
-                <div
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                  ref={modeldropdownRef}
-                  className={`absolute z-10 top-[95%] left-0 w-full mt-1 bg-gray-50 border border-gray-300 rounded-sm shadow-md transform transition-all duration-300 origin-top ${
-                    isModelDropdownOpen
-                      ? "opacity-100 scale-100 pointer-events-auto"
-                      : "opacity-0 scale-y-95 pointer-events-none"
-                  }`}
-                >
-                  <ul className="">
-                    {["T5", "Phi4-mini"].map((item) => (
-                      <li
-                        key={item}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          console.log("changing");
-                          setselectedModel(item);
-                          setisModelDropdownOpen(false);
-                        }}
-                        className="px-4 py-2 border-b-1 border-gray-200 whitespace-nowrap font-medium text-sm text-gray-700 hover:bg-gray-200/50 cursor-pointer"
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            {/* loader while text is extracting from pdf  */}
+            {isTextExtracting && (
+              <div className=" flex justify-center items-center gap-2">
+                <Loader2 size={20} className=" text-gray-700 animate-spin" />
+                <p className=" font-medium text-gray-600 text-sm translate-y-[1px]">
+                  Processing the text from pdf
+                </p>
               </div>
+            )}
 
-              {/* Language selection */}
-              <div className="relative ">
-                <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1">
-                  <Globe className="w-4 h-4" />
-                  Language
-                </label>
+            {!isTextExtracting && (
+              <>
+                {/* Dropdowns section */}
+                <div className="gap-y-3 gap-x-3 grid sm:grid-cols-2 grid-cols-1">
+                  {/* Model selection */}
+                  <div className="relative ">
+                    <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1">
+                      <Settings className="w-4 h-4" />
+                      Select Model
+                    </label>
 
-                <button
-                  ref={langcontainerRef}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setisLangDropdownOpen((prev) => !prev);
-                  }}
-                  className="w-full cursor-pointer px-4 py-1.5 flex items-center justify-between gap-1 rounded-sm font-medium text-base text-gray-600  bg-amber-100/10 border border-amber-800/40  transition-colors"
-                >
-                  {selectedLang}
-                  <ChevronDown
-                    className={`w-5 h-5 transition-transform duration-300 ${
-                      isLangDropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
+                    <button
+                      ref={modelcontainerRef}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setisModelDropdownOpen((prev) => !prev);
+                      }}
+                      className="w-full cursor-pointer px-4 py-1.5 flex items-center justify-between gap-1 rounded-sm font-medium text-base text-gray-600  bg-amber-100/10 border border-amber-800/40  transition-colors"
+                    >
+                      {selectedModel}
+                      <ChevronDown
+                        className={`w-5 h-5 transition-transform duration-300 ${
+                          isModelDropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
 
-                {/*select model Dropdown */}
-                <div
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                  ref={langdropdownRef}
-                  className={`absolute z-10 top-[95%] max-h-[150px] overflow-auto left-0 w-full mt-1 bg-gray-50 border border-gray-200/10 rounded-sm shadow-md transform transition-all duration-300 origin-top ${
-                    isLangDropdownOpen
-                      ? "opacity-100 scale-100 pointer-events-auto"
-                      : "opacity-0 scale-y-95 pointer-events-none"
-                  }`}
-                >
-                  <ul className="">
-                    {["English", "Spanish", "French", "German", "Japanese"].map(
-                      (item) => (
-                        <li
-                          key={item}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            console.log("changing");
-                            setselectedLang(item);
-                            setisLangDropdownOpen(false);
-                          }}
-                          className="px-4 py-2 border-b-1 border-gray-200 whitespace-nowrap font-medium text-sm text-gray-700 hover:bg-gray-200/50 cursor-pointer"
-                        >
-                          {item}
-                        </li>
-                      )
-                    )}
-                  </ul>
+                    {/*select model Dropdown */}
+                    <div
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      ref={modeldropdownRef}
+                      className={`absolute z-10 top-[95%] left-0 w-full mt-1 bg-gray-50 border border-gray-300 rounded-sm shadow-md transform transition-all duration-300 origin-top ${
+                        isModelDropdownOpen
+                          ? "opacity-100 scale-100 pointer-events-auto"
+                          : "opacity-0 scale-y-95 pointer-events-none"
+                      }`}
+                    >
+                      <ul className="">
+                        {["T5", "Phi4-mini"].map((item) => (
+                          <li
+                            key={item}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              console.log("changing");
+                              setselectedModel(item);
+                              setisModelDropdownOpen(false);
+                            }}
+                            className="px-4 py-2 border-b-1 border-gray-200 whitespace-nowrap font-medium text-sm text-gray-700 hover:bg-gray-200/50 cursor-pointer"
+                          >
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Language selection */}
+                  <div className="relative ">
+                    <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1">
+                      <Globe className="w-4 h-4" />
+                      Language
+                    </label>
+
+                    <button
+                      ref={langcontainerRef}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setisLangDropdownOpen((prev) => !prev);
+                      }}
+                      className="w-full cursor-pointer px-4 py-1.5 flex items-center justify-between gap-1 rounded-sm font-medium text-base text-gray-600  bg-amber-100/10 border border-amber-800/40  transition-colors"
+                    >
+                      {selectedLang}
+                      <ChevronDown
+                        className={`w-5 h-5 transition-transform duration-300 ${
+                          isLangDropdownOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {/*select model Dropdown */}
+                    <div
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      ref={langdropdownRef}
+                      className={`absolute z-10 top-[95%] max-h-[150px] overflow-auto left-0 w-full mt-1 bg-gray-50 border border-gray-200/10 rounded-sm shadow-md transform transition-all duration-300 origin-top ${
+                        isLangDropdownOpen
+                          ? "opacity-100 scale-100 pointer-events-auto"
+                          : "opacity-0 scale-y-95 pointer-events-none"
+                      }`}
+                    >
+                      <ul className="">
+                        {[
+                          "English",
+                          "Spanish",
+                          "French",
+                          "German",
+                          "Japanese",
+                        ].map((item) => (
+                          <li
+                            key={item}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              console.log("changing");
+                              setselectedLang(item);
+                              setisLangDropdownOpen(false);
+                            }}
+                            className="px-4 py-2 border-b-1 border-gray-200 whitespace-nowrap font-medium text-sm text-gray-700 hover:bg-gray-200/50 cursor-pointer"
+                          >
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Remove button */}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemoveFile();
-              }}
-              className="mt-8 cursor-pointer flex items-center justify-center gap-2 w-fit mx-auto px-4 py-2 text-sm font-medium text-white bg-amber-800 hover:bg-amber-900 rounded-md transition-colors border border-amber-200"
-            >
-              <X className="w-4 h-4" />
-              Remove File
-            </button>
+                {/* Remove button */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveFile();
+                  }}
+                  className="mt-8 cursor-pointer flex items-center justify-center gap-2 w-fit mx-auto px-4 py-2 text-sm font-medium text-white bg-amber-800 hover:bg-amber-900 rounded-md transition-colors border border-amber-200"
+                >
+                  <X className="w-4 h-4" />
+                  Remove File
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <>

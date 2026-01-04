@@ -133,14 +133,14 @@ export const Features = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-24 bg-[#ffffffa8] border-2 border-amber-800/20 rounded-2xl p-12 text-center shadow-md">
+        <div className="mt-24 bg-[#ffffffa8] border-2 border-amber-800/20 rounded-2xl py-8 md:px-12 sm:px-8 px-4 text-center shadow-md">
           <h2 className="text-3xl font-bold text-amber-800">
             Start Summarizing Today
           </h2>
           <p className="mt-4 text-gray-700">
             Experience the fastest way to understand Indian legal judgments.
           </p>
-          <div className="mt-6 flex justify-center gap-4">
+          <div className="mt-6 flex md:flex-row flex-col items-center justify-center gap-4">
             <button
               onClick={(e) => {
                 e.preventDefault();

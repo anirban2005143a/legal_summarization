@@ -76,6 +76,7 @@ def predict(data: InputText):
         api_url = None
         if "t5" in model_key.lower():
             api_url = os.getenv("T5_URL")  # set this in .env
+            
         elif "phi4" in model_key.lower():
             api_url = os.getenv("PHI4_URL")  # set this in .env
         
