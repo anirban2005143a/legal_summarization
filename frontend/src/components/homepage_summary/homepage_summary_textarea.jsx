@@ -18,13 +18,10 @@ export const HomePageSummaryTextArea = ({
   setInput,
 }) => {
   const [isModelDropdownOpen, setisModelDropdownOpen] = useState(false);
-  const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
   const [isTextExtracting, setisTextExtracting] = useState(false);
   const [selectedFiles, setselectedFiles] = useState(null);
   const modelcontainerRef = useRef();
   const modeldropdownRef = useRef();
-  const langcontainerRef = useRef();
-  const langdropdownRef = useRef();
   const textareaRef = useRef(null);
   const maxHeight = 150; // px
 
@@ -54,18 +51,10 @@ export const HomePageSummaryTextArea = ({
       ) {
         setisModelDropdownOpen(false);
       }
-      if (
-        langcontainerRef.current &&
-        !langcontainerRef.current.contains(e.target) &&
-        langdropdownRef.current &&
-        !langdropdownRef.current.contains(e.target)
-      ) {
-        setisLangDropdownOpen(false);
-      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [modelcontainerRef, modeldropdownRef, langcontainerRef, langdropdownRef]);
+  }, [modelcontainerRef, modeldropdownRef]);
 
   useEffect(() => {
     if (!selectedFiles || selectedFiles.length == 0) {
@@ -175,46 +164,6 @@ export const HomePageSummaryTextArea = ({
                   </div>
                 </div>
 
-                {/* select lang from dropdown  */}
-                <div className="relative w-fit mb-1">
-                  <button
-                    ref={langcontainerRef}
-                    onClick={() => setisLangDropdownOpen((prev) => !prev)}
-                    className="w-full cursor-pointer px-1.5 py-1 flex items-center justify-between gap-1 rounded-full font-medium text-gray-900 text-xs bg-amber-200/20 border border-amber-900/40 hover:bg-amber-200/10 transition-colors"
-                  >
-                    {selectedLang}
-                    <ChevronDown
-                      className={`w-5 h-5 transition-transform duration-300 ${
-                        isLangDropdownOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                  {/*language Dropdown */}
-                  <div
-                    ref={langdropdownRef}
-                    className={`absolute z-10 bottom-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
-                      isLangDropdownOpen
-                        ? "opacity-100 scale-100 pointer-events-auto"
-                        : "opacity-0 scale-y-95 pointer-events-none"
-                    }`}
-                  >
-                    <ul className="">
-                      {["Engish", "Hindi", "Tamil"].map((item) => (
-                        <li
-                          key={item}
-                          onClick={() => {
-                            setselectedLang(item);
-                            setisLangDropdownOpen(false);
-                          }}
-                          className="px-4 py-1.5 text-sm text-gray-800 hover:bg-gray-200 cursor-pointer"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
                 {/* select pdf file  */}
                 <div className="relative w-fit mb-1">
                   <label
@@ -222,9 +171,7 @@ export const HomePageSummaryTextArea = ({
                     className="w-full cursor-pointer px-1.5 py-1 flex items-center justify-between gap-1 rounded-full font-medium text-gray-900 text-xs bg-amber-200/20 border border-amber-900/40 hover:bg-amber-200/10 transition-colors"
                   >
                     <Plus
-                      className={`w-5 h-5 transition-transform duration-300 ${
-                        isLangDropdownOpen ? "rotate-180" : ""
-                      }`}
+                      className="w-5 h-5 transition-transform duration-300"
                     />
                     Select file
                   </label>

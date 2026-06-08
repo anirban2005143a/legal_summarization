@@ -369,13 +369,10 @@ const FileUploadArea = ({
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
   const [isModelDropdownOpen, setisModelDropdownOpen] = useState(false);
-  const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
   const [isTextExtracting, setisTextExtracting] = useState(true);
 
   const modelcontainerRef = useRef();
   const modeldropdownRef = useRef();
-  const langcontainerRef = useRef();
-  const langdropdownRef = useRef();
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -418,18 +415,10 @@ const FileUploadArea = ({
       ) {
         setisModelDropdownOpen(false);
       }
-      if (
-        langcontainerRef.current &&
-        !langcontainerRef.current.contains(e.target) &&
-        langdropdownRef.current &&
-        !langdropdownRef.current.contains(e.target)
-      ) {
-        setisLangDropdownOpen(false);
-      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [modelcontainerRef, modeldropdownRef, langcontainerRef, langdropdownRef]);
+  }, [modelcontainerRef, modeldropdownRef]);
 
   // extract text from file
   useEffect(() => {
@@ -492,10 +481,10 @@ const FileUploadArea = ({
             {!isTextExtracting && (
               <>
                 {/* Dropdowns section */}
-                <div className="gap-y-3 gap-x-3 grid sm:grid-cols-2 grid-cols-1">
+                <div className="max-w-sm mx-auto">
                   {/* Model selection */}
-                  <div className="relative ">
-                    <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1">
+                  <div className="relative">
+                    <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1 justify-center">
                       <Settings className="w-4 h-4" />
                       Select Model
                     </label>
@@ -539,68 +528,6 @@ const FileUploadArea = ({
                               console.log("changing");
                               setselectedModel(item);
                               setisModelDropdownOpen(false);
-                            }}
-                            className="px-4 py-2 border-b-1 border-gray-200 whitespace-nowrap font-medium text-sm text-gray-700 hover:bg-gray-200/50 cursor-pointer"
-                          >
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Language selection */}
-                  <div className="relative ">
-                    <label className="flex items-center gap-2 text-md font-medium text-gray-600 mb-1">
-                      <Globe className="w-4 h-4" />
-                      Language
-                    </label>
-
-                    <button
-                      ref={langcontainerRef}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setisLangDropdownOpen((prev) => !prev);
-                      }}
-                      className="w-full cursor-pointer px-4 py-1.5 flex items-center justify-between gap-1 rounded-sm font-medium text-base text-gray-600  bg-amber-100/10 border border-amber-800/40  transition-colors"
-                    >
-                      {selectedLang}
-                      <ChevronDown
-                        className={`w-5 h-5 transition-transform duration-300 ${
-                          isLangDropdownOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-
-                    {/*select model Dropdown */}
-                    <div
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                      ref={langdropdownRef}
-                      className={`absolute z-10 top-[95%] max-h-[150px] overflow-auto left-0 w-full mt-1 bg-gray-50 border border-gray-200/10 rounded-sm shadow-md transform transition-all duration-300 origin-top ${
-                        isLangDropdownOpen
-                          ? "opacity-100 scale-100 pointer-events-auto"
-                          : "opacity-0 scale-y-95 pointer-events-none"
-                      }`}
-                    >
-                      <ul className="">
-                        {[
-                          "English",
-                          "Spanish",
-                          "French",
-                          "German",
-                          "Japanese",
-                        ].map((item) => (
-                          <li
-                            key={item}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              console.log("changing");
-                              setselectedLang(item);
-                              setisLangDropdownOpen(false);
                             }}
                             className="px-4 py-2 border-b-1 border-gray-200 whitespace-nowrap font-medium text-sm text-gray-700 hover:bg-gray-200/50 cursor-pointer"
                           >

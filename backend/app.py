@@ -173,13 +173,9 @@ def translate_endpoint(data: TranslationRequest):
     try:
         url = os.getenv("GRADIO_TRANSLATION_URL")
         
-        # If url is not configured or empty, run in mock mode
+        # Fallback to hardcoded URL if env is not configured or empty
         if not url or url.strip() == "":
-            print("⚠️ GRADIO_TRANSLATION_URL is not set. Running in Mock Mode.")
-            return {
-                "success": True,
-                "translated_text": f"[Mock - {data.target_lang}]: {data.text}"
-            }
+            url = "https://4cb125560222fe7472.gradio.live/"
             
         url_strip = url.strip()
         

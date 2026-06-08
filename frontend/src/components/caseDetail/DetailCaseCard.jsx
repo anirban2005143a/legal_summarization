@@ -382,13 +382,9 @@ const SummaryContent = ({ input, isGetSummary = false, setisGetSummary }) => {
   const [output, setOutput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isModelDropDownOpen, setisModelDropDownOpen] = useState(false);
-  const [isLangDropdownOpen, setisLangDropdownOpen] = useState(false);
   const [selectedModel, setselectedModel] = useState("T5");
-  const [selectedLang, setselectedLang] = useState("English");
   const modelcontainerRef = useRef();
   const modeldropdownRef = useRef();
-  const langcontainerRef = useRef();
-  const langdropdownRef = useRef();
 
   const handelGetSummary = useCallback(
     async (e) => {
@@ -453,18 +449,10 @@ const SummaryContent = ({ input, isGetSummary = false, setisGetSummary }) => {
       ) {
         setisModelDropDownOpen(false);
       }
-      if (
-        langcontainerRef.current &&
-        !langcontainerRef.current.contains(e.target) &&
-        langdropdownRef.current &&
-        !langdropdownRef.current.contains(e.target)
-      ) {
-        setisLangDropdownOpen(false);
-      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [modelcontainerRef, modeldropdownRef, langcontainerRef, langdropdownRef]);
+  }, [modelcontainerRef, modeldropdownRef]);
 
   return (
     <div className=" md:py-4">
@@ -508,46 +496,6 @@ const SummaryContent = ({ input, isGetSummary = false, setisGetSummary }) => {
                     setisModelDropDownOpen(false);
                   }}
                   className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* select lang from dropdown  */}
-        <div className="relative inline-block w-fit">
-          <button
-            ref={langcontainerRef}
-            onClick={() => setisLangDropdownOpen((prev) => !prev)}
-            className="w-full cursor-pointer px-3 py-2 flex items-center justify-between gap-2 rounded-md font-semibold text-gray-700 text-sm bg-amber-200/20 border border-amber-900/50 hover:bg-amber-200/30 transition-colors"
-          >
-            {selectedLang}
-            <ChevronDown
-              className={`w-5 h-5 transition-transform duration-300 ${
-                isLangDropdownOpen ? "rotate-180" : ""
-              }`}
-            />
-          </button>
-          {/*language Dropdown */}
-          <div
-            ref={langdropdownRef}
-            className={`absolute z-10 top-full left-0 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md transform transition-all duration-300 origin-top ${
-              isLangDropdownOpen
-                ? "opacity-100 scale-100 pointer-events-auto"
-                : "opacity-0 scale-y-95 pointer-events-none"
-            }`}
-          >
-            <ul className="py-2">
-              {["Engish", "Hindi", "Tamil"].map((item) => (
-                <li
-                  key={item}
-                  onClick={() => {
-                    setselectedLang(item);
-                    setisLangDropdownOpen(false);
-                  }}
-                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
                 >
                   {item}
                 </li>
