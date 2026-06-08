@@ -108,15 +108,112 @@ export const HomePageSummary = ({}) => {
 };
 
 const AIResponseDisplay = ({ output, isLoading }) => {
+  const [translatedText, setTranslatedText] = useState("");
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [activeTab, setActiveTab] = useState("original"); // "original" or "translated"
+  const [selectedLang, setSelectedLang] = useState("Telugu");
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const langDropdownRef = useRef(null);
+  const langButtonRef = useRef(null);
+
+  const SUPPORTED_LANGUAGES = [
+    "Telugu",
+    "Hindi",
+    "Bengali",
+    "Tamil",
+    "Marathi",
+    "Malayalam",
+    "Gujarati",
+    "Punjabi",
+    "Odia",
+    "Kannada"
+  ];
+
+  // Reset states when the original output changes (e.g. new document summarized)
+  useEffect(() => {
+    setTranslatedText("");
+    setActiveTab("original");
+  }, [output]);
+
+  // Handle clicking outside the language dropdown
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (
+        langDropdownRef.current && !langDropdownRef.current.contains(e.target) &&
+        langButtonRef.current && !langButtonRef.current.contains(e.target)
+      ) {
+        setIsLangDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleTranslate = async () => {
+    if (isTranslating || !output) return;
+    setIsTranslating(true);
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_FAST_URL}/translate`, {
+        text: output,
+        target_lang: selectedLang,
+      });
+      if (res.data.success && res.data.translated_text) {
+        setTranslatedText(res.data.translated_text);
+        setActiveTab("translated");
+      } else {
+        showToast(res.data.error || "Translation failed", 1);
+      }
+    } catch (err) {
+      console.error(err);
+      showToast(err.response?.data?.detail || err.message || "Failed to connect to translation server", 1);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  const displayText = activeTab === "translated" ? translatedText : output;
+
   return (
-    <div className="relative pb-6 mt-3 max-w-4xl mx-auto border border-gray-100 bg-gray-50  rounded-lg">
+    <div className="relative pb-6 mt-3 max-w-4xl mx-auto border border-gray-100 bg-gray-50 rounded-lg">
       <div className="flex-1 overflow-auto flex flex-col">
-        <div className="flex-1  p-4 overflow-auto ">
-          <div className="flex items-center gap-2 mb-3">
-            <Bot className="w-4 h-4 text-amber-600" />
-            <h3 className="text-sm  text-gray-600 font-medium">AI Response</h3>
+        <div className="flex-1 p-4 overflow-auto">
+          {/* Header row */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Bot className="w-4 h-4 text-amber-600" />
+              <h3 className="text-sm text-gray-600 font-medium">AI Response</h3>
+            </div>
           </div>
 
+          {/* Tab switches */}
+          {output && !isLoading && (
+            <div className="flex border-b border-gray-200 mb-4 gap-2">
+              <button
+                onClick={() => setActiveTab("original")}
+                className={`px-3 py-1.5 text-xs font-semibold border-b-2 transition-colors duration-200 ${
+                  activeTab === "original"
+                    ? "border-amber-600 text-amber-700"
+                    : "border-transparent text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                Original (English)
+              </button>
+              {translatedText && (
+                <button
+                  onClick={() => setActiveTab("translated")}
+                  className={`px-3 py-1.5 text-xs font-semibold border-b-2 transition-colors duration-200 ${
+                    activeTab === "translated"
+                      ? "border-amber-600 text-amber-700"
+                      : "border-transparent text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  Translated ({selectedLang})
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Main content display */}
           {isLoading ? (
             <div className="animate-pulse">
               <div className="flex flex-col gap-2">
@@ -126,12 +223,15 @@ const AIResponseDisplay = ({ output, isLoading }) => {
                 <div className="h-4 bg-gray-200 rounded w-2/3"></div>
               </div>
             </div>
-          ) : output ? (
-            <div className=" max-w-none">
+          ) : isTranslating ? (
+            <div className="py-8 flex flex-col items-center justify-center gap-3">
+              <Loader2 className="w-7 h-7 text-amber-600 animate-spin" />
+              <p className="text-xs font-medium text-gray-500">Translating summary to {selectedLang}...</p>
+            </div>
+          ) : displayText ? (
+            <div className="max-w-none">
               <p className="text-gray-800 text-sm mb-2 whitespace-pre-wrap">
-                {output}
-
-                {/* <TypewriterEffect words={output}/> */}
+                {displayText}
               </p>
             </div>
           ) : (
@@ -142,36 +242,83 @@ const AIResponseDisplay = ({ output, isLoading }) => {
         </div>
       </div>
 
-      {/* copy and download summary  */}
-      <div
-        className={`${
-          output && !isLoading ? "" : "hidden"
-        } absolute left-5 bottom-1 flex items-center gap-4 w-fit`}
-      >
-        <button
-          aria-label="copy answer"
-          onClick={(e) => {
-            e.preventDefault();
-            copyToClipboard(output);
-          }}
-          className=" cursor-pointer py-2"
-        >
-          <Copy className=" hover:text-gray-800 text-gray-600 w-3.5 h-3.5 " />
-        </button>
-        <button
-          aria-label="download answer"
-          onClick={(e) => {
-            e.preventDefault();
-            handleDownload({
-              data: { title: "Judgment Summary" },
-              textContent: output,
-            });
-          }}
-          className=" cursor-pointer py-2"
-        >
-          <Download className=" hover:text-gray-800 text-gray-600 w-3.5 h-3.5 " />
-        </button>
-      </div>
+      {/* copy, download, and translation bar */}
+      {output && !isLoading && !isTranslating && (
+        <div className="mt-4 pt-4 border-t border-gray-200/60 flex flex-wrap items-center justify-between gap-4 px-4">
+          {/* Action buttons (copy and download) */}
+          <div className="flex items-center gap-4">
+            <button
+              aria-label="copy answer"
+              onClick={(e) => {
+                e.preventDefault();
+                copyToClipboard(displayText);
+              }}
+              className="cursor-pointer py-1 px-2 hover:bg-gray-200/50 rounded transition-all flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-800"
+            >
+              <Copy className="w-3.5 h-3.5" />
+              <span>Copy</span>
+            </button>
+            <button
+              aria-label="download answer"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDownload({
+                  data: { title: `Judgment Summary (${activeTab === "translated" ? selectedLang : "English"})` },
+                  textContent: displayText,
+                });
+              }}
+              className="cursor-pointer py-1 px-2 hover:bg-gray-200/50 rounded transition-all flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-800"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download PDF</span>
+            </button>
+          </div>
+
+          {/* Translation controls */}
+          <div className="flex items-center gap-2 relative">
+            <button
+              ref={langButtonRef}
+              onClick={() => setIsLangDropdownOpen((prev) => !prev)}
+              className="px-2.5 py-1 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50 flex items-center gap-1 transition-colors"
+            >
+              <Globe className="w-3.5 h-3.5 text-gray-500" />
+              <span>{selectedLang}</span>
+              <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${isLangDropdownOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            {isLangDropdownOpen && (
+              <div
+                ref={langDropdownRef}
+                className="absolute z-20 bottom-full right-0 mb-1 w-40 bg-white border border-gray-200 rounded shadow-lg max-h-48 overflow-y-auto"
+              >
+                <ul className="py-1">
+                  {SUPPORTED_LANGUAGES.map((lang) => (
+                    <li
+                      key={lang}
+                      onClick={() => {
+                        setSelectedLang(lang);
+                        setIsLangDropdownOpen(false);
+                      }}
+                      className={`px-3 py-1.5 text-xs hover:bg-amber-50 cursor-pointer text-gray-700 ${
+                        selectedLang === lang ? "bg-amber-50 font-semibold text-amber-700" : ""
+                      }`}
+                    >
+                      {lang}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <button
+              onClick={handleTranslate}
+              className="px-3 py-1 text-xs font-semibold text-white bg-amber-700 hover:bg-amber-800 rounded transition-all flex items-center gap-1"
+            >
+              Translate
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

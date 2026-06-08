@@ -10,6 +10,8 @@ import {
   Mic,
   Copy,
   Download,
+  Globe,
+  ChevronDown,
 } from "lucide-react";
 import { saveChatResponse } from "./functions/saveChat";
 import { getChatInfo } from "./functions/getChatInfo";
@@ -197,46 +199,7 @@ const ChatWindow = ({}) => {
 
                     {/* Bot Message */}
                     {message.answer && (
-                      <div className="flex justify-start">
-                        <div className="flex gap-3 max-w-[80%] flex-row">
-                          <div className="flex-shrink-0 h-8 w-8  rounded-full flex items-center justify-center bg-purple-100">
-                            <Bot className="w-6 h-6 text-white p-1 bg-purple-600 rounded-full" />
-                          </div>
-                          <div className=" group relative">
-                            <div className="px-4 text-sm py-2 w-full bg-gray-100/20 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
-                              <p>{message.answer}</p>
-                              <p className=" text-[10px] font-normal text-gray-700 mt-1">
-                                {formatISODateToDDMMYYYY(Date.now())}
-                              </p>
-                            </div>
-                            <div className="absolute left-2 top-full flex items-center gap-4 w-fit">
-                              <button
-                                aria-label="copy answer"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  copyToClipboard(message.answer);
-                                }}
-                                className=" cursor-pointer py-2"
-                              >
-                                <Copy className=" hover:text-gray-800 text-gray-600 w-3.5 h-3.5 " />
-                              </button>
-                              <button
-                                aria-label="download answer"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleDownload({
-                                    data: { title: "Judgment Summary" },
-                                    textContent: message.answer,
-                                  });
-                                }}
-                                className=" cursor-pointer py-2"
-                              >
-                                <Download className=" hover:text-gray-800 text-gray-600 w-3.5 h-3.5 " />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <BotMessage message={message} />
                     )}
                   </div>
                 );
@@ -280,3 +243,213 @@ const ChatWindow = ({}) => {
 };
 
 export default ChatWindow;
+
+const BotMessage = ({ message }) => {
+  const [translatedText, setTranslatedText] = useState("");
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [activeTab, setActiveTab] = useState("original"); // "original" or "translated"
+  const [selectedLang, setSelectedLang] = useState("Telugu");
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
+  const langDropdownRef = useRef(null);
+  const langButtonRef = useRef(null);
+
+  const SUPPORTED_LANGUAGES = [
+    "Telugu",
+    "Hindi",
+    "Bengali",
+    "Tamil",
+    "Marathi",
+    "Malayalam",
+    "Gujarati",
+    "Punjabi",
+    "Odia",
+    "Kannada"
+  ];
+
+  // Reset states when the original output changes
+  useEffect(() => {
+    setTranslatedText("");
+    setActiveTab("original");
+  }, [message.answer]);
+
+  // Handle clicking outside the language dropdown
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (
+        langDropdownRef.current && !langDropdownRef.current.contains(e.target) &&
+        langButtonRef.current && !langButtonRef.current.contains(e.target)
+      ) {
+        setIsLangDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleTranslate = async () => {
+    if (isTranslating || !message.answer) return;
+    setIsTranslating(true);
+    try {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_FAST_URL}/translate`, {
+        text: message.answer,
+        target_lang: selectedLang,
+      });
+      if (res.data.success && res.data.translated_text) {
+        setTranslatedText(res.data.translated_text);
+        setActiveTab("translated");
+      } else {
+        showToast(res.data.error || "Translation failed", 1);
+      }
+    } catch (err) {
+      console.error(err);
+      showToast(err.response?.data?.detail || err.message || "Failed to connect to translation server", 1);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  const displayText = activeTab === "translated" ? translatedText : message.answer;
+
+  return (
+    <div className="flex justify-start">
+      <div className="flex gap-3 max-w-[80%] flex-row">
+        <div className="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center bg-purple-100">
+          <Bot className="w-6 h-6 text-white p-1 bg-purple-600 rounded-full" />
+        </div>
+        <div className="group relative flex flex-col min-w-[200px]">
+          {/* Tabs header */}
+          {message.answer && !isTranslating && (
+            <div className="flex mb-1 gap-2 pl-1">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActiveTab("original");
+                }}
+                className={`text-[10px] font-semibold border-b-2 transition-colors duration-200 ${
+                  activeTab === "original"
+                    ? "border-purple-600 text-purple-700"
+                    : "border-transparent text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                Original (EN)
+              </button>
+              {translatedText && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveTab("translated");
+                  }}
+                  className={`text-[10px] font-semibold border-b-2 transition-colors duration-200 ${
+                    activeTab === "translated"
+                      ? "border-purple-600 text-purple-700"
+                      : "border-transparent text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  Translated ({selectedLang})
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Chat Bubble Body */}
+          <div className="px-4 text-sm py-2 w-full bg-gray-100/20 text-gray-800 rounded-bl-2xl rounded-r-2xl shadow">
+            {isTranslating ? (
+              <div className="py-2 flex items-center gap-2">
+                <Loader2 className="w-4 h-4 text-purple-600 animate-spin" />
+                <span className="text-xs text-gray-500 italic">Translating...</span>
+              </div>
+            ) : (
+              <p className="whitespace-pre-wrap">{displayText}</p>
+            )}
+            <p className="text-[10px] font-normal text-gray-700 mt-1">
+              {formatISODateToDDMMYYYY(message.createdAt || Date.now())}
+            </p>
+          </div>
+
+          {/* Action buttons + Translate */}
+          {!isTranslating && (
+            <div className="flex items-center gap-4 mt-1 bg-transparent px-1 relative w-full justify-between">
+              {/* Copy & Download */}
+              <div className="flex items-center gap-2">
+                <button
+                  aria-label="copy answer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    copyToClipboard(displayText);
+                  }}
+                  className="cursor-pointer py-1"
+                >
+                  <Copy className="hover:text-gray-800 text-gray-600 w-3.5 h-3.5" />
+                </button>
+                <button
+                  aria-label="download answer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDownload({
+                      data: { title: `Chat Response (${activeTab === 'translated' ? selectedLang : 'English'})` },
+                      textContent: displayText,
+                    });
+                  }}
+                  className="cursor-pointer py-1"
+                >
+                  <Download className="hover:text-gray-800 text-gray-600 w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Translation controls */}
+              <div className="flex items-center gap-1.5 relative">
+                <button
+                  ref={langButtonRef}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsLangDropdownOpen((prev) => !prev);
+                  }}
+                  className="px-1.5 py-0.5 text-[10px] font-semibold text-gray-600 bg-white border border-gray-200 rounded hover:bg-gray-50 flex items-center gap-1 transition-colors"
+                >
+                  <Globe className="w-3 h-3 text-gray-500" />
+                  <span>{selectedLang}</span>
+                  <ChevronDown className="w-2.5 h-2.5" />
+                </button>
+
+                {isLangDropdownOpen && (
+                  <div
+                    ref={langDropdownRef}
+                    className="absolute z-35 bottom-full right-0 mb-1 w-36 bg-white border border-gray-200 rounded shadow-lg max-h-36 overflow-y-auto"
+                  >
+                    <ul className="py-1">
+                      {SUPPORTED_LANGUAGES.map((lang) => (
+                        <li
+                          key={lang}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedLang(lang);
+                            setIsLangDropdownOpen(false);
+                          }}
+                          className={`px-2 py-1 text-[10px] hover:bg-purple-50 cursor-pointer text-gray-700 ${
+                            selectedLang === lang ? "bg-purple-50 font-semibold text-purple-700" : ""
+                          }`}
+                        >
+                          {lang}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleTranslate();
+                  }}
+                  className="px-2 py-0.5 text-[10px] font-semibold text-white bg-purple-600 hover:bg-purple-700 rounded transition-all"
+                >
+                  Translate
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -343,7 +343,7 @@ const LeftSection = ({ width }) => {
       </h1> */}
 
       <h1 className="user-select-none text-4xl md:text-[38px] xl:text-[45px] font-bold text-gray-900 leading-tight">
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9e600a] to-[#d4812e]">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#9e600a] to-[#d4812e] ">
           LegalSummarizer - Indian Legal
         </span>
         <br />
