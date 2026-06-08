@@ -1,4 +1,3 @@
-import { showToast } from "@/utils/ShowToast";
 import { NextResponse } from "next/server";
 
 // Function to fetch and cache data
