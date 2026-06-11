@@ -175,7 +175,7 @@ def translate_endpoint(data: TranslationRequest):
         
         # Fallback to hardcoded URL if env is not configured or empty
         if not url or url.strip() == "":
-            url = "https://4cb125560222fe7472.gradio.live/"
+            url = "https://d5d9034df95c36b111.gradio.live/"
             
         url_strip = url.strip()
         
